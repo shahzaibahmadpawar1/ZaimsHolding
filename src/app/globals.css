@@ -1,26 +1,183 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --mono-0: #ffffff;
+  --mono-10: #f1f5f9;
+  --mono-20: #e2e8f0;
+  --mono-30: #cbd5e1;
+  --mono-45: #94a3b8;
+  --mono-55: #64748b;
+  --mono-70: #475569;
+  --mono-90: #0b1220;
+  --mono-100: #060a12;
+
+  --brand-primary: #0f2744;
+  --brand-secondary: #1a3a5c;
+  --brand-accent: #b87333;
+  --paper: #f7f8fa;
+  --surface-warm: #ffffff;
+  --surface-subtle: #eef1f5;
+  --paper-tint: #ffffff;
+  --letter-surface: #ffffff;
+  --sketch-ink: #0b1220;
+
+  --shadow-soft: 0 1px 2px rgba(11, 18, 32, 0.04), 0 8px 24px rgba(11, 18, 32, 0.06);
+  --shadow-letter: 0 1px 3px rgba(11, 18, 32, 0.08), 0 12px 32px rgba(11, 18, 32, 0.08);
+  --shadow-nav: 0 2px 20px rgba(11, 18, 32, 0.08);
+
+  --nav-cta-bg: var(--brand-primary);
+  --nav-cta-border: transparent;
+  --nav-cta-shadow: 0 2px 8px rgba(15, 39, 68, 0.25);
+  --nav-cta-text: #ffffff;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-brand-accent: var(--brand-accent);
+  --color-paper: var(--paper);
+  --color-surface-warm: var(--surface-warm);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-paper-tint: var(--paper-tint);
+  --color-letter-surface: var(--letter-surface);
+  --color-mono-0: var(--mono-0);
+  --color-mono-10: var(--mono-10);
+  --color-mono-20: var(--mono-20);
+  --color-mono-30: var(--mono-30);
+  --color-mono-45: var(--mono-45);
+  --color-mono-55: var(--mono-55);
+  --color-mono-70: var(--mono-70);
+  --color-mono-90: var(--mono-90);
+  --color-mono-100: var(--mono-100);
+  --font-sans: var(--font-source-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.bg-noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bg-steel-hero {
+  background-color: #0f2744;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 70% 40%, rgba(184, 115, 51, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 20% 80%, rgba(26, 58, 92, 0.9) 0%, transparent 50%),
+    linear-gradient(165deg, #0a1a2e 0%, #0f2744 45%, #152f4d 100%);
+}
+
+.shadow-letter {
+  box-shadow: var(--shadow-letter);
+}
+
+.shadow-soft {
+  box-shadow: var(--shadow-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-safe-only {
+    animation: none !important;
   }
 }
 
+@keyframes accordion-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+.animate-accordion-down {
+  animation: accordion-down 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animate-accordion-up {
+  animation: accordion-up 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--mono-90);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[id] {
+  scroll-margin-top: 6rem;
+}
+
+::selection {
+  background: rgba(184, 115, 51, 0.25);
+  color: var(--mono-90);
+}
+
+/* —— Operating company brand themes (from live sites) —— */
+
+.theme-nexgen {
+  --company-primary: #0d2545;
+  --company-accent: #e8601a;
+}
+
+.theme-nexgen .company-display {
+  font-family: var(--font-barlow-condensed), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.theme-nexgen .company-body {
+  font-family: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+}
+
+.theme-dammam {
+  --company-primary: #0a0a0a;
+  --company-accent: #e5b52a;
+}
+
+.theme-dammam .company-display {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.theme-dammam .company-body {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+.theme-edge {
+  --company-primary: #0a0a0a;
+  --company-accent: #ff5722;
+}
+
+.theme-edge .company-display {
+  font-family: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.theme-edge .company-body {
+  font-family: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+}
+
+.theme-edge .company-mono {
+  font-family: var(--font-space-mono), ui-monospace, monospace;
 }

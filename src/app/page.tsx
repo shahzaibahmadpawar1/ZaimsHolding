@@ -1,69 +1,214 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Building2, Layers, ShieldCheck, Landmark } from "lucide-react";
+import HomeHero from "@/components/HomeHero";
+import VisionLetter from "@/components/VisionLetter";
+import CompanyCard from "@/components/CompanyCard";
+import SectionHeading from "@/components/SectionHeading";
+import FaqAccordion from "@/components/FaqAccordion";
+import ClosingCTA from "@/components/ClosingCTA";
+import { FadeIn, Stagger, StaggerItem, Reveal } from "@/components/Motion";
+import { companies, sectors } from "@/lib/content";
 
-export default function Home() {
+const proofs = [
+  {
+    icon: ShieldCheck,
+    title: "Aramco-grade standards",
+    desc: "NexGen Build holds Saudi Aramco vendor approval #10119021 — attributed where it belongs.",
+  },
+  {
+    icon: Landmark,
+    title: "SCA-certified fabrication",
+    desc: "Edge Steel and Dammam Laser operate as SCA-certified contractors for Kingdom projects.",
+  },
+  {
+    icon: Layers,
+    title: "Three companies, one group",
+    desc: "Construction, steel, and precision fab under permanent holding ownership — not a one-off JV.",
+  },
+  {
+    icon: Building2,
+    title: "Kingdom footprint",
+    desc: "Operations across Riyadh and the Eastern Province — Dammam, Jubail, and beyond.",
+  },
+];
+
+const faqItems = [
+  {
+    q: "What does Zaims Holding own?",
+    a: "Three operating companies: NexGen Build (construction & building systems), Dammam Laser CNC (precision laser and CNC fabrication), and Edge Steel KSA (structural and architectural steel). Each runs day-to-day independently; the holding aligns capital, quality, and cross-company delivery.",
+  },
+  {
+    q: "Is Zaims a contractor or an investor?",
+    a: "Both, in the industrial sense. We are operators who own complementary businesses for the long term — not a fund with a forced exit clock, and not a brokerage that auctions projects. Partners engage the group; work is delivered by the operating companies.",
+  },
+  {
+    q: "How do the companies work together?",
+    a: "They are designed as a chain: Edge for structural and architectural steel, Dammam Laser for precision components and panels, NexGen for construction and MEP systems. Shared ownership means coordination happens inside the group instead of across competing subcontractors.",
+  },
+  {
+    q: "Who should get in touch?",
+    a: "Investors and capital partners, strategic operators exploring collaboration, and media or institutional stakeholders. Project delivery conversations are routed to the relevant operating company — start at Contact and we'll connect you.",
+  },
+];
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+    <>
+      <HomeHero />
+
+      <VisionLetter />
+
+      {/* Companies */}
+      <section id="companies" className="bg-paper py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-6">
+          <FadeIn>
+            <SectionHeading
+              eyebrow="Our Companies"
+              title="Operating companies we hold."
+              description="A focused industrial portfolio — not a sprawling conglomerate. Each company is built to stand alone and stronger together."
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </FadeIn>
+          <Stagger className="mt-12 grid gap-5 md:grid-cols-3" delay={0.1}>
+            {companies.map((c, i) => (
+              <StaggerItem key={c.slug}>
+                <CompanyCard company={c} index={i} />
+              </StaggerItem>
+            ))}
+          </Stagger>
+          <FadeIn className="mt-10">
+            <Link
+              href="/companies"
+              className="text-sm font-semibold text-brand-primary hover:text-brand-accent transition-colors cursor-pointer"
+            >
+              View all companies →
+            </Link>
+          </FadeIn>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Sectors */}
+      <section id="sectors" className="bg-white py-20 md:py-28 border-y border-mono-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <FadeIn>
+            <SectionHeading
+              eyebrow="Sectors"
+              title="Where the group operates."
+              description="Four industrial lenses. One holding. Capabilities live inside the operating companies — the group sets direction and accountability."
+            />
+          </FadeIn>
+          <div className="mt-14 grid gap-10 md:grid-cols-2">
+            {sectors.map((s, i) => (
+              <Reveal key={s.title} delay={i * 0.08} direction={i % 2 === 0 ? "right" : "left"}>
+                <div className="border-t border-mono-20 pt-6">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-mono-45">
+                    {String(i + 1).padStart(2, "0")} · via {s.company}
+                  </p>
+                  <h3 className="font-display text-2xl font-bold text-mono-90">{s.title}</h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-mono-70">{s.description}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <FadeIn className="mt-12">
+            <Link
+              href="/sectors"
+              className="text-sm font-semibold text-brand-primary hover:text-brand-accent transition-colors cursor-pointer"
+            >
+              Explore sectors →
+            </Link>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* Why structure */}
+      <section className="bg-paper py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            <Reveal direction="right">
+              <SectionHeading
+                eyebrow="Why this structure"
+                title="Integration is a holding strategy — not a slide in a pitch deck."
+                description="Fragmented ownership creates fragmented outcomes. Zaims exists so complementary industrial capabilities share capital, standards, and a long horizon."
+              />
+              <Link
+                href="/why-zaims"
+                className="mt-8 inline-flex text-sm font-semibold text-brand-primary transition-colors hover:text-brand-accent cursor-pointer"
+              >
+                Read the thesis →
+              </Link>
+            </Reveal>
+            <Reveal direction="left" delay={0.1}>
+              <div className="rounded-2xl border border-mono-20 bg-white p-8 shadow-soft md:p-10">
+                <ul className="space-y-6">
+                  {[
+                    "Permanent ownership mindset — no forced three-year flip",
+                    "Cross-company coordination without killing local operators",
+                    "Credentials stay with the company that earned them",
+                    "Partners engage one group story with clear operating entities",
+                  ].map((item) => (
+                    <li key={item} className="flex gap-3 text-[15px] leading-relaxed text-mono-70">
+                      <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-accent" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Proof */}
+      <section className="bg-white py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-6">
+          <FadeIn>
+            <SectionHeading
+              eyebrow="Track record"
+              title="Proof, attributed honestly."
+              description="We don't invent group-wide badges. Credentials belong to the operating companies that earned them."
+            />
+          </FadeIn>
+          <Stagger className="mt-12 grid gap-6 sm:grid-cols-2" delay={0.05}>
+            {proofs.map((p) => (
+              <StaggerItem key={p.title}>
+                <div className="flex gap-4 rounded-2xl border border-mono-20 p-6">
+                  <p.icon className="h-6 w-6 flex-shrink-0 text-brand-accent" strokeWidth={1.75} />
+                  <div>
+                    <h3 className="font-display text-lg font-bold text-mono-90">{p.title}</h3>
+                    <p className="mt-2 text-[15px] leading-relaxed text-mono-70">{p.desc}</p>
+                  </div>
+                </div>
+              </StaggerItem>
+            ))}
+          </Stagger>
+          <FadeIn className="mt-10">
+            <Link
+              href="/portfolio"
+              className="text-sm font-semibold text-brand-primary hover:text-brand-accent transition-colors cursor-pointer"
+            >
+              See selected work →
+            </Link>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-paper py-20 md:py-28">
+        <div className="mx-auto max-w-3xl px-6">
+          <FadeIn>
+            <SectionHeading
+              eyebrow="Common questions"
+              title="What partners ask first."
+              align="center"
+            />
+          </FadeIn>
+          <FadeIn delay={0.08} className="mt-12">
+            <FaqAccordion items={faqItems} />
+          </FadeIn>
+        </div>
+      </section>
+
+      <ClosingCTA />
+    </>
   );
 }
