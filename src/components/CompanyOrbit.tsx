@@ -21,24 +21,24 @@ export default function CompanyOrbit({ className = "" }: { className?: string })
   return (
     <div className={`relative mx-auto h-[380px] w-full max-w-md lg:h-[440px] lg:max-w-none ${className}`}>
       <motion.div
-        className="absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/15"
+        className="absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-surface/15"
         animate={reduce ? undefined : { rotate: 360 }}
         transition={{ duration: 70, repeat: Infinity, ease: "linear" }}
       />
       <motion.div
-        className="absolute left-1/2 top-1/2 h-[42%] w-[42%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-brand-accent/30"
+        className="absolute left-1/2 top-1/2 h-[42%] w-[42%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-brand-yellow/30"
         animate={reduce ? undefined : { rotate: -360 }}
         transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
       />
 
       <motion.div
-        className="absolute left-1/2 top-1/2 z-10 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 p-3 shadow-[0_0_40px_rgba(184,115,51,0.15)] backdrop-blur-md md:h-28 md:w-28 md:p-3.5"
+        className="absolute left-1/2 top-1/2 z-10 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-surface/20 bg-surface/10 p-3 shadow-[0_0_40px_rgba(201,162,39,0.2)] backdrop-blur-md md:h-28 md:w-28 md:p-3.5"
         initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.2, ease }}
       >
         <Image
-          src="/assets/logos/favicon.png"
+          src="/assets/logos/zaimsLogo.jpg"
           alt="Zaims"
           width={72}
           height={72}
@@ -62,13 +62,13 @@ export default function CompanyOrbit({ className = "" }: { className?: string })
           >
             <Link
               href={`/companies/${c.slug}`}
-              className="group flex min-w-[10rem] -translate-x-1/2 flex-col rounded-2xl border border-white/20 bg-white/10 px-4 py-3 shadow-[0_12px_40px_rgba(0,0,0,0.35)] backdrop-blur-md transition-colors hover:border-brand-accent/60 hover:bg-white/15 cursor-pointer"
+              className="group flex min-w-[10rem] -translate-x-1/2 flex-col rounded-2xl border border-surface/20 bg-surface/10 px-4 py-3 shadow-[0_12px_40px_rgba(0,0,0,0.35)] backdrop-blur-md transition-colors hover:border-brand-cyan/60 hover:bg-surface/15 cursor-pointer"
             >
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-brand-accent">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-brand-yellow">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <span className="mt-1 font-display text-sm font-bold text-white">{c.shortName}</span>
-              <span className="mt-0.5 line-clamp-1 text-[11px] text-white/55">{c.role}</span>
+              <span className="mt-1 font-display text-sm font-bold text-surface">{c.shortName}</span>
+              <span className="mt-0.5 line-clamp-1 text-[11px] text-surface/55">{c.role}</span>
             </Link>
           </motion.div>
         </motion.div>
@@ -76,7 +76,7 @@ export default function CompanyOrbit({ className = "" }: { className?: string })
 
       {!reduce && (
         <motion.div
-          className="pointer-events-none absolute inset-x-[10%] top-0 z-0 h-px bg-gradient-to-r from-transparent via-brand-accent/50 to-transparent"
+          className="pointer-events-none absolute inset-x-[10%] top-0 z-0 h-px bg-linear-to-r from-transparent via-brand-yellow/50 to-transparent"
           animate={{ top: ["10%", "88%", "10%"] }}
           transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
         />

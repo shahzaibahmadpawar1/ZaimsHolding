@@ -25,26 +25,81 @@ export type Company = {
   tagline: string;
   role: string;
   location: string;
+  address?: string;
   founded?: string;
   description: string;
   capabilities: string[];
   credentials: string[];
+  highlights?: string[];
+  clients?: string[];
+  email?: string;
+  phone?: string;
   website: string;
   /** @deprecated use brand.surface — kept for card tint utility classes */
   accent: string;
   brand: CompanyBrand;
 };
 
+export type LeadershipPerson = {
+  name: string;
+  role: string;
+  company: string;
+  companySlug?: CompanySlug;
+  bio: string;
+  /** Optional public source — omit for profiles not attributed to an external site */
+  sourceUrl?: string;
+};
+
+/**
+ * Leadership profiles for the group and operating companies.
+ * NexGen names are as published on nxgens.com/about.
+ * Dammam Laser CNC does not list named executives on its public About page.
+ */
+export const leadership: LeadershipPerson[] = [
+  {
+    name: "Adil Tasawar",
+    role: "Founder & Managing Director",
+    company: "Edge Steel KSA",
+    companySlug: "edge-steel",
+    bio: "With more than 15 years embedded in Saudi Arabia's industrial construction sector, Adil Tasawar leads with a hands-on approach across commercial strategy, major client relationships, and the technical decisions that determine outcomes on large-scale programmes.",
+  },
+  {
+    name: "Eng. Hamad Zaman",
+    role: "Leadership · NexGen Build",
+    company: "NexGen Build",
+    companySlug: "nexgen-build",
+    bio: "20+ years of construction and industrial project management in Saudi Arabia. Recognized for driving structural execution and client-focused engineering solutions.",
+    sourceUrl: "https://nxgens.com/about/",
+  },
+  {
+    name: "Eng. Tariq Al-Ghamdi",
+    role: "Leadership · NexGen Build",
+    company: "NexGen Build",
+    companySlug: "nexgen-build",
+    bio: "15+ years managing integrated civil and industrial fabrication sites. Specialized in workflow efficiency, AWS welding compliance, and safety auditing.",
+    sourceUrl: "https://nxgens.com/about/",
+  },
+  {
+    name: "Eng. Sarah Al-Dosari",
+    role: "Leadership · NexGen Build",
+    company: "NexGen Build",
+    companySlug: "nexgen-build",
+    bio: "12+ years leading structural design, mechanical systems integration, and international engineering standards compliance for Saudi infrastructure projects.",
+    sourceUrl: "https://nxgens.com/about/",
+  },
+];
+
 export const companies: Company[] = [
   {
     slug: "nexgen-build",
     name: "NexGen Build",
     shortName: "NexGen",
-    tagline: "Construction & integrated building systems",
+    tagline: "Complete construction & fabrication for Saudi Arabia",
     role: "Construction & MEP systems",
     location: "Dammam & Jubail, Eastern Province",
+    address: "Dammam, Saudi Arabia (Jubail facilities)",
     description:
-      "End-to-end construction and building systems under one roof — general construction, electrical, HVAC, plumbing, waterproofing, and fire protection. An approved Saudi Aramco vendor delivering critical infrastructure aligned with Vision 2030 standards.",
+      "End-to-end construction, industrial fabrication, and maintenance from foundation to finish. Six integrated divisions under one roof — general construction, electrical, HVAC, sanitary & plumbing, waterproofing & coatings, and fire protection — with Saudi Aramco vendor approval and Vision 2030–aligned delivery.",
     capabilities: [
       "General construction & civil works",
       "Electrical systems",
@@ -52,25 +107,34 @@ export const companies: Company[] = [
       "Sanitary & plumbing",
       "Waterproofing & coatings",
       "Fire protection systems",
+      "Fiber laser & CNC fabrication (Dammam & Jubail workshops)",
+      "AWS-certified welding (TIG, MIG, SMAW)",
     ],
     credentials: [
       "Saudi Aramco Approved Vendor #10119021",
       "Saudi Energy Registered Supplier (SAP Ariba)",
-      "ISO 9001 Certified",
+      "ISO 9001:2015 Certified",
       "AWS Certified Welding Processes",
     ],
+    highlights: [
+      "Six specialized service divisions, one contractor",
+      "Workshop facilities in Dammam and Jubail",
+      "<8% weld rejection rate (as published by NexGen)",
+      "CNC precision within ±0.05mm tolerances (workshop capability)",
+    ],
+    email: "contact@Nxgens.com",
+    phone: "+966-555-123-456",
     website: "https://nxgens.com/",
-    accent: "bg-[#0d2545]/[0.05]",
+    accent: "bg-surface",
     brand: {
-      // nxgens.com — Barlow / Barlow Condensed, navy #0d2545, orange #e8601a
       logo: "/assets/logos/logo.png",
       logoWidth: 220,
       logoHeight: 78,
-      primary: "#0d2545",
-      accent: "#e8601a",
-      surface: "rgba(13, 37, 69, 0.05)",
-      heroFrom: "#071525",
-      heroTo: "#0d2545",
+      primary: "#0f2744",
+      accent: "#c9a227",
+      surface: "#f7f1e8",
+      heroFrom: "#0a1a2e",
+      heroTo: "#0f2744",
       themeClass: "theme-nexgen",
     },
   },
@@ -81,28 +145,36 @@ export const companies: Company[] = [
     tagline: "Precision laser cutting and CNC fabrication",
     role: "Precision manufacturing",
     location: "Dammam, Eastern Province",
+    address: "Al-Khodariya Industrial Area, Dammam, Eastern Province, Saudi Arabia",
     description:
-      "Precision fabrication powered by fiber lasers, CO₂ technology, and CNC routing. From heavy-duty metal components to intricate decorative panels — steel, stainless, aluminum, wood, and acrylic.",
+      "Based in Dammam, Dammam Laser CNC delivers precision laser cutting and CNC fabrication across metal, wood, and acrylic. Fiber lasers, CO₂ lasers, and CNC routers support heavy-duty industrial components through intricate decorative panels for construction, oil & gas, automotive, aerospace, and interior design clients.",
     capabilities: [
-      "Fiber laser metal cutting",
-      "CO₂ laser cutting & engraving",
+      "Fiber laser metal cutting (steel, stainless, aluminum)",
+      "CO₂ laser cutting & engraving (wood, acrylic, plastic)",
       "Advanced CNC routing (2D & 3D)",
       "Architectural metal works",
-      "Custom industrial parts",
+      "Custom industrial parts fabrication",
+      "Steel fabrication support",
+      "Equipment rental, material supply & manpower solutions",
     ],
     credentials: ["SCA Certified Contractor", "VAT Registered", "SME Certified"],
+    highlights: [
+      "Serves construction, industrial manufacturing, oil & gas, automotive & aerospace, and interior design",
+      "Working hours published as Saturday–Thursday, 07:00–19:00",
+    ],
+    email: "info@dammamlaser.com",
+    phone: "0591259810",
     website: "https://dammamlaser.com/",
-    accent: "bg-[#e5b52a]/[0.08]",
+    accent: "bg-surface",
     brand: {
-      // dammamlaser.com — Inter, black + mustard gold #e5b52a / #c8991a
       logo: "/assets/logos/dammam-laser.png",
       logoWidth: 72,
       logoHeight: 68,
-      primary: "#0a0a0a",
-      accent: "#e5b52a",
-      surface: "rgba(229, 181, 42, 0.08)",
-      heroFrom: "#000000",
-      heroTo: "#1a1a1a",
+      primary: "#0f2744",
+      accent: "#c9a227",
+      surface: "#f7f1e8",
+      heroFrom: "#0a1a2e",
+      heroTo: "#0f2744",
       themeClass: "theme-dammam",
     },
   },
@@ -110,32 +182,48 @@ export const companies: Company[] = [
     slug: "edge-steel",
     name: "Edge Steel KSA",
     shortName: "Edge Steel",
-    tagline: "Structural and architectural steel",
+    tagline: "Precision steel. Built for Saudi Arabia.",
     role: "Steel fabrication",
     location: "Riyadh, KSA",
+    address: "Riyadh, Saudi Arabia",
     founded: "2020",
     description:
-      "Structural and architectural steel fabrication for commercial, government, and infrastructure clients across the Kingdom. Precision cutting, welding, and custom assemblies built to SCA and international standards.",
+      "Established in 2020 in Riyadh, Edge Steel KSA delivers structural and architectural steel fabrication, CNC fiber laser cutting (±0.1mm), weld assemblies, equipment rental, and material & manpower supply. SCA-certified work for government, defence, energy, and commercial clients across the Kingdom — 500+ projects completed as published on their site.",
     capabilities: [
-      "Structural steel fabrication",
-      "Laser-cut decorative & façade panels",
+      "Structural steel fabrication (beams, columns, trusses)",
+      "CNC fiber laser cutting (±0.1mm tolerance)",
+      "Decorative & architectural façade panels",
       "Weld assemblies & sub-frames",
-      "Equipment rental support",
+      "Equipment rental (generators, excavators, cranes, forklifts, welding machines)",
       "Material & manpower supply",
     ],
     credentials: ["SCA Certified Contractor", "VAT Registered", "SME Certified"],
+    highlights: [
+      "500+ projects completed across the Kingdom (as published)",
+      "15+ major government & enterprise clients (as published)",
+      "Laser division commissioned 2022; fleet expansion 2024",
+    ],
+    clients: [
+      "Ministry of Interior",
+      "Saudi National Guard",
+      "Siemens KSA",
+      "Alfanar Projects",
+      "Riyadh Metro",
+      "Jadah Development",
+      "SAPCQ",
+      "Tarshid Energy",
+    ],
     website: "https://edgesteelksa.com/en",
-    accent: "bg-[#ff5722]/[0.06]",
+    accent: "bg-surface",
     brand: {
-      // edgesteelksa.com — Sora + Space Mono, black + #ff5722
       logo: "/assets/logos/edge-steel.png",
       logoWidth: 160,
       logoHeight: 90,
-      primary: "#0a0a0a",
-      accent: "#ff5722",
-      surface: "rgba(255, 87, 34, 0.06)",
-      heroFrom: "#050505",
-      heroTo: "#141414",
+      primary: "#0f2744",
+      accent: "#c9a227",
+      surface: "#f7f1e8",
+      heroFrom: "#0a1a2e",
+      heroTo: "#0f2744",
       themeClass: "theme-edge",
     },
   },
@@ -151,24 +239,28 @@ export const sectors = [
     description:
       "Turnkey structural and civil delivery through NexGen Build — from foundations to handover on industrial and commercial sites.",
     company: "NexGen Build",
+    icon: "/assets/icons/icon-construction.png",
   },
   {
     title: "Steel Fabrication",
     description:
       "Heavy structural members, architectural panels, and weld assemblies through Edge Steel KSA — built for demanding Saudi projects.",
     company: "Edge Steel KSA",
+    icon: "/assets/icons/icon-steel.png",
   },
   {
     title: "Precision Manufacturing",
     description:
       "Laser and CNC fabrication through Dammam Laser CNC — tight-tolerance components and decorative metalwork.",
     company: "Dammam Laser CNC",
+    icon: "/assets/icons/icon-precision.png",
   },
   {
     title: "Industrial Systems",
     description:
       "Electrical, HVAC, plumbing, waterproofing, and fire protection — integrated under NexGen so systems and structure stay coordinated.",
     company: "NexGen Build",
+    icon: "/assets/icons/icon-systems.png",
   },
 ];
 
@@ -195,11 +287,6 @@ export const navItems: NavItem[] = [
     href: "/companies",
     children: [
       {
-        label: "All companies",
-        href: "/companies",
-        description: "Portfolio hub for the three operators",
-      },
-      {
         label: "NexGen Build",
         href: "/companies/nexgen-build",
         description: "Construction & MEP systems",
@@ -221,11 +308,6 @@ export const navItems: NavItem[] = [
     href: "/about",
     children: [
       {
-        label: "Our story",
-        href: "/about",
-        description: "Holding purpose and footprint",
-      },
-      {
         label: "Why Zaims",
         href: "/why-zaims",
         description: "Ownership thesis and model",
@@ -242,11 +324,6 @@ export const navItems: NavItem[] = [
     label: "Insights",
     href: "/news",
     children: [
-      {
-        label: "News",
-        href: "/news",
-        description: "Updates from the group",
-      },
       {
         label: "Track record",
         href: "/portfolio",

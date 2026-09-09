@@ -19,8 +19,10 @@ export type ValueGalleryItem = {
   image: string;
 };
 
-/** Extra viewport height per frame — lowers scroll sensitivity */
-const VH_PER_FRAME = 190;
+/** Extra viewport height per value frame — scroll sensitivity between images */
+const VH_PER_VALUE = 190;
+/** Intro (orbit) frame — keep in step with between-image feel, not a full dead zone */
+const VH_INTRO = 95;
 
 /** Clear the fixed Line Menu TOC on the left (lg+) */
 const COPY_INSET =
@@ -38,9 +40,9 @@ function HeroBackdrop() {
           maskImage: "radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%)",
         }}
       />
-      <div className="pointer-events-none absolute -left-24 top-1/4 h-72 w-72 rounded-full bg-brand-accent/20 blur-3xl" />
-      <div className="pointer-events-none absolute -right-16 top-1/3 h-96 w-96 rounded-full bg-sky-400/10 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-brand-secondary/40 blur-3xl" />
+      <div className="pointer-events-none absolute -left-24 top-1/4 h-72 w-72 rounded-full bg-brand-yellow/20 blur-3xl" />
+      <div className="pointer-events-none absolute -right-16 top-1/3 h-96 w-96 rounded-full bg-brand-cyan/15 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-brand-teal/30 blur-3xl" />
 
       {/* Hero orbit illustration — right side */}
       <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] flex w-full max-w-xl items-center justify-center pr-4 opacity-95 sm:pr-8 lg:max-w-2xl lg:pr-16 xl:max-w-3xl">
@@ -81,10 +83,10 @@ function StickyIntroCopy() {
       className={`pointer-events-none absolute left-0 top-0 z-30 w-full max-w-lg pr-6 pt-24 md:pt-28 ${COPY_INSET}`}
     >
       <div className="[text-shadow:0_2px_24px_rgba(0,0,0,0.55)]">
-        <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-accent">
+        <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-yellow">
           Values
         </p>
-        <h2 className="font-display text-2xl font-bold tracking-tight text-white text-balance sm:text-3xl md:text-4xl">
+        <h2 className="font-display text-2xl font-bold tracking-tight text-surface text-balance sm:text-3xl md:text-4xl">
           What we optimize for.
         </h2>
       </div>
@@ -95,36 +97,38 @@ function StickyIntroCopy() {
 function GallerySlide({
   item,
   valueIndex,
-  frameIndex,
+  frameStart,
+  frameEnd,
   active,
   progress,
-  frameCount,
   valueCount,
   reduce,
 }: {
   item: ValueGalleryItem;
   valueIndex: number;
-  frameIndex: number;
+  frameStart: number;
+  frameEnd: number;
   active: boolean;
   progress: MotionValue<number>;
-  frameCount: number;
   valueCount: number;
   reduce: boolean | null;
 }) {
-  const start = frameIndex / frameCount;
-  const end = (frameIndex + 1) / frameCount;
-  // Longer hold in the middle so slides feel less twitchy
-  const enter = start + (end - start) * 0.12;
-  const holdStart = start + (end - start) * 0.22;
-  const holdEnd = start + (end - start) * 0.78;
-  const exit = start + (end - start) * 0.88;
+  const span = Math.max(frameEnd - frameStart, 0.0001);
+  const enter = frameStart + span * 0.12;
+  const holdStart = frameStart + span * 0.22;
+  const holdEnd = frameStart + span * 0.78;
+  const exit = frameStart + span * 0.88;
 
-  const opacity = useTransform(progress, [start, enter, holdStart, holdEnd, exit, end], [0, 1, 1, 1, 1, 0]);
-  const scale = useTransform(progress, [start, holdStart, end], [1.03, 1, 1.02]);
-  const textY = useTransform(progress, [start, holdStart, holdEnd, end], [28, 0, 0, -28]);
+  const opacity = useTransform(
+    progress,
+    [frameStart, enter, holdStart, holdEnd, exit, frameEnd],
+    [0, 1, 1, 1, 1, 0],
+  );
+  const scale = useTransform(progress, [frameStart, holdStart, frameEnd], [1.03, 1, 1.02]);
+  const textY = useTransform(progress, [frameStart, holdStart, holdEnd, frameEnd], [28, 0, 0, -28]);
   const textOpacity = useTransform(
     progress,
-    [start, holdStart, holdEnd, end],
+    [frameStart, holdStart, holdEnd, frameEnd],
     [0, 1, 1, 0],
   );
 
@@ -167,13 +171,13 @@ function SlideCopy({
       className={`relative z-10 w-full max-w-xl pr-6 pb-20 pt-32 md:pb-0 md:pt-20 ${COPY_INSET}`}
     >
       <div className="max-w-md [text-shadow:0_2px_28px_rgba(0,0,0,0.55)]">
-        <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-accent">
+        <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-yellow">
           {String(index + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
         </p>
-        <h3 className="font-display text-2xl font-bold tracking-tight text-white text-balance sm:text-3xl md:text-4xl lg:text-5xl">
+        <h3 className="font-display text-2xl font-bold tracking-tight text-surface text-balance sm:text-3xl md:text-4xl lg:text-5xl">
           {item.title}
         </h3>
-        <p className="mt-3 max-w-sm text-sm leading-relaxed text-white md:mt-4 md:text-base">
+        <p className="mt-3 max-w-sm text-sm leading-relaxed text-surface md:mt-4 md:text-base">
           {item.desc}
         </p>
       </div>
@@ -185,18 +189,18 @@ function ThumbRail({
   items,
   activeValue,
   progress,
-  frameCount,
+  introEnd,
   reduce,
   onSelect,
 }: {
   items: ValueGalleryItem[];
   activeValue: number;
   progress: MotionValue<number>;
-  frameCount: number;
+  introEnd: number;
   reduce: boolean | null;
   onSelect: (valueIndex: number) => void;
 }) {
-  const y = useTransform(progress, [1 / frameCount, 1], [0, -52 * (items.length - 1)]);
+  const y = useTransform(progress, [introEnd, 1], [0, -52 * (items.length - 1)]);
 
   return (
     <div className="pointer-events-none absolute inset-y-0 left-1/2 z-20 flex -translate-x-1/2 items-center">
@@ -213,7 +217,7 @@ function ThumbRail({
                 aria-current={isActive ? "true" : undefined}
                 className={`relative h-12 w-12 overflow-hidden rounded-xl border-2 transition-transform duration-300 md:h-14 md:w-14 ${
                   isActive
-                    ? "scale-110 border-brand-accent shadow-[0_0_0_2px_rgba(184,115,51,0.35)]"
+                    ? "scale-110 border-brand-yellow shadow-[0_0_0_2px_rgba(201,162,39,0.35)]"
                     : "border-white/50"
                 }`}
               >
@@ -257,7 +261,31 @@ export default function ValuesScrollGallery({ items }: { items: ValueGalleryItem
   const [activeFrame, setActiveFrame] = useState(0);
 
   // Frame 0 = hero intro (no photo). Frames 1..n = value photos.
-  const frameCount = items.length + 1;
+  // Intro is shorter so reaching the first image matches between-image sensitivity.
+  const frameWeights = useMemo(
+    () => [VH_INTRO, ...items.map(() => VH_PER_VALUE)],
+    [items],
+  );
+  const totalWeight = useMemo(
+    () => frameWeights.reduce((sum, w) => sum + w, 0),
+    [frameWeights],
+  );
+  const frameStarts = useMemo(() => {
+    const starts: number[] = [];
+    let acc = 0;
+    for (const w of frameWeights) {
+      starts.push(acc / totalWeight);
+      acc += w;
+    }
+    return starts;
+  }, [frameWeights, totalWeight]);
+  const frameEnds = useMemo(
+    () => frameStarts.map((start, i) =>
+      i + 1 < frameStarts.length ? frameStarts[i + 1] : 1,
+    ),
+    [frameStarts],
+  );
+  const frameCount = frameWeights.length;
 
   const { scrollYProgress } = useScroll({
     target: trackRef,
@@ -265,18 +293,22 @@ export default function ValuesScrollGallery({ items }: { items: ValueGalleryItem
   });
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    const next = Math.min(frameCount - 1, Math.max(0, Math.floor(v * frameCount)));
+    let next = frameCount - 1;
+    for (let i = 0; i < frameCount; i++) {
+      if (v < frameEnds[i]) {
+        next = i;
+        break;
+      }
+    }
     setActiveFrame((prev) => (prev === next ? prev : next));
   });
 
-  const scrollHeight = useMemo(
-    () => `${Math.max(frameCount, 1) * VH_PER_FRAME}vh`,
-    [frameCount],
-  );
+  const scrollHeight = useMemo(() => `${totalWeight}vh`, [totalWeight]);
 
+  const introEnd = frameEnds[0] ?? 0.2;
   const heroOpacity = useTransform(
     scrollYProgress,
-    [0, 1 / frameCount - 0.02, 1 / frameCount + 0.04],
+    [0, introEnd * 0.55, introEnd],
     [1, 1, 0],
   );
 
@@ -289,7 +321,9 @@ export default function ValuesScrollGallery({ items }: { items: ValueGalleryItem
     const rect = el.getBoundingClientRect();
     const top = window.scrollY + rect.top;
     const span = el.offsetHeight - window.innerHeight;
-    const target = top + (span * (frameIndex + 0.45)) / frameCount;
+    const mid =
+      ((frameStarts[frameIndex] ?? 0) + (frameEnds[frameIndex] ?? 1)) / 2;
+    const target = top + span * mid;
     window.scrollTo({ top: target, behavior: reduce ? "auto" : "smooth" });
   };
 
@@ -325,10 +359,10 @@ export default function ValuesScrollGallery({ items }: { items: ValueGalleryItem
             key={item.title}
             item={item}
             valueIndex={valueIndex}
-            frameIndex={valueIndex + 1}
+            frameStart={frameStarts[valueIndex + 1] ?? 0}
+            frameEnd={frameEnds[valueIndex + 1] ?? 1}
             active={activeFrame === valueIndex + 1}
             progress={scrollYProgress}
-            frameCount={frameCount}
             valueCount={items.length}
             reduce={false}
           />
@@ -340,12 +374,12 @@ export default function ValuesScrollGallery({ items }: { items: ValueGalleryItem
           items={items}
           activeValue={activeValue}
           progress={scrollYProgress}
-          frameCount={frameCount}
+          introEnd={introEnd}
           reduce={false}
           onSelect={jumpToValue}
         />
 
-        <div className="pointer-events-none absolute bottom-6 left-1/2 z-20 -translate-x-1/2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.65)]">
+        <div className="pointer-events-none absolute bottom-6 left-1/2 z-20 -translate-x-1/2 text-[10px] font-semibold uppercase tracking-[0.2em] text-surface [text-shadow:0_1px_12px_rgba(0,0,0,0.65)]">
           Scroll
         </div>
       </div>

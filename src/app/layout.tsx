@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import {
-  Outfit,
-  Source_Sans_3,
-  Newsreader,
+  Epilogue,
   Barlow,
   Barlow_Condensed,
   Inter,
@@ -14,22 +12,10 @@ import Footer from "@/components/Footer";
 import SiteToc from "@/components/SiteToc";
 import "./globals.css";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+/** Holding site — display + body */
+const epilogue = Epilogue({
+  variable: "--font-epilogue",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-const sourceSans = Source_Sans_3({
-  variable: "--font-source-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
-const newsreader = Newsreader({
-  variable: "--font-newsreader",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
 });
 
@@ -74,9 +60,9 @@ export const metadata: Metadata = {
   description:
     "Zaims Holding owns and operates complementary construction and fabrication companies across Saudi Arabia — NexGen Build, Dammam Laser CNC, and Edge Steel KSA.",
   icons: {
-    icon: [{ url: "/assets/logos/favicon.png", type: "image/png" }],
-    apple: [{ url: "/assets/logos/favicon.png", type: "image/png" }],
-    shortcut: ["/assets/logos/favicon.png"],
+    icon: [{ url: "/assets/logos/zaimsLogo.jpg", type: "image/jpeg" }],
+    apple: [{ url: "/assets/logos/zaimsLogo.jpg", type: "image/jpeg" }],
+    shortcut: ["/assets/logos/zaimsLogo.jpg"],
   },
 };
 
@@ -84,7 +70,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${sourceSans.variable} ${newsreader.variable} ${barlow.variable} ${barlowCondensed.variable} ${inter.variable} ${sora.variable} ${spaceMono.variable} h-full antialiased`}
+      className={`${epilogue.variable} ${barlow.variable} ${barlowCondensed.variable} ${inter.variable} ${sora.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
         <Header />

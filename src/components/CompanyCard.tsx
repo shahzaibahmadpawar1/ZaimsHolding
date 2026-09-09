@@ -18,15 +18,10 @@ export default function CompanyCard({ company, index }: { company: Company; inde
     >
       <Link
         href={`/companies/${company.slug}`}
-        className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border border-mono-20 p-7 md:p-8 transition-colors cursor-pointer ${brand.themeClass}`}
-        style={{
-          backgroundColor: brand.surface,
-          borderColor: `color-mix(in srgb, ${brand.accent} 18%, #e2e8f0)`,
-        }}
+        className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border border-mono-20 bg-surface p-7 md:p-8 transition-colors hover:border-brand-cyan/40 cursor-pointer ${brand.themeClass}`}
       >
         <motion.div
-          className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full blur-2xl"
-          style={{ background: `color-mix(in srgb, ${brand.accent} 18%, transparent)` }}
+          className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-brand-yellow/15 blur-2xl"
           initial={{ opacity: 0 }}
           whileHover={{ opacity: 1 }}
         />
@@ -45,21 +40,17 @@ export default function CompanyCard({ company, index }: { company: Company; inde
         <div className="relative flex items-start justify-between gap-4">
           <div>
             {typeof index === "number" && (
-              <p
-                className="mb-3 text-xs font-semibold uppercase tracking-wider"
-                style={{ color: brand.accent }}
-              >
+              <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-brand-yellow">
                 {String(index + 1).padStart(2, "0")}
               </p>
             )}
-            <h3 className="company-display text-xl font-bold text-mono-90 transition-opacity group-hover:opacity-80 md:text-2xl">
+            <h3 className="company-display text-xl font-bold text-mono-90 transition-colors group-hover:text-brand-yellow md:text-2xl">
               {company.name}
             </h3>
             <p className="company-body mt-1 text-sm font-medium text-mono-55">{company.role}</p>
           </div>
           <motion.span
-            className="transition-colors"
-            style={{ color: brand.accent }}
+            className="text-brand-yellow transition-colors group-hover:text-brand-yellow"
             whileHover={reduce ? undefined : { x: 2, y: -2 }}
           >
             <ArrowUpRight className="h-5 w-5" />

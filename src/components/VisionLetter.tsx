@@ -59,14 +59,14 @@ export default function VisionLetter() {
             </p>
             <h2 className="font-display text-[2rem] font-bold leading-[1.15] tracking-tight text-mono-90 text-balance sm:text-4xl lg:text-[2.65rem]">
               We built Zaims to be the industrial partner{" "}
-              <span className="text-brand-primary">we wish the Kingdom had.</span>
+              <span className="text-brand-yellow">we wish the Kingdom had.</span>
             </h2>
             <SketchArrow />
           </Reveal>
 
           {/* Right — letter card */}
           <Reveal direction="left" delay={0.12} className="lg:col-span-7">
-            <article className="rounded-2xl border border-mono-20/80 bg-white p-8 shadow-letter md:p-10 lg:p-12">
+            <article className="rounded-2xl border border-mono-20/80 bg-surface p-8 shadow-letter md:p-10 lg:p-12">
               <p className="mb-6 font-display text-lg font-semibold text-mono-90 md:text-xl">
                 Partners —
               </p>
@@ -82,7 +82,7 @@ export default function VisionLetter() {
                   Finger-pointing at handover.
                 </p>
 
-                <p className="-mx-2 rounded-md bg-[#E8EEF5] px-2 py-1.5 font-semibold text-mono-90 md:-mx-2.5 md:px-2.5">
+                <p className="-mx-2 rounded-md bg-[#E8EEF5] px-2 py-1.5 font-semibold text-brand-yellow md:-mx-2.5 md:px-2.5">
                   So we made a list of everything that structure gets wrong and built a holding
                   company that does none of it.
                 </p>
@@ -92,11 +92,11 @@ export default function VisionLetter() {
                 <ul className="space-y-2.5">
                   {companies.map((c) => (
                     <li key={c.slug} className="flex gap-2">
-                      <span className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-mono-90" />
+                      <span className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-brand-yellow" />
                       <span>
                         <Link
                           href={`/companies/${c.slug}`}
-                          className="font-semibold text-mono-90 underline decoration-mono-30 underline-offset-4 transition-colors hover:decoration-brand-primary cursor-pointer"
+                          className="font-semibold text-brand-yellow underline decoration-mono-30 underline-offset-4 transition-colors hover:decoration-brand-yellow cursor-pointer"
                         >
                           {c.name}
                         </Link>
@@ -121,7 +121,7 @@ export default function VisionLetter() {
                 </div>
                 <Link
                   href="/about"
-                  className="text-sm font-semibold text-brand-primary transition-colors hover:text-brand-accent cursor-pointer"
+                  className="text-sm font-semibold text-brand-primary transition-colors hover:text-brand-yellow cursor-pointer"
                 >
                   Read our full story →
                 </Link>

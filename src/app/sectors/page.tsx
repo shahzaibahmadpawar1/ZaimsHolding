@@ -3,8 +3,9 @@ import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import SectionHeading from "@/components/SectionHeading";
 import ClosingCTA from "@/components/ClosingCTA";
-import { FadeIn, Stagger, StaggerItem } from "@/components/Motion";
-import { sectors, companies } from "@/lib/content";
+import SectorsTimeline from "@/components/SectorsTimeline";
+import ScrollZoomReveal from "@/components/ScrollZoomReveal";
+import { FadeIn } from "@/components/Motion";
 
 export const metadata: Metadata = {
   title: "Sectors",
@@ -25,43 +26,31 @@ export default function SectorsPage() {
         ]}
       />
 
-      <section id="sectors" className="bg-white py-16 md:py-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <Stagger className="space-y-16">
-            {sectors.map((s, i) => {
-              const company = companies.find((c) => c.name === s.company);
-              return (
-                <StaggerItem key={s.title}>
-                  <article className="grid gap-8 border-t border-mono-20 pt-12 md:grid-cols-12">
-                    <div className="md:col-span-1">
-                      <span className="font-display text-sm font-bold text-brand-accent">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                    </div>
-                    <div className="md:col-span-5">
-                      <h2 className="font-display text-3xl font-bold text-mono-90">{s.title}</h2>
-                      <p className="mt-2 text-sm font-medium text-mono-55">Led through {s.company}</p>
-                    </div>
-                    <div className="md:col-span-6">
-                      <p className="text-base leading-relaxed text-mono-70">{s.description}</p>
-                      {company && (
-                        <Link
-                          href={`/companies/${company.slug}`}
-                          className="mt-5 inline-block text-sm font-semibold text-brand-primary hover:text-brand-accent cursor-pointer"
-                        >
-                          About {company.shortName} →
-                        </Link>
-                      )}
-                    </div>
-                  </article>
-                </StaggerItem>
-              );
-            })}
-          </Stagger>
+      <section id="sectors" className="relative overflow-hidden bg-surface py-16 md:py-24">
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 select-none text-center font-display text-[18vw] font-bold leading-none text-mono-90/[0.035]"
+          aria-hidden
+        >
+          ZAIMS
+        </div>
+
+        <div className="relative mx-auto max-w-6xl px-6">
+          <FadeIn className="mb-12 text-center md:mb-16">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-brand-yellow">
+              — Our sectors —
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-bold text-mono-90 md:text-4xl">
+              Operating <span className="text-brand-yellow">lenses</span>
+            </h2>
+          </FadeIn>
+
+          <SectorsTimeline />
         </div>
       </section>
 
-      <section id="holding" className="bg-paper border-t border-mono-20 py-16 md:py-24">
+      <ScrollZoomReveal videoSrc="/assets/images/video2.mp4" />
+
+      <section id="holding" className="border-t border-mono-20 bg-paper py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
           <FadeIn>
             <SectionHeading
@@ -72,13 +61,13 @@ export default function SectorsPage() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/why-zaims"
-                className="rounded-full bg-brand-primary px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90 cursor-pointer"
+                className="rounded-full bg-brand-primary px-5 py-2.5 text-sm font-semibold text-surface hover:opacity-90 cursor-pointer"
               >
                 Why Zaims
               </Link>
               <Link
                 href="/companies"
-                className="rounded-full border border-mono-30 px-5 py-2.5 text-sm font-semibold text-mono-90 hover:bg-mono-10 cursor-pointer"
+                className="rounded-full border border-mono-30 px-5 py-2.5 text-sm font-semibold text-mono-90 transition-colors hover:bg-mono-10 hover:text-brand-yellow cursor-pointer"
               >
                 Companies
               </Link>

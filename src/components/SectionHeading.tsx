@@ -19,14 +19,14 @@ export default function SectionHeading({
 }) {
   const reduce = useReducedMotion();
   const center = align === "center";
-  const titleClass = dark ? "text-white" : "text-mono-90";
-  const descClass = dark ? "text-white/70" : "text-mono-70";
+  const titleClass = dark ? "text-surface" : "text-mono-90";
+  const descClass = dark ? "text-surface/70" : "text-mono-70";
 
   if (reduce) {
     return (
       <div className={center ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
         {eyebrow && (
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-accent">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-yellow">
             {eyebrow}
           </p>
         )}
@@ -57,7 +57,7 @@ export default function SectionHeading({
     >
       {eyebrow && (
         <motion.p
-          className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-accent"
+          className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-yellow"
           variants={{
             hidden: { opacity: 0, y: 12 },
             show: { opacity: 1, y: 0, transition: { duration: 0.5, ease } },

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import SectionHeading from "@/components/SectionHeading";
 import ClosingCTA from "@/components/ClosingCTA";
 import { FadeIn, Stagger, StaggerItem } from "@/components/Motion";
 import { companies } from "@/lib/content";
-import { FileText, Leaf, Newspaper } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Investors",
@@ -26,7 +26,7 @@ export default function InvestorsPage() {
         ]}
       />
 
-      <section id="glance" className="bg-white py-16 md:py-24">
+      <section id="glance" className="bg-surface py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
           <FadeIn>
             <SectionHeading
@@ -68,21 +68,21 @@ export default function InvestorsPage() {
           <Stagger className="mt-12 grid gap-5 md:grid-cols-3">
             {[
               {
-                icon: FileText,
+                icon: "/assets/icons/icon-marketplace.png",
                 title: "Investment inquiries",
                 body: "Share context via Contact (inquiry type: Investment). Formal materials shared under NDA as appropriate.",
                 href: "/contact",
                 cta: "Contact IR path",
               },
               {
-                icon: Leaf,
+                icon: "/assets/icons/icon-shield.png",
                 title: "Sustainability & ESG",
                 body: "Operating companies carry site-level safety and quality systems (including ISO 9001 at NexGen). Group ESG reporting is in development.",
                 href: "/about",
                 cta: "About the group",
               },
               {
-                icon: Newspaper,
+                icon: "/assets/icons/icon-group.png",
                 title: "Media",
                 body: "For press, use Contact with inquiry type Media. Seeded updates live on the News page.",
                 href: "/news",
@@ -90,13 +90,20 @@ export default function InvestorsPage() {
               },
             ].map((item) => (
               <StaggerItem key={item.title}>
-                <div className="flex h-full flex-col rounded-2xl border border-mono-20 bg-white p-6">
-                  <item.icon className="h-6 w-6 text-brand-accent" strokeWidth={1.75} />
+                <div className="flex h-full flex-col rounded-2xl border border-mono-20 bg-surface p-6">
+                  <Image
+                    src={item.icon}
+                    alt=""
+                    width={48}
+                    height={48}
+                    className="h-12 w-12 object-contain"
+                    unoptimized
+                  />
                   <h3 className="mt-4 font-display text-lg font-bold text-mono-90">{item.title}</h3>
                   <p className="mt-3 flex-1 text-[15px] leading-relaxed text-mono-70">{item.body}</p>
                   <Link
                     href={item.href}
-                    className="mt-5 text-sm font-semibold text-brand-primary hover:text-brand-accent cursor-pointer"
+                    className="mt-5 text-sm font-semibold text-brand-primary hover:text-brand-yellow cursor-pointer"
                   >
                     {item.cta} →
                   </Link>

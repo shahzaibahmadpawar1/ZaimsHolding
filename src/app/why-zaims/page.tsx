@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import SectionHeading from "@/components/SectionHeading";
@@ -13,11 +14,28 @@ export const metadata: Metadata = {
     "Why Zaims Holding exists — permanent industrial ownership, complementary companies, and integration as strategy.",
 };
 
+const notUs = [
+  {
+    icon: "/assets/icons/icon-timer.png",
+    title: "Not a short-hold PE vehicle",
+    body: "No structural need to flip companies on a fund clock. Permanent ownership orientation.",
+  },
+  {
+    icon: "/assets/icons/icon-marketplace.png",
+    title: "Not a contractor marketplace",
+    body: "We don't auction work across strangers. We own operators and take responsibility for the group story.",
+  },
+  {
+    icon: "/assets/icons/icon-check.png",
+    title: "Not credential theater",
+    body: "Aramco, SCA, and ISO claims stay attached to the company that earned them — starting with NexGen's Aramco vendor #10119021.",
+  },
+];
+
 export default function WhyZaimsPage() {
   return (
     <>
       <PageHero
-        dark
         eyebrow="Why Zaims"
         title="Three companies. One holding. A long horizon."
         description="Zaims is a thesis about how industrial capability should be owned in Saudi Arabia — complementary operators under permanent capital, not a pile of unrelated assets."
@@ -27,7 +45,7 @@ export default function WhyZaimsPage() {
         ]}
       />
 
-      <section id="thesis" className="bg-white py-16 md:py-24">
+      <section id="thesis" className="bg-surface py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6 grid gap-12 lg:grid-cols-2">
           <FadeIn>
             <SectionHeading
@@ -73,29 +91,24 @@ export default function WhyZaimsPage() {
         </div>
       </section>
 
-      <section id="model" className="bg-white py-16 md:py-24">
+      <section id="model" className="bg-surface py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
           <FadeIn>
             <SectionHeading eyebrow="What we are not" title="Clear about the model." />
           </FadeIn>
           <Stagger className="mt-12 grid gap-6 md:grid-cols-3">
-            {[
-              {
-                title: "Not a short-hold PE vehicle",
-                body: "No structural need to flip companies on a fund clock. Permanent ownership orientation.",
-              },
-              {
-                title: "Not a contractor marketplace",
-                body: "We don't auction work across strangers. We own operators and take responsibility for the group story.",
-              },
-              {
-                title: "Not credential theater",
-                body: "Aramco, SCA, and ISO claims stay attached to the company that earned them — starting with NexGen's Aramco vendor #10119021.",
-              },
-            ].map((item) => (
+            {notUs.map((item) => (
               <StaggerItem key={item.title}>
-                <div className="h-full rounded-2xl border border-mono-20 p-6">
-                  <h3 className="font-display text-lg font-bold text-mono-90">{item.title}</h3>
+                <div className="h-full rounded-2xl border border-mono-20 bg-white/50 p-6">
+                  <Image
+                    src={item.icon}
+                    alt=""
+                    width={48}
+                    height={48}
+                    className="h-12 w-12 object-contain"
+                    unoptimized
+                  />
+                  <h3 className="mt-4 font-display text-lg font-bold text-mono-90">{item.title}</h3>
                   <p className="mt-3 text-[15px] leading-relaxed text-mono-70">{item.body}</p>
                 </div>
               </StaggerItem>
@@ -106,7 +119,7 @@ export default function WhyZaimsPage() {
               Prefer a side-by-side?{" "}
               <Link
                 href="/comparison"
-                className="font-semibold text-brand-primary underline underline-offset-4 cursor-pointer"
+                className="font-semibold text-brand-primary underline underline-offset-4 transition-colors hover:text-brand-yellow cursor-pointer"
               >
                 See the comparison
               </Link>

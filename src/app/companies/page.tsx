@@ -25,7 +25,7 @@ export default function CompaniesPage() {
         ]}
       />
 
-      <section id="portfolio" className="bg-white py-16 md:py-24">
+      <section id="portfolio" className="bg-surface py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
           <Stagger className="grid gap-5 md:grid-cols-3">
             {companies.map((c, i) => (
@@ -61,14 +61,14 @@ export default function CompaniesPage() {
                   Want the strategic thesis?{" "}
                   <Link
                     href="/why-zaims"
-                    className="font-medium text-brand-primary underline underline-offset-4 cursor-pointer"
+                    className="font-medium text-brand-primary underline underline-offset-4 transition-colors hover:text-brand-yellow cursor-pointer"
                   >
                     Read Why Zaims
                   </Link>
                   . Looking for selected deliveries across the group?{" "}
                   <Link
                     href="/portfolio"
-                    className="font-medium text-brand-primary underline underline-offset-4 cursor-pointer"
+                    className="font-medium text-brand-primary underline underline-offset-4 transition-colors hover:text-brand-yellow cursor-pointer"
                   >
                     See track record
                   </Link>

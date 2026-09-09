@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
+import { useRef } from "react";
 import {
   motion,
   useMotionValue,
@@ -8,39 +10,55 @@ import {
   useScroll,
   useSpring,
   useTransform,
+  type MotionValue,
 } from "motion/react";
-import { useRef } from "react";
-import { ArrowDown } from "lucide-react";
-import { TextReveal } from "@/components/Motion";
-import CompanyOrbit from "@/components/CompanyOrbit";
-import { companies } from "@/lib/content";
 
-const ease = [0.22, 1, 0.36, 1] as const;
+/**
+ * Scroll hero inspired by Framer MokuHero:
+ * https://www.framer.com/marketplace/components/mokuhero/
+ *
+ * Start: 1.png is full-bleed. On scroll it insets into a rounded card while
+ * 2–5.jpg settle into a tight asymmetric grid around it.
+ */
 
-function FloatingOrb({
-  className,
-  delay = 0,
-  duration = 12,
-}: {
-  className: string;
-  delay?: number;
-  duration?: number;
-}) {
-  const reduce = useReducedMotion();
-  if (reduce) return <div className={className} />;
+const CENTER = "/assets/images/1.png";
+const GAP = "0.5rem";
 
-  return (
-    <motion.div
-      className={className}
-      animate={{
-        y: [0, -28, 12, 0],
-        x: [0, 18, -10, 0],
-        scale: [1, 1.08, 0.96, 1],
-      }}
-      transition={{ duration, delay, repeat: Infinity, ease: "easeInOut" }}
-    />
-  );
-}
+/** Settled: center 56% × 80%, sides 20% — fills most of the viewport */
+const SATELLITES = [
+  {
+    src: "/assets/images/2.jpg",
+    alt: "Precision welding on site",
+    className:
+      "left-[calc(50%-28%-var(--hero-gap)-20%)] top-[calc(50%-40%)] h-[39%] w-[20%]",
+    from: { x: -80, y: -40, rotate: -4 },
+    to: { x: 0, y: 0, rotate: -1 },
+  },
+  {
+    src: "/assets/images/3.jpg",
+    alt: "Heavy fabrication work",
+    className:
+      "right-[calc(50%-28%-var(--hero-gap)-20%)] top-[calc(50%-40%)] h-[39%] w-[20%]",
+    from: { x: 80, y: -40, rotate: 4 },
+    to: { x: 0, y: 0, rotate: 1 },
+  },
+  {
+    src: "/assets/images/4.jpg",
+    alt: "Industrial plant structure",
+    className:
+      "left-[calc(50%-28%-var(--hero-gap)-20%)] bottom-[calc(50%-40%)] h-[39%] w-[20%]",
+    from: { x: -80, y: 40, rotate: 3 },
+    to: { x: 0, y: 0, rotate: 0.75 },
+  },
+  {
+    src: "/assets/images/5.jpg",
+    alt: "Kingdom industrial operations",
+    className:
+      "right-[calc(50%-28%-var(--hero-gap)-20%)] bottom-[calc(50%-40%)] h-[39%] w-[20%]",
+    from: { x: 80, y: 40, rotate: -3 },
+    to: { x: 0, y: 0, rotate: -0.75 },
+  },
+] as const;
 
 function MagneticCTA({
   href,
@@ -74,8 +92,8 @@ function MagneticCTA({
 
   const base =
     variant === "primary"
-      ? "rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-brand-primary shadow-lg shadow-black/20"
-      : "rounded-full border border-white/30 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm";
+      ? "rounded-full bg-surface px-6 py-3.5 text-sm font-semibold text-brand-primary shadow-lg shadow-black/25"
+      : "rounded-full border border-surface/35 bg-surface/10 px-6 py-3.5 text-sm font-semibold text-surface backdrop-blur-sm";
 
   return (
     <motion.div style={{ x: springX, y: springY }}>
@@ -92,150 +110,159 @@ function MagneticCTA({
   );
 }
 
+function Satellite({
+  src,
+  alt,
+  className,
+  from,
+  to,
+  progress,
+}: {
+  src: string;
+  alt: string;
+  className: string;
+  from: { x: number; y: number; rotate: number };
+  to: { x: number; y: number; rotate: number };
+  progress: MotionValue<number>;
+}) {
+  const x = useTransform(progress, [0.06, 0.4, 1], [from.x, to.x, to.x]);
+  const y = useTransform(progress, [0.06, 0.4, 1], [from.y, to.y, to.y]);
+  const rotate = useTransform(progress, [0.06, 0.4, 1], [from.rotate, to.rotate, to.rotate]);
+  // Fade in once, then stay fully opaque for the rest of the hero scroll
+  const opacity = useTransform(progress, [0.04, 0.1, 1], [0, 1, 1]);
+  const scale = useTransform(progress, [0.06, 0.4, 1], [0.92, 1, 1]);
+  const radius = useTransform(progress, [0.06, 0.35, 1], [18, 28, 28]);
+
+  return (
+    <motion.div
+      className={`absolute z-[1] overflow-hidden shadow-[0_16px_40px_rgba(11,18,32,0.16)] ${className}`}
+      style={{ x, y, rotate, opacity, scale, borderRadius: radius }}
+    >
+      <Image src={src} alt={alt} fill className="object-cover" sizes="(max-width: 768px) 40vw, 24vw" />
+    </motion.div>
+  );
+}
+
 export default function HomeHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start start", "end start"],
+    offset: ["start start", "end end"],
   });
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, 80]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-  const orbitY = useTransform(scrollYProgress, [0, 1], [0, 140]);
-  const gridY = useTransform(scrollYProgress, [0, 1], [0, 60]);
+
+  // Inset from viewport edges: 0 → card margins, then hold (no further change)
+  const insetX = useTransform(scrollYProgress, [0, 0.45, 1], [0, 22, 22]); // (100-56)/2
+  const insetY = useTransform(scrollYProgress, [0, 0.45, 1], [0, 10, 10]); // (100-80)/2
+  const centerTop = useTransform(insetY, (v) => `${v}%`);
+  const centerBottom = useTransform(insetY, (v) => `${v}%`);
+  const centerLeft = useTransform(insetX, (v) => `${v}%`);
+  const centerRight = useTransform(insetX, (v) => `${v}%`);
+  const centerRadius = useTransform(scrollYProgress, [0, 0.16, 0.45, 1], [0, 14, 28, 28]);
+  const centerShadow = useTransform(
+    scrollYProgress,
+    [0, 0.12, 0.45, 1],
+    [
+      "0 0 0 rgba(11,18,32,0)",
+      "0 12px 40px rgba(11,18,32,0.1)",
+      "0 28px 80px rgba(11,18,32,0.2)",
+      "0 28px 80px rgba(11,18,32,0.2)",
+    ],
+  );
+  const paperOpacity = useTransform(scrollYProgress, [0, 0.12, 1], [0, 1, 1]);
+  const noiseOpacity = useTransform(scrollYProgress, [0, 0.12, 1], [0, 0.4, 0.4]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.2, 1], [1, 0, 0]);
+  const copyY = useTransform(scrollYProgress, [0, 0.22, 1], [0, 28, 28]);
+  const copyOpacity = useTransform(scrollYProgress, [0, 0.16, 1], [1, 0, 0]);
+  const copyPointer = useTransform(scrollYProgress, [0, 0.12, 1], ["auto", "none", "none"]);
 
   return (
     <section
       id="hero"
       ref={sectionRef}
-      className="relative min-h-[100svh] overflow-hidden bg-steel-hero bg-noise"
+      className="relative h-[240vh] bg-paper"
+      aria-label="Zaims Holding hero"
     >
-      {/* Ambient orbs */}
-      <FloatingOrb
-        className="pointer-events-none absolute -left-24 top-1/4 h-72 w-72 rounded-full bg-brand-accent/20 blur-3xl"
-        delay={0}
-        duration={14}
-      />
-      <FloatingOrb
-        className="pointer-events-none absolute -right-16 top-1/3 h-96 w-96 rounded-full bg-sky-400/10 blur-3xl"
-        delay={2}
-        duration={16}
-      />
-      <FloatingOrb
-        className="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-brand-secondary/40 blur-3xl"
-        delay={1}
-        duration={11}
-      />
-
-      {/* Animated grid */}
-      <motion.div
-        className="pointer-events-none absolute inset-0 opacity-[0.35]"
-        style={{
-          y: reduce ? 0 : gridY,
-          backgroundImage:
-            "linear-gradient(to right, rgba(255,255,255,0.045) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.045) 1px, transparent 1px)",
-          backgroundSize: "72px 72px",
-          maskImage: "radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%)",
-        }}
-      />
-
-      {/* Horizontal steel lines */}
-      {!reduce &&
-        [18, 42, 68].map((top, i) => (
-          <motion.div
-            key={top}
-            className="pointer-events-none absolute left-0 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent"
-            style={{ top: `${top}%` }}
-            initial={{ scaleX: 0, opacity: 0 }}
-            animate={{ scaleX: 1, opacity: 1 }}
-            transition={{ duration: 1.2, delay: 0.3 + i * 0.15, ease }}
-          />
-        ))}
-
-      <div className="relative z-10 mx-auto grid min-h-[100svh] w-full max-w-6xl items-center gap-10 px-6 pb-24 pt-32 lg:grid-cols-12 lg:gap-8 lg:pb-16 lg:pt-28">
+      <div className="sticky top-0 h-svh overflow-hidden">
         <motion.div
-          className="lg:col-span-7"
-          style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,var(--surface)_0%,var(--paper)_70%)]"
+          style={reduce ? { opacity: 1 } : { opacity: paperOpacity }}
+        />
+        <motion.div
+          className="pointer-events-none absolute inset-0 bg-noise"
+          style={reduce ? { opacity: 0.4 } : { opacity: noiseOpacity }}
+        />
+
+        <div
+          className="relative h-full w-full"
+          style={{ ["--hero-gap" as string]: GAP } as React.CSSProperties}
         >
-          <motion.p
-            className="mb-6 font-display text-sm font-bold tracking-[0.2em] text-brand-accent"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease }}
-          >
-            ZAIMS HOLDING
-          </motion.p>
-
-          <TextReveal
-            text="We build and hold industrial companies that make Saudi infrastructure possible."
-            className="font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-white text-balance sm:text-5xl md:text-6xl lg:text-[3.6rem]"
-            delay={0.15}
-          />
-
-          <motion.p
-            className="mt-6 max-w-xl text-base leading-relaxed text-pretty text-white/70 md:text-lg"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.85, ease }}
-          >
-            Three complementary operating companies. One long-term ownership structure. Construction,
-            steel, and precision fabrication — aligned for the Kingdom.
-          </motion.p>
+          {!reduce &&
+            SATELLITES.map((s) => (
+              <Satellite
+                key={s.src}
+                src={s.src}
+                alt={s.alt}
+                className={s.className}
+                from={s.from}
+                to={s.to}
+                progress={scrollYProgress}
+              />
+            ))}
 
           <motion.div
-            className="mt-10 flex flex-wrap gap-3"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 1.05, ease }}
+            className="absolute z-10 overflow-hidden will-change-[inset,border-radius]"
+            style={
+              reduce
+                ? {
+                    top: "10%",
+                    bottom: "10%",
+                    left: "22%",
+                    right: "22%",
+                    borderRadius: 28,
+                    boxShadow: "0 28px 80px rgba(11,18,32,0.2)",
+                  }
+                : {
+                    top: centerTop,
+                    bottom: centerBottom,
+                    left: centerLeft,
+                    right: centerRight,
+                    borderRadius: centerRadius,
+                    boxShadow: centerShadow,
+                  }
+            }
           >
-            <MagneticCTA href="/companies">Explore our companies</MagneticCTA>
-            <MagneticCTA href="/contact" variant="secondary">
-              Get in touch
-            </MagneticCTA>
-          </motion.div>
-        </motion.div>
+            <Image
+              src={CENTER}
+              alt="We build more than structures. We build trust."
+              fill
+              priority
+              className="object-cover object-center"
+              sizes="100vw"
+            />
 
-        <motion.div
-          className="hidden lg:col-span-5 lg:block"
-          style={reduce ? undefined : { y: orbitY }}
-        >
-          <CompanyOrbit />
-        </motion.div>
+            <motion.div
+              className="absolute inset-0 bg-linear-to-t from-brand-primary/45 via-transparent to-transparent"
+              style={reduce ? { opacity: 0.4 } : { opacity: overlayOpacity }}
+            />
 
-        {/* Mobile company chips */}
-        <motion.div
-          className="flex flex-wrap gap-2 lg:hidden"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.1 }}
-        >
-          {companies.map((c) => (
-            <Link
-              key={c.slug}
-              href={`/companies/${c.slug}`}
-              className="rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-xs font-medium text-white/90 backdrop-blur-sm cursor-pointer"
+            <motion.div
+              className="absolute inset-x-0 bottom-0 z-10 flex flex-wrap items-center justify-center gap-3 px-6 pb-[max(2rem,6vh)]"
+              style={
+                reduce
+                  ? undefined
+                  : { y: copyY, opacity: copyOpacity, pointerEvents: copyPointer }
+              }
             >
-              {c.shortName}
-            </Link>
-          ))}
-        </motion.div>
+              <h1 className="sr-only">Zaims Holding</h1>
+              <MagneticCTA href="/companies">Explore our companies</MagneticCTA>
+              <MagneticCTA href="/contact" variant="secondary">
+                Get in touch
+              </MagneticCTA>
+            </motion.div>
+          </motion.div>
+        </div>
       </div>
-
-      {/* Scroll cue */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-white/50"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }}
-      >
-        <span className="text-[10px] font-semibold uppercase tracking-[0.2em]">Scroll</span>
-        <motion.div
-          animate={reduce ? undefined : { y: [0, 6, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <ArrowDown className="h-4 w-4" />
-        </motion.div>
-      </motion.div>
     </section>
   );
 }

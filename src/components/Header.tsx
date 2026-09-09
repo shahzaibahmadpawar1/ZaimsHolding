@@ -29,7 +29,7 @@ function BrandLogo({
   if (compact) {
     return (
       <Image
-        src="/assets/logos/favicon.png"
+        src="/assets/logos/zaimsLogo.jpg"
         alt="Zaims Holding"
         width={36}
         height={36}
@@ -42,7 +42,7 @@ function BrandLogo({
 
   return (
     <Image
-      src="/assets/logos/zaimsLogo.png"
+      src="/assets/logos/zaimsLogo.jpg"
       alt="Zaims Holding"
       width={168}
       height={48}
@@ -79,13 +79,13 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
   }, [pathname]);
 
   const isLightBackground = theme === "light" || scrolled;
-  const linkColor = isLightBackground ? "rgba(11, 18, 32, 0.85)" : "rgba(255, 255, 255, 0.9)";
-  const activePill = isLightBackground ? "rgba(11, 18, 32, 0.06)" : "rgba(255, 255, 255, 0.14)";
-  const hoverClass = isLightBackground ? "hover:bg-black/5" : "hover:bg-white/10";
-  const dropdownBg = isLightBackground ? "rgba(255,255,255,0.98)" : "rgba(15, 39, 68, 0.96)";
-  const dropdownBorder = isLightBackground ? "rgba(11,18,32,0.08)" : "rgba(255,255,255,0.14)";
-  const dropdownText = isLightBackground ? "#0B1220" : "#ffffff";
-  const dropdownMuted = isLightBackground ? "#64748b" : "rgba(255,255,255,0.65)";
+  const linkColor = isLightBackground ? "rgba(26, 69, 112, 0.9)" : "rgba(247, 241, 232, 0.92)";
+  const activePill = isLightBackground ? "rgba(26, 69, 112, 0.06)" : "rgba(247, 241, 232, 0.14)";
+  const hoverClass = isLightBackground ? "hover:bg-black/5" : "hover:bg-surface/10";
+  const dropdownBg = isLightBackground ? "rgba(247,241,232,0.98)" : "rgba(15, 39, 68, 0.96)";
+  const dropdownBorder = isLightBackground ? "rgba(26,69,112,0.1)" : "rgba(247,241,232,0.14)";
+  const dropdownText = isLightBackground ? "#1A4570" : "#F7F1E8";
+  const dropdownMuted = isLightBackground ? "#5a6d82" : "rgba(247,241,232,0.65)";
 
   const clearCloseTimer = () => {
     if (closeTimer.current) {
@@ -118,17 +118,17 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
           padding: "6px 6px 6px 16px",
           borderRadius: 9999,
           backgroundColor: scrolled
-            ? "rgba(255,255,255,0.94)"
+            ? "rgba(247,241,232,0.94)"
             : theme === "light"
-              ? "rgba(255,255,255,0.72)"
-              : "rgba(255,255,255,0.1)",
+              ? "rgba(247,241,232,0.78)"
+              : "rgba(247,241,232,0.12)",
           backdropFilter: "blur(24px) saturate(160%)",
           boxShadow: scrolled ? "var(--shadow-nav)" : "none",
           border: scrolled
-            ? "1px solid rgba(11,18,32,0.08)"
+            ? "1px solid rgba(26,69,112,0.1)"
             : theme === "light"
-              ? "1px solid rgba(11,18,32,0.08)"
-              : "1px solid rgba(255,255,255,0.18)",
+              ? "1px solid rgba(26,69,112,0.1)"
+              : "1px solid rgba(247,241,232,0.2)",
           transition: "background-color 0.3s, box-shadow 0.3s, border-color 0.3s",
         }}
       >
@@ -148,7 +148,7 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
                   key={item.label}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className={`relative z-0 cursor-pointer whitespace-nowrap rounded-full px-3.5 py-2 font-medium transition-colors duration-200 ${
+                  className={`relative z-0 cursor-pointer whitespace-nowrap rounded-full px-3.5 py-2 font-medium transition-colors duration-200 hover:!text-brand-yellow ${
                     active ? "" : hoverClass
                   }`}
                   style={{ fontSize: 14, lineHeight: 1, color: linkColor }}
@@ -176,16 +176,17 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
                 onMouseEnter={() => openDropdown(item.label)}
                 onMouseLeave={scheduleClose}
               >
-                <button
-                  type="button"
+                <Link
+                  href={item.href}
                   aria-expanded={isOpen}
                   aria-haspopup="menu"
                   aria-controls={`${menuId}-${item.label}`}
-                  className={`relative z-0 inline-flex cursor-pointer items-center gap-1 whitespace-nowrap rounded-full px-3.5 py-2 font-medium transition-colors duration-200 ${
+                  aria-current={active ? "page" : undefined}
+                  className={`relative z-0 inline-flex cursor-pointer items-center gap-1 whitespace-nowrap rounded-full px-3.5 py-2 font-medium transition-colors duration-200 hover:!text-brand-yellow ${
                     active || isOpen ? "" : hoverClass
                   }`}
                   style={{ fontSize: 14, lineHeight: 1, color: linkColor }}
-                  onClick={() => setOpenMenu(isOpen ? null : item.label)}
+                  onClick={() => setOpenMenu(null)}
                 >
                   {(active || isOpen) && (
                     <motion.span
@@ -203,7 +204,7 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
                       isOpen ? "rotate-180" : ""
                     }`}
                   />
-                </button>
+                </Link>
 
                 <AnimatePresence>
                   {isOpen && (
@@ -231,19 +232,19 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
                             href={child.href}
                             role="menuitem"
                             aria-current={childActive ? "page" : undefined}
-                            className={`block cursor-pointer rounded-xl px-3.5 py-2.5 transition-colors ${
+                            className={`group block cursor-pointer rounded-xl px-3.5 py-2.5 transition-colors ${
                               childActive
                                 ? isLightBackground
                                   ? "bg-mono-10"
-                                  : "bg-white/10"
+                                  : "bg-surface/10"
                                 : isLightBackground
                                   ? "hover:bg-mono-10"
-                                  : "hover:bg-white/10"
+                                  : "hover:bg-surface/10"
                             }`}
                             onClick={() => setOpenMenu(null)}
                           >
                             <span
-                              className="block text-sm font-semibold"
+                              className="block text-sm font-semibold transition-colors group-hover:!text-brand-yellow"
                               style={{ color: dropdownText }}
                             >
                               {child.label}
@@ -269,14 +270,14 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
 
         <Link
           href="/contact"
-          className="flex flex-shrink-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-brand-primary px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+          className="flex flex-shrink-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-brand-primary px-5 py-2.5 text-sm font-semibold text-surface transition-opacity hover:opacity-90"
         >
           Get in touch
         </Link>
       </motion.nav>
 
       {/* Mobile */}
-      <div className="fixed top-4 right-4 left-4 z-50 flex items-center justify-between rounded-full border border-mono-20/80 bg-white/90 px-4 py-3 shadow-soft backdrop-blur-xl md:hidden">
+      <div className="fixed top-4 right-4 left-4 z-50 flex items-center justify-between rounded-full border border-mono-20/80 bg-surface/90 px-4 py-3 shadow-soft backdrop-blur-xl md:hidden">
         <Link href="/" className="flex items-center" aria-label="Zaims Holding home">
           <BrandLogo className="!h-7" />
         </Link>
@@ -292,7 +293,7 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
           </Dialog.Trigger>
           <Dialog.Portal>
             <Dialog.Overlay className="fixed inset-0 z-[60] bg-mono-100/40 backdrop-blur-sm" />
-            <Dialog.Content className="fixed inset-y-0 right-0 z-[70] flex w-[min(100%,20rem)] flex-col overflow-y-auto bg-white p-6 shadow-soft outline-none">
+            <Dialog.Content className="fixed inset-y-0 right-0 z-[70] flex w-[min(100%,20rem)] flex-col overflow-y-auto bg-surface p-6 shadow-soft outline-none">
               <div className="mb-8 flex items-center justify-between">
                 <Dialog.Title asChild>
                   <Link href="/" className="flex items-center" aria-label="Zaims Holding home">
@@ -334,21 +335,34 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
 
                   return (
                     <div key={item.label} className="rounded-xl">
-                      <button
-                        type="button"
-                        aria-expanded={expanded}
-                        className={`flex w-full cursor-pointer items-center justify-between rounded-xl px-3 py-3 text-left text-base font-medium text-mono-90 hover:bg-mono-10 ${
+                      <div
+                        className={`flex items-center rounded-xl hover:bg-mono-10 ${
                           active ? "bg-mono-10" : ""
                         }`}
-                        onClick={() => setMobileExpanded(expanded ? null : item.label)}
                       >
-                        {item.label}
-                        <ChevronDown
-                          className={`h-4 w-4 text-mono-55 transition-transform ${
-                            expanded ? "rotate-180" : ""
-                          }`}
-                        />
-                      </button>
+                        <Dialog.Close asChild>
+                          <Link
+                            href={item.href}
+                            aria-current={active ? "page" : undefined}
+                            className="flex-1 cursor-pointer px-3 py-3 text-left text-base font-medium text-mono-90"
+                          >
+                            {item.label}
+                          </Link>
+                        </Dialog.Close>
+                        <button
+                          type="button"
+                          aria-expanded={expanded}
+                          aria-label={`${expanded ? "Collapse" : "Expand"} ${item.label} submenu`}
+                          className="inline-flex h-11 w-11 flex-shrink-0 cursor-pointer items-center justify-center rounded-xl text-mono-55 hover:bg-mono-10"
+                          onClick={() => setMobileExpanded(expanded ? null : item.label)}
+                        >
+                          <ChevronDown
+                            className={`h-4 w-4 transition-transform ${
+                              expanded ? "rotate-180" : ""
+                            }`}
+                          />
+                        </button>
+                      </div>
                       <AnimatePresence initial={false}>
                         {expanded && (
                           <motion.div
@@ -387,7 +401,7 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
               <Dialog.Close asChild>
                 <Link
                   href="/contact"
-                  className="mt-auto cursor-pointer rounded-full bg-brand-primary px-5 py-3 text-center text-sm font-semibold text-white"
+                  className="mt-auto cursor-pointer rounded-full bg-brand-primary px-5 py-3 text-center text-sm font-semibold text-surface"
                 >
                   Get in touch
                 </Link>

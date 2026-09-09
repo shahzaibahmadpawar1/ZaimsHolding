@@ -19,7 +19,7 @@ export default function ClosingCTA({
   return (
     <section id={id} className="relative overflow-hidden bg-steel-hero bg-noise py-20 md:py-24">
       <motion.div
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[120%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-accent/10 blur-3xl"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[120%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-cyan/15 blur-3xl"
         animate={reduce ? undefined : { scale: [1, 1.12, 1], opacity: [0.4, 0.7, 0.4] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -34,7 +34,7 @@ export default function ClosingCTA({
           }}
         >
           <motion.h2
-            className="font-display text-3xl font-bold tracking-tight text-white text-balance md:text-4xl"
+            className="font-display text-3xl font-bold tracking-tight text-surface text-balance md:text-4xl"
             variants={{
               hidden: { opacity: 0, y: 32, filter: "blur(8px)" },
               show: {
@@ -48,7 +48,7 @@ export default function ClosingCTA({
             {title}
           </motion.h2>
           <motion.p
-            className="mt-4 text-base text-pretty text-white/70 md:text-lg"
+            className="mt-4 text-base text-pretty text-surface/70 md:text-lg"
             variants={{
               hidden: { opacity: 0, y: 20 },
               show: { opacity: 1, y: 0, transition: { duration: 0.6, ease } },
@@ -66,7 +66,7 @@ export default function ClosingCTA({
             <motion.div whileHover={reduce ? undefined : { scale: 1.04, y: -2 }} whileTap={{ scale: 0.98 }}>
               <Link
                 href="/contact"
-                className="inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-primary transition-colors hover:bg-white/90 cursor-pointer"
+                className="inline-flex rounded-full bg-surface px-6 py-3 text-sm font-semibold text-brand-primary transition-colors hover:bg-mono-10 cursor-pointer"
               >
                 Get in touch
               </Link>
@@ -74,7 +74,7 @@ export default function ClosingCTA({
             <motion.div whileHover={reduce ? undefined : { scale: 1.04, y: -2 }} whileTap={{ scale: 0.98 }}>
               <Link
                 href="/investors"
-                className="inline-flex rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10 cursor-pointer"
+                className="inline-flex rounded-full border border-surface/30 px-6 py-3 text-sm font-semibold text-surface transition-colors hover:bg-surface/10 cursor-pointer"
               >
                 Investor relations
               </Link>

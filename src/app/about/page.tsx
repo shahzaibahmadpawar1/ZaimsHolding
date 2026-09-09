@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import SectionHeading from "@/components/SectionHeading";
 import ClosingCTA from "@/components/ClosingCTA";
 import ValuesScrollGallery from "@/components/ValuesScrollGallery";
-import { FadeIn, Reveal } from "@/components/Motion";
-import { companies } from "@/lib/content";
+import { FadeIn, Reveal, Stagger, StaggerItem } from "@/components/Motion";
+import { companies, leadership } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "About",
@@ -12,10 +13,6 @@ export const metadata: Metadata = {
     "Zaims Holding — an industrial holding company owning complementary construction and fabrication businesses in Saudi Arabia.",
 };
 
-/**
- * Add matching files under public/assets/images (jpg/png/webp).
- * Filenames below are the expected paths — swap extensions if needed.
- */
 const values = [
   {
     title: "Operator mindset",
@@ -48,15 +45,15 @@ export default function AboutPage() {
         description="Zaims Holding owns and operates complementary construction and fabrication companies across Saudi Arabia. We exist to align capital, craft, and accountability — not to auction projects or flip assets on a timer."
       />
 
-      <section id="story" className="bg-white py-16 md:py-24">
-        <div className="mx-auto max-w-6xl px-6 grid gap-12 lg:grid-cols-12">
+      <section id="story" className="bg-surface py-16 md:py-24">
+        <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-12">
           <Reveal direction="right" className="lg:col-span-4">
             <SectionHeading eyebrow="Our story" title="From fragmentation to a coherent group." />
           </Reveal>
           <Reveal
             direction="left"
             delay={0.08}
-            className="lg:col-span-8 space-y-5 text-base leading-relaxed text-mono-70"
+            className="space-y-5 text-base leading-relaxed text-mono-70 lg:col-span-8"
           >
             <p>
               Critical infrastructure in the Kingdom still too often depends on a patchwork of unrelated
@@ -65,15 +62,16 @@ export default function AboutPage() {
             </p>
             <p>
               Zaims was formed to hold businesses that belong together:{" "}
-              <strong className="font-semibold text-mono-90">NexGen Build</strong> for construction and
-              MEP, <strong className="font-semibold text-mono-90">Edge Steel KSA</strong> for structural
+              <strong className="font-semibold text-brand-yellow">NexGen Build</strong> for construction and
+              MEP, <strong className="font-semibold text-brand-yellow">Edge Steel KSA</strong> for structural
               and architectural steel, and{" "}
-              <strong className="font-semibold text-mono-90">Dammam Laser CNC</strong> for precision
+              <strong className="font-semibold text-brand-yellow">Dammam Laser CNC</strong> for precision
               fabrication. Each company keeps its operating identity. The holding keeps the long view.
             </p>
             <p>
               We are operators and owners — not a pure financial sponsor, and not a general contractor
-              brand papering over unrelated subs.
+              brand papering over unrelated subs. Company-level credentials (including NexGen&apos;s Saudi
+              Aramco vendor #10119021) stay attributed to the operator that earned them.
             </p>
           </Reveal>
         </div>
@@ -83,31 +81,71 @@ export default function AboutPage() {
         <ValuesScrollGallery items={values} />
       </section>
 
-      <section id="leadership" className="bg-white py-16 md:py-24">
+      <section id="leadership" className="bg-surface py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
           <FadeIn>
             <SectionHeading
               eyebrow="Leadership"
-              title="Leadership profiles coming soon."
-              description="Names, roles, and biographies will be published here once finalized. Until then, engage the holding through Contact."
+              title="People published by our operating companies."
+              description="Operating leadership includes Adil Tasawar (Founder & Managing Director, Edge Steel KSA) and NexGen Build leaders as published on nxgens.com. Dammam Laser CNC does not list named executives on its public site — contact that company directly for operating inquiries."
             />
           </FadeIn>
-          <div className="mt-10 grid gap-4 sm:grid-cols-3">
-            {[1, 2, 3].map((n) => (
-              <div
-                key={n}
-                className="rounded-2xl border border-dashed border-mono-30 bg-paper p-6 text-center"
-              >
-                <div className="mx-auto h-20 w-20 rounded-full bg-mono-20" />
-                <p className="mt-4 font-display font-semibold text-mono-55">Leadership seat {n}</p>
-                <p className="mt-1 text-sm text-mono-45">Placeholder</p>
-              </div>
+          <Stagger className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {leadership.map((person) => (
+              <StaggerItem key={person.name}>
+                <article className="flex h-full flex-col rounded-2xl border border-mono-20 bg-paper p-6">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-primary/10 font-display text-lg font-bold text-brand-primary">
+                    {person.name
+                      .replace(/^Eng\.\s*/, "")
+                      .split(" ")
+                      .filter(Boolean)
+                      .slice(0, 2)
+                      .map((w) => w[0])
+                      .join("")}
+                  </div>
+                  <h3 className="mt-4 font-display text-lg font-bold text-mono-90">{person.name}</h3>
+                  <p className="mt-1 text-sm font-semibold text-brand-yellow">{person.role}</p>
+                  <p className="mt-1 text-xs font-medium uppercase tracking-wider text-mono-45">
+                    {person.company}
+                  </p>
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-mono-70">{person.bio}</p>
+                  {person.sourceUrl ? (
+                    <a
+                      href={person.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 text-xs font-semibold text-brand-primary transition-colors hover:text-brand-yellow"
+                    >
+                      Source →
+                    </a>
+                  ) : null}
+                </article>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
+          <p className="mt-8 text-sm text-mono-55">
+            For Dammam Laser CNC operating contact:{" "}
+            <a
+              href="https://dammamlaser.com/about-us/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-brand-primary underline underline-offset-4 hover:text-brand-yellow"
+            >
+              dammamlaser.com/about-us
+            </a>
+            {" · "}
+            <a
+              href="mailto:info@dammamlaser.com"
+              className="font-medium text-brand-primary underline underline-offset-4 hover:text-brand-yellow"
+            >
+              info@dammamlaser.com
+            </a>
+            .
+          </p>
         </div>
       </section>
 
-      <section id="footprint" className="bg-paper border-t border-mono-20 py-16 md:py-24">
+      <section id="footprint" className="border-t border-mono-20 bg-paper py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
           <FadeIn>
             <SectionHeading
@@ -122,7 +160,15 @@ export default function AboutPage() {
                 key={c.slug}
                 className="flex flex-col gap-1 border-b border-mono-20 py-4 sm:flex-row sm:items-baseline sm:justify-between"
               >
-                <span className="font-display font-semibold text-mono-90">{c.name}</span>
+                <div>
+                  <Link
+                    href={`/companies/${c.slug}`}
+                    className="font-display font-semibold text-brand-yellow transition-colors hover:text-brand-primary"
+                  >
+                    {c.name}
+                  </Link>
+                  {c.address ? <p className="mt-1 text-sm text-mono-55">{c.address}</p> : null}
+                </div>
                 <span className="text-sm text-mono-55">{c.location}</span>
               </li>
             ))}

@@ -59,7 +59,7 @@ export default function ComparisonPage() {
         description="For investors and strategic partners evaluating ownership models — not a contractor bid sheet."
       />
 
-      <section id="table" className="bg-white py-12 md:py-20">
+      <section id="table" className="bg-surface py-12 md:py-20">
         <div className="mx-auto max-w-6xl px-6 overflow-x-auto">
           <FadeIn>
             <table className="w-full min-w-[720px] text-left text-sm border-collapse">
@@ -133,7 +133,7 @@ export default function ComparisonPage() {
               },
             ].map((c) => (
               <StaggerItem key={c.title}>
-                <div className="rounded-2xl border border-mono-20 bg-white p-6">
+                <div className="rounded-2xl border border-mono-20 bg-surface p-6">
                   <h3 className="font-display text-lg font-bold text-mono-90">{c.title}</h3>
                   <p className="mt-3 text-[15px] leading-relaxed text-mono-70">{c.body}</p>
                 </div>

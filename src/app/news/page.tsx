@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import ClosingCTA from "@/components/ClosingCTA";
-import { FadeIn, Stagger, StaggerItem } from "@/components/Motion";
+import { Stagger, StaggerItem } from "@/components/Motion";
 
 export const metadata: Metadata = {
   title: "News",
@@ -11,44 +11,60 @@ export const metadata: Metadata = {
 
 const news = [
   {
-    date: "2026",
-    category: "Group",
-    title: "Zaims Holding advances its industrial portfolio narrative",
+    date: "2024",
+    category: "Edge Steel KSA",
+    title: "Edge Steel expands equipment rental fleet",
     excerpt:
-      "The holding continues to align NexGen Build, Dammam Laser CNC, and Edge Steel KSA under a single long-term ownership story for partners and investors.",
-    href: "/about",
+      "As published on Edge Steel’s About timeline: significant expansion of generators, excavators, cranes, forklifts, and welding machines to support full-service site operations for major contractors.",
+    href: "/companies/edge-steel",
+  },
+  {
+    date: "2023",
+    category: "Edge Steel KSA",
+    title: "Edge Steel crosses 500+ completed projects",
+    excerpt:
+      "Edge Steel KSA publicly marks crossing the 500-project threshold as a trusted fabrication partner across structural, architectural, and industrial applications in Saudi Arabia.",
+    href: "/companies/edge-steel",
+  },
+  {
+    date: "2022",
+    category: "Edge Steel KSA",
+    title: "CNC fiber laser division commissioned",
+    excerpt:
+      "Edge Steel’s timeline lists a dedicated CNC fiber laser division for precision architectural panels, decorative façade screens, and tolerance-critical flat components.",
+    href: "/companies/edge-steel",
+  },
+  {
+    date: "2021",
+    category: "Edge Steel KSA",
+    title: "SCA certification achieved",
+    excerpt:
+      "Edge Steel KSA states Saudi Contractors Authority certification in 2021 — qualifying for government-tier and defence-sector participation.",
+    href: "/companies/edge-steel",
   },
   {
     date: "Operating update",
     category: "NexGen Build",
-    title: "NexGen Build — Aramco-approved construction & systems",
+    title: "Saudi Aramco Approved Vendor #10119021",
     excerpt:
-      "NexGen remains positioned as Saudi Aramco Approved Vendor #10119021 with integrated construction and MEP capabilities in the Eastern Province.",
+      "NexGen Build continues to publish Saudi Aramco vendor approval, Saudi Energy registration, ISO 9001:2015, and AWS welding credentials alongside six integrated construction and MEP divisions.",
     href: "/companies/nexgen-build",
   },
   {
     date: "Operating update",
     category: "Dammam Laser CNC",
-    title: "Precision fabrication capacity in Dammam",
+    title: "Precision fabrication from Al-Khodariya, Dammam",
     excerpt:
-      "Fiber laser, CO₂, and CNC capabilities supporting industrial and architectural metalwork across the Eastern Province.",
+      "Dammam Laser CNC publishes SCA, VAT, and SME credentials with fiber laser, CO₂, and CNC routing capacity for industrial and architectural work across the Eastern Province.",
     href: "/companies/dammam-laser",
   },
   {
-    date: "Operating update",
+    date: "2020",
     category: "Edge Steel KSA",
-    title: "Structural and architectural steel from Riyadh",
+    title: "Edge Steel KSA founded in Riyadh",
     excerpt:
-      "Edge Steel continues SCA-certified fabrication for commercial, government, and infrastructure clients across the Kingdom.",
+      "Edge Steel publicly dates its founding to 2020 in Riyadh, combining structural fabrication with a precision-first delivery model for industrial and construction clients.",
     href: "/companies/edge-steel",
-  },
-  {
-    date: "Perspective",
-    category: "Thesis",
-    title: "Why complementary ownership beats ad-hoc subcontract stacks",
-    excerpt:
-      "A short read on the holding thesis — integration as ownership strategy, not a temporary joint venture.",
-    href: "/why-zaims",
   },
 ];
 
@@ -58,10 +74,10 @@ export default function NewsPage() {
       <PageHero
         eyebrow="News"
         title="Updates from the group."
-        description="Seeded editorial updates while a full press pipeline comes online. Media inquiries: use Contact with inquiry type Media."
+        description="Milestones and operating notes grounded in what NexGen Build, Dammam Laser CNC, and Edge Steel KSA publish on their own sites. Media inquiries: Contact with inquiry type Media."
       />
 
-      <section id="updates" className="bg-white py-16 md:py-24">
+      <section id="updates" className="bg-surface py-16 md:py-24">
         <div className="mx-auto max-w-3xl px-6">
           <Stagger className="divide-y divide-mono-20 border-y border-mono-20">
             {news.map((item) => (
@@ -75,18 +91,12 @@ export default function NewsPage() {
                   <h2 className="mt-3 font-display text-xl font-bold text-mono-90 md:text-2xl">
                     <Link
                       href={item.href}
-                      className="transition-colors hover:text-brand-primary cursor-pointer"
+                      className="cursor-pointer transition-colors hover:text-brand-yellow"
                     >
                       {item.title}
                     </Link>
                   </h2>
                   <p className="mt-3 text-[15px] leading-relaxed text-mono-70">{item.excerpt}</p>
-                  <Link
-                    href={item.href}
-                    className="mt-4 inline-block text-sm font-semibold text-brand-primary hover:text-brand-accent cursor-pointer"
-                  >
-                    Read more →
-                  </Link>
                 </article>
               </StaggerItem>
             ))}
@@ -94,10 +104,7 @@ export default function NewsPage() {
         </div>
       </section>
 
-      <ClosingCTA
-        title="Press or partnership inquiry?"
-        description="Reach the holding team through Contact."
-      />
+      <ClosingCTA />
     </>
   );
 }
