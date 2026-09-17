@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/zaimholdingfcfe/test.zaimholding.com
+    - /bin/mkdir -p $DEPLOYPATH/tmp
+    - /bin/bash -lc 'cd /home/zaimholdingfcfe/test.zaimholding.com && ACTIVATE=$(ls -1d /home/zaimholdingfcfe/nodevenv/test.zaimholding.com/*/bin/activate 2>/dev/null | head -n 1) && if [ -n "$ACTIVATE" ]; then . "$ACTIVATE"; fi && npm install && npm run build && /bin/touch tmp/restart.txt'
