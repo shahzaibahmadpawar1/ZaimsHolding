@@ -1,8 +1,8 @@
-"use client";
+  "use client";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionValue,
@@ -24,41 +24,77 @@ import {
 const CENTER = "/assets/images/1.png";
 const GAP = "0.5rem";
 
-/** Settled: center 56% × 80%, sides 20% — fills most of the viewport */
+/** Settled satellites — % of viewport; paired with responsive center inset */
 const SATELLITES = [
   {
     src: "/assets/images/2.jpg",
     alt: "Precision welding on site",
     className:
-      "left-[calc(50%-28%-var(--hero-gap)-20%)] top-[calc(50%-40%)] h-[39%] w-[20%]",
-    from: { x: -80, y: -40, rotate: -4 },
+      "left-[max(0.5rem,calc(50%-var(--hero-center-half)-var(--hero-gap)-var(--hero-side-w)))] top-[calc(50%-40%)] h-[39%] w-[var(--hero-side-w)]",
+    from: { x: -48, y: -28, rotate: -4 },
     to: { x: 0, y: 0, rotate: -1 },
   },
   {
     src: "/assets/images/3.jpg",
     alt: "Heavy fabrication work",
     className:
-      "right-[calc(50%-28%-var(--hero-gap)-20%)] top-[calc(50%-40%)] h-[39%] w-[20%]",
-    from: { x: 80, y: -40, rotate: 4 },
+      "right-[max(0.5rem,calc(50%-var(--hero-center-half)-var(--hero-gap)-var(--hero-side-w)))] top-[calc(50%-40%)] h-[39%] w-[var(--hero-side-w)]",
+    from: { x: 48, y: -28, rotate: 4 },
     to: { x: 0, y: 0, rotate: 1 },
   },
   {
     src: "/assets/images/4.jpg",
     alt: "Industrial plant structure",
     className:
-      "left-[calc(50%-28%-var(--hero-gap)-20%)] bottom-[calc(50%-40%)] h-[39%] w-[20%]",
-    from: { x: -80, y: 40, rotate: 3 },
+      "left-[max(0.5rem,calc(50%-var(--hero-center-half)-var(--hero-gap)-var(--hero-side-w)))] bottom-[calc(50%-40%)] h-[39%] w-[var(--hero-side-w)]",
+    from: { x: -48, y: 28, rotate: 3 },
     to: { x: 0, y: 0, rotate: 0.75 },
   },
   {
     src: "/assets/images/5.jpg",
     alt: "Kingdom industrial operations",
     className:
-      "right-[calc(50%-28%-var(--hero-gap)-20%)] bottom-[calc(50%-40%)] h-[39%] w-[20%]",
-    from: { x: 80, y: 40, rotate: -3 },
+      "right-[max(0.5rem,calc(50%-var(--hero-center-half)-var(--hero-gap)-var(--hero-side-w)))] bottom-[calc(50%-40%)] h-[39%] w-[var(--hero-side-w)]",
+    from: { x: 48, y: 28, rotate: -3 },
     to: { x: 0, y: 0, rotate: -0.75 },
   },
 ] as const;
+
+function useHeroLayout() {
+  const [layout, setLayout] = useState({
+    showSides: true,
+    /** Horizontal inset % when settled → center width = 100 - 2*inset */
+    insetX: 24,
+    sideW: "21%",
+    centerHalf: "26%",
+  });
+
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      if (w < 480) {
+        // Narrow phones — tighter center, visible side tiles
+        setLayout({ showSides: true, insetX: 27, sideW: "23%", centerHalf: "23%" });
+      } else if (w < 768) {
+        setLayout({ showSides: true, insetX: 25, sideW: "22%", centerHalf: "25%" });
+      } else if (w < 1024) {
+        setLayout({ showSides: true, insetX: 24, sideW: "21%", centerHalf: "26%" });
+      } else if (w < 1280) {
+        // 14" / small laptop
+        setLayout({ showSides: true, insetX: 26, sideW: "22%", centerHalf: "24%" });
+      } else if (w < 1536) {
+        setLayout({ showSides: true, insetX: 24, sideW: "20%", centerHalf: "26%" });
+      } else {
+        setLayout({ showSides: true, insetX: 22, sideW: "20%", centerHalf: "28%" });
+      }
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  return layout;
+}
 
 function MagneticCTA({
   href,
@@ -92,8 +128,8 @@ function MagneticCTA({
 
   const base =
     variant === "primary"
-      ? "rounded-full bg-surface px-6 py-3.5 text-sm font-semibold text-brand-primary shadow-lg shadow-black/25"
-      : "rounded-full border border-surface/35 bg-surface/10 px-6 py-3.5 text-sm font-semibold text-surface backdrop-blur-sm";
+      ? "rounded-full bg-surface px-5 py-3 text-sm font-semibold text-brand-primary shadow-lg shadow-black/25 sm:px-6 sm:py-3.5"
+      : "rounded-full border border-surface/35 bg-surface/10 px-5 py-3 text-sm font-semibold text-surface backdrop-blur-sm sm:px-6 sm:py-3.5";
 
   return (
     <motion.div style={{ x: springX, y: springY }}>
@@ -128,7 +164,6 @@ function Satellite({
   const x = useTransform(progress, [0.06, 0.4, 1], [from.x, to.x, to.x]);
   const y = useTransform(progress, [0.06, 0.4, 1], [from.y, to.y, to.y]);
   const rotate = useTransform(progress, [0.06, 0.4, 1], [from.rotate, to.rotate, to.rotate]);
-  // Fade in once, then stay fully opaque for the rest of the hero scroll
   const opacity = useTransform(progress, [0.04, 0.1, 1], [0, 1, 1]);
   const scale = useTransform(progress, [0.06, 0.4, 1], [0.92, 1, 1]);
   const radius = useTransform(progress, [0.06, 0.35, 1], [18, 28, 28]);
@@ -138,7 +173,7 @@ function Satellite({
       className={`absolute z-[1] overflow-hidden shadow-[0_16px_40px_rgba(11,18,32,0.16)] ${className}`}
       style={{ x, y, rotate, opacity, scale, borderRadius: radius }}
     >
-      <Image src={src} alt={alt} fill className="object-cover" sizes="(max-width: 768px) 40vw, 24vw" />
+      <Image src={src} alt={alt} fill className="object-cover" sizes="22vw" />
     </motion.div>
   );
 }
@@ -146,18 +181,30 @@ function Satellite({
 export default function HomeHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
+  const { showSides, insetX, sideW, centerHalf } = useHeroLayout();
+  const insetXTarget = useMotionValue(insetX);
+
+  useEffect(() => {
+    insetXTarget.set(insetX);
+  }, [insetX, insetXTarget]);
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
   });
 
-  // Inset from viewport edges: 0 → card margins, then hold (no further change)
-  const insetX = useTransform(scrollYProgress, [0, 0.45, 1], [0, 22, 22]); // (100-56)/2
-  const insetY = useTransform(scrollYProgress, [0, 0.45, 1], [0, 10, 10]); // (100-80)/2
+  const insetXMotion = useTransform([scrollYProgress, insetXTarget], ([p, settled]) => {
+    const progress = Number(p);
+    const target = Number(settled);
+    if (progress <= 0) return 0;
+    if (progress >= 0.45) return target;
+    return (progress / 0.45) * target;
+  });
+  const insetY = useTransform(scrollYProgress, [0, 0.45, 1], [0, 10, 10]);
   const centerTop = useTransform(insetY, (v) => `${v}%`);
   const centerBottom = useTransform(insetY, (v) => `${v}%`);
-  const centerLeft = useTransform(insetX, (v) => `${v}%`);
-  const centerRight = useTransform(insetX, (v) => `${v}%`);
+  const centerLeft = useTransform(insetXMotion, (v) => `${v}%`);
+  const centerRight = useTransform(insetXMotion, (v) => `${v}%`);
   const centerRadius = useTransform(scrollYProgress, [0, 0.16, 0.45, 1], [0, 14, 28, 28]);
   const centerShadow = useTransform(
     scrollYProgress,
@@ -180,7 +227,7 @@ export default function HomeHero() {
     <section
       id="hero"
       ref={sectionRef}
-      className="relative h-[240vh] bg-paper"
+      className="relative h-[220vh] bg-paper md:h-[240vh]"
       aria-label="Zaims Holding hero"
     >
       <div className="sticky top-0 h-svh overflow-hidden">
@@ -194,21 +241,36 @@ export default function HomeHero() {
         />
 
         <div
-          className="relative h-full w-full"
-          style={{ ["--hero-gap" as string]: GAP } as React.CSSProperties}
+          className="relative h-full w-full overflow-hidden"
+          style={
+            {
+              ["--hero-gap" as string]: GAP,
+              ["--hero-side-w" as string]: sideW,
+              ["--hero-center-half" as string]: centerHalf,
+            } as React.CSSProperties
+          }
         >
-          {!reduce &&
-            SATELLITES.map((s) => (
-              <Satellite
-                key={s.src}
-                src={s.src}
-                alt={s.alt}
-                className={s.className}
-                from={s.from}
-                to={s.to}
-                progress={scrollYProgress}
-              />
-            ))}
+          {showSides &&
+            SATELLITES.map((s) =>
+              reduce ? (
+                <div
+                  key={s.src}
+                  className={`absolute z-[1] overflow-hidden rounded-[1.5rem] shadow-[0_16px_40px_rgba(11,18,32,0.16)] ${s.className}`}
+                >
+                  <Image src={s.src} alt={s.alt} fill className="object-cover" sizes="24vw" />
+                </div>
+              ) : (
+                <Satellite
+                  key={s.src}
+                  src={s.src}
+                  alt={s.alt}
+                  className={s.className}
+                  from={s.from}
+                  to={s.to}
+                  progress={scrollYProgress}
+                />
+              ),
+            )}
 
           <motion.div
             className="absolute z-10 overflow-hidden will-change-[inset,border-radius]"
@@ -217,8 +279,8 @@ export default function HomeHero() {
                 ? {
                     top: "10%",
                     bottom: "10%",
-                    left: "22%",
-                    right: "22%",
+                    left: `${insetX}%`,
+                    right: `${insetX}%`,
                     borderRadius: 28,
                     boxShadow: "0 28px 80px rgba(11,18,32,0.2)",
                   }
@@ -232,12 +294,16 @@ export default function HomeHero() {
                   }
             }
           >
+            {/*
+              Mobile only: crop toward the right so the baked-in headline stays in frame.
+              md+ (tablet / laptop / desktop): balanced center crop.
+            */}
             <Image
               src={CENTER}
               alt="We build more than structures. We build trust."
               fill
               priority
-              className="object-cover object-center"
+              className="object-cover object-[63%_23%] md:object-center"
               sizes="100vw"
             />
 
@@ -247,14 +313,14 @@ export default function HomeHero() {
             />
 
             <motion.div
-              className="absolute inset-x-0 bottom-0 z-10 flex flex-wrap items-center justify-center gap-3 px-6 pb-[max(2rem,6vh)]"
+              className="absolute inset-x-0 bottom-0 z-10 flex flex-wrap items-center justify-center gap-2.5 px-4 pb-[max(1.25rem,4.5vh)] sm:gap-3 sm:px-6 sm:pb-[max(2rem,6vh)]"
               style={
                 reduce
                   ? undefined
                   : { y: copyY, opacity: copyOpacity, pointerEvents: copyPointer }
               }
             >
-              <h1 className="sr-only">Zaims Holding</h1>
+              <h1 className="sr-only">Zaims Holding — We build more than structures. We build trust.</h1>
               <MagneticCTA href="/companies">Explore our companies</MagneticCTA>
               <MagneticCTA href="/contact" variant="secondary">
                 Get in touch

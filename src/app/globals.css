@@ -136,11 +136,17 @@
   animation: accordion-up 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+html {
+  /* clip (not hidden) — contains sideways overflow without breaking position:sticky */
+  overflow-x: clip;
+}
+
 body {
   background: var(--paper);
   color: var(--mono-90);
   font-family: var(--font-sans);
   font-optical-sizing: auto;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

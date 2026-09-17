@@ -46,7 +46,7 @@ function BrandLogo({
       alt="Zaims Holding"
       width={168}
       height={48}
-      className={`h-8 w-auto object-contain md:h-9 ${className}`}
+      className={`h-8 w-auto max-w-full object-contain md:h-9 ${className}`}
       priority
       unoptimized
     />
@@ -108,12 +108,11 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
     <>
       <motion.nav
         aria-label="Primary"
-        className="fixed top-5 left-1/2 z-50 hidden -translate-x-1/2 items-center gap-2 md:flex"
+        className="fixed top-4 left-1/2 z-50 hidden w-[min(72rem,calc(100%-1.5rem))] -translate-x-1/2 items-center gap-1 lg:top-5 lg:flex lg:w-[min(72rem,calc(100%-2rem))] lg:gap-2 xl:w-[min(72rem,calc(100%-3rem))]"
         initial={{ y: -24, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         style={{
-          maxWidth: "calc(100% - 2rem)",
           height: 64,
           padding: "6px 6px 6px 16px",
           borderRadius: 9999,
@@ -136,7 +135,7 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
           <BrandLogo compact={!isLightBackground} />
         </Link>
 
-        <div className="ml-1 flex flex-1 items-center justify-center gap-0.5">
+        <div className="ml-1 flex min-w-0 flex-1 items-center justify-center gap-0 lg:gap-0.5">
           {navItems.map((item) => {
             const active = itemIsActive(pathname, item);
             const hasChildren = Boolean(item.children?.length);
@@ -148,7 +147,7 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
                   key={item.label}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className={`relative z-0 cursor-pointer whitespace-nowrap rounded-full px-3.5 py-2 font-medium transition-colors duration-200 hover:!text-brand-yellow ${
+                  className={`relative z-0 cursor-pointer whitespace-nowrap rounded-full px-2.5 py-2 font-medium transition-colors duration-200 hover:!text-brand-yellow xl:px-3.5 ${
                     active ? "" : hoverClass
                   }`}
                   style={{ fontSize: 14, lineHeight: 1, color: linkColor }}
@@ -182,7 +181,7 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
                   aria-haspopup="menu"
                   aria-controls={`${menuId}-${item.label}`}
                   aria-current={active ? "page" : undefined}
-                  className={`relative z-0 inline-flex cursor-pointer items-center gap-1 whitespace-nowrap rounded-full px-3.5 py-2 font-medium transition-colors duration-200 hover:!text-brand-yellow ${
+                  className={`relative z-0 inline-flex cursor-pointer items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-2 font-medium transition-colors duration-200 hover:!text-brand-yellow xl:px-3.5 ${
                     active || isOpen ? "" : hoverClass
                   }`}
                   style={{ fontSize: 14, lineHeight: 1, color: linkColor }}
@@ -270,23 +269,27 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
 
         <Link
           href="/contact"
-          className="flex flex-shrink-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-brand-primary px-5 py-2.5 text-sm font-semibold text-surface transition-opacity hover:opacity-90"
+          className="flex flex-shrink-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-brand-primary px-4 py-2.5 text-sm font-semibold text-surface transition-opacity hover:opacity-90 xl:px-5"
         >
           Get in touch
         </Link>
       </motion.nav>
 
-      {/* Mobile */}
-      <div className="fixed top-4 right-4 left-4 z-50 flex items-center justify-between rounded-full border border-mono-20/80 bg-surface/90 px-4 py-3 shadow-soft backdrop-blur-xl md:hidden">
-        <Link href="/" className="flex items-center" aria-label="Zaims Holding home">
-          <BrandLogo className="!h-7" />
+      {/* Mobile + tablet — keep pill fully inside the viewport */}
+      <div className="fixed top-3 left-1/2 z-50 box-border flex w-[calc(100%-1.5rem)] max-w-[calc(100vw-1.5rem)] -translate-x-1/2 items-center justify-between gap-2 overflow-hidden rounded-full border border-mono-20/80 bg-surface/90 px-3 py-2.5 shadow-soft backdrop-blur-xl sm:top-4 sm:w-[calc(100%-2rem)] sm:max-w-[calc(100vw-2rem)] sm:px-4 sm:py-3 lg:hidden">
+        <Link
+          href="/"
+          className="flex min-w-0 flex-1 items-center overflow-hidden"
+          aria-label="Zaims Holding home"
+        >
+          <BrandLogo className="h-6! w-auto max-w-full object-contain object-left sm:h-7!" />
         </Link>
         <Dialog.Root open={open} onOpenChange={setOpen}>
           <Dialog.Trigger asChild>
             <button
               type="button"
               aria-label="Open menu"
-              className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full hover:bg-mono-10"
+              className="inline-flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full hover:bg-mono-10"
             >
               <Menu className="h-5 w-5 text-mono-90" />
             </button>

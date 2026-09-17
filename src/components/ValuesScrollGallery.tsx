@@ -349,7 +349,7 @@ export default function ValuesScrollGallery({ items }: { items: ValueGalleryItem
 
   return (
     <div ref={trackRef} className="relative" style={{ height: scrollHeight }}>
-      <div className="sticky top-0 h-screen overflow-hidden bg-mono-100">
+      <div className="sticky top-0 h-svh overflow-hidden bg-mono-100">
         <motion.div className="absolute inset-0 z-0" style={{ opacity: heroOpacity }}>
           <HeroBackdrop />
         </motion.div>

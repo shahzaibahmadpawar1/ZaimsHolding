@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Node.js hosting (cPanel) — do not use `output: "export"`
+  images: {
+    // Avoid native `sharp` issues on many shared hosts
+    unoptimized: true,
+  },
   async redirects() {
     return [
       { source: "/platforms", destination: "/companies", permanent: true },
