@@ -1,6 +1,8 @@
 ---
+# Deploy on cPanel Git. Do NOT run `next build` here — shared hosts OOM on Turbopack/WASM.
+# Build locally (`npm run build`), upload the `.next` folder, then Deploy / Restart the Node app.
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/zaimholdingfcfe/test.zaimholding.com
+    - export DEPLOYPATH=/home/zaimsholdingfcfe/test.zaimsholding.com
     - /bin/mkdir -p $DEPLOYPATH/tmp
-    - /bin/bash -lc 'cd /home/zaimholdingfcfe/test.zaimholding.com && ACTIVATE=$(ls -1d /home/zaimholdingfcfe/nodevenv/test.zaimholding.com/*/bin/activate 2>/dev/null | head -n 1) && if [ -n "$ACTIVATE" ]; then . "$ACTIVATE"; fi && npm install && npm run build && /bin/touch tmp/restart.txt'
+    - /bin/bash -lc 'cd /home/zaimsholdingfcfe/test.zaimsholding.com && ACTIVATE=$(ls -1d /home/zaimsholdingfcfe/nodevenv/test.zaimsholding.com/*/bin/activate 2>/dev/null | head -n 1) && if [ -n "$ACTIVATE" ]; then . "$ACTIVATE"; fi && npm install && /bin/touch tmp/restart.txt'
