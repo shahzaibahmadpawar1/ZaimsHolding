@@ -19,7 +19,7 @@ export default function SectorsPage() {
       <PageHero
         eyebrow="Sectors"
         title="Industrial sectors. Operating clarity."
-        description="Zaims is organized around four sector lenses. Delivery sits with the operating company best suited to the work — with the holding aligning capital and standards."
+        description="Zaims is organized around five sector lenses. Delivery sits with the operating company best suited to the work — with the holding aligning capital and standards."
         actions={[
           { label: "Our companies", href: "/companies" },
           { label: "Get in touch", href: "/contact", variant: "secondary" },
@@ -52,13 +52,13 @@ export default function SectorsPage() {
 
       <section id="holding" className="border-t border-mono-20 bg-paper py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <FadeIn>
-            <SectionHeading
-              eyebrow="Holding lens"
-              title="Sectors are how we describe the group — not a sales catalog."
-              description="If you need project-level capabilities, start with the operating company. If you care about how the pieces fit as an ownership structure, start with Why Zaims."
-            />
-            <div className="mt-8 flex flex-wrap gap-3">
+          <SectionHeading
+            eyebrow="Holding lens"
+            title="Sectors are how we describe the group — not a sales catalog."
+            description="If you need project-level capabilities, start with the operating company. If you care about how the pieces fit as an ownership structure, start with Why Zaims."
+          />
+          <FadeIn className="mt-8">
+            <div className="flex flex-wrap gap-3">
               <Link
                 href="/why-zaims"
                 className="rounded-full bg-brand-primary px-5 py-2.5 text-sm font-semibold text-surface hover:opacity-90 cursor-pointer"

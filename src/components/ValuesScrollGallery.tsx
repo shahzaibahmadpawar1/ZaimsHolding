@@ -1,16 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState, useRef } from "react";
+import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import {
+  AnimatePresence,
   motion,
   useMotionValueEvent,
   useReducedMotion,
-  useScroll,
   useTransform,
   type MotionValue,
 } from "motion/react";
 import CompanyOrbit from "@/components/CompanyOrbit";
+import {
+  useScrubFailureFallback,
+  useSectionScrollProgress,
+} from "@/lib/useSectionScrollProgress";
 
 export type ValueGalleryItem = {
   title: string;
@@ -24,9 +28,8 @@ const VH_PER_VALUE = 190;
 /** Intro (orbit) frame — keep in step with between-image feel, not a full dead zone */
 const VH_INTRO = 95;
 
-/** Clear the fixed Line Menu TOC on the left (lg+) */
-const COPY_INSET =
-  "pl-6 sm:pl-8 md:pl-12 lg:pl-28 xl:pl-32";
+const COPY_INSET = "pl-6 sm:pl-8 md:pl-12 lg:pl-28 xl:pl-32";
+const ease = [0.22, 1, 0.36, 1] as const;
 
 function HeroBackdrop() {
   return (
@@ -44,7 +47,6 @@ function HeroBackdrop() {
       <div className="pointer-events-none absolute -right-16 top-1/3 h-96 w-96 rounded-full bg-brand-cyan/15 blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-brand-teal/30 blur-3xl" />
 
-      {/* Hero orbit illustration — right side */}
       <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] flex w-full max-w-xl items-center justify-center pr-4 opacity-95 sm:pr-8 lg:max-w-2xl lg:pr-16 xl:max-w-3xl">
         <div className="pointer-events-auto w-full scale-90 sm:scale-100 lg:scale-110">
           <CompanyOrbit />
@@ -69,14 +71,13 @@ function FullBleedImage({ src }: { src: string }) {
           className="object-cover"
           onError={() => setFailed(true)}
           unoptimized
-          quality={100}
+          quality={75}
         />
       )}
     </>
   );
 }
 
-/** Sticky section title — stays put, does not fade with value slides */
 function StickyIntroCopy() {
   return (
     <div
@@ -102,7 +103,6 @@ function GallerySlide({
   active,
   progress,
   valueCount,
-  reduce,
 }: {
   item: ValueGalleryItem;
   valueIndex: number;
@@ -111,7 +111,6 @@ function GallerySlide({
   active: boolean;
   progress: MotionValue<number>;
   valueCount: number;
-  reduce: boolean | null;
 }) {
   const span = Math.max(frameEnd - frameStart, 0.0001);
   const enter = frameStart + span * 0.12;
@@ -131,16 +130,6 @@ function GallerySlide({
     [frameStart, holdStart, holdEnd, frameEnd],
     [0, 1, 1, 0],
   );
-
-  if (reduce) {
-    if (!active) return null;
-    return (
-      <div className="absolute inset-0">
-        <FullBleedImage src={item.image} />
-        <SlideCopy item={item} index={valueIndex} count={valueCount} />
-      </div>
-    );
-  }
 
   return (
     <motion.div className="absolute inset-0" style={{ opacity }} aria-hidden={!active}>
@@ -251,17 +240,82 @@ function ThumbImage({ src }: { src: string }) {
   );
 }
 
+/** Light single-stage crossfade gallery — used when sticky scrub fails or reduced-motion. */
+function LightValuesGallery({
+  items,
+  animate,
+}: {
+  items: ValueGalleryItem[];
+  animate: boolean;
+}) {
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    if (!animate || items.length < 2) return;
+    const id = window.setInterval(() => {
+      setActive((i) => (i + 1) % items.length);
+    }, 4500);
+    return () => window.clearInterval(id);
+  }, [animate, items.length]);
+
+  const item = items[active] ?? items[0];
+
+  return (
+    <div className="space-y-0">
+      <div className="relative min-h-[70vh] overflow-hidden md:min-h-screen">
+        <HeroBackdrop />
+        <StickyIntroCopy />
+      </div>
+
+      <div className="relative min-h-[70vh] overflow-hidden bg-mono-100 md:min-h-screen">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={item.title}
+            className="absolute inset-0"
+            initial={animate ? { opacity: 0, y: 18 } : false}
+            animate={{ opacity: 1, y: 0 }}
+            exit={animate ? { opacity: 0, y: -12 } : undefined}
+            transition={{ duration: 0.45, ease }}
+          >
+            <FullBleedImage src={item.image} />
+            <div className="absolute inset-0 z-10 flex items-end md:items-center">
+              <SlideCopy item={item} index={active} count={items.length} />
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        <StickyIntroCopy />
+
+        <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-2">
+          {items.map((it, i) => (
+            <button
+              key={it.title}
+              type="button"
+              aria-label={`Show ${it.title}`}
+              aria-current={i === active ? "true" : undefined}
+              onClick={() => setActive(i)}
+              className={`h-2.5 w-2.5 rounded-full transition-colors ${
+                i === active ? "bg-brand-yellow" : "bg-surface/40 hover:bg-surface/70"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /**
  * Scroll-driven values gallery inspired by Framer CMS Scroll Gallery:
  * https://www.framer.com/marketplace/components/cms-scroll-gallery/
  */
 export default function ValuesScrollGallery({ items }: { items: ValueGalleryItem[] }) {
   const reduce = useReducedMotion();
+  const [forceLight, setForceLight] = useState(false);
+  const useLight = Boolean(reduce || forceLight);
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeFrame, setActiveFrame] = useState(0);
 
-  // Frame 0 = hero intro (no photo). Frames 1..n = value photos.
-  // Intro is shorter so reaching the first image matches between-image sensitivity.
   const frameWeights = useMemo(
     () => [VH_INTRO, ...items.map(() => VH_PER_VALUE)],
     [items],
@@ -280,19 +334,21 @@ export default function ValuesScrollGallery({ items }: { items: ValueGalleryItem
     return starts;
   }, [frameWeights, totalWeight]);
   const frameEnds = useMemo(
-    () => frameStarts.map((start, i) =>
-      i + 1 < frameStarts.length ? frameStarts[i + 1] : 1,
-    ),
+    () =>
+      frameStarts.map((start, i) => (i + 1 < frameStarts.length ? frameStarts[i + 1] : 1)),
     [frameStarts],
   );
   const frameCount = frameWeights.length;
 
-  const { scrollYProgress } = useScroll({
-    target: trackRef,
-    offset: ["start start", "end end"],
+  const scrollYProgress = useSectionScrollProgress(trackRef, !useLight);
+
+  const onScrubFail = useCallback(() => setForceLight(true), []);
+  useScrubFailureFallback(trackRef, scrollYProgress, onScrubFail, {
+    enabled: !useLight,
   });
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
+    if (useLight) return;
     let next = frameCount - 1;
     for (let i = 0; i < frameCount; i++) {
       if (v < frameEnds[i]) {
@@ -321,30 +377,13 @@ export default function ValuesScrollGallery({ items }: { items: ValueGalleryItem
     const rect = el.getBoundingClientRect();
     const top = window.scrollY + rect.top;
     const span = el.offsetHeight - window.innerHeight;
-    const mid =
-      ((frameStarts[frameIndex] ?? 0) + (frameEnds[frameIndex] ?? 1)) / 2;
+    const mid = ((frameStarts[frameIndex] ?? 0) + (frameEnds[frameIndex] ?? 1)) / 2;
     const target = top + span * mid;
-    window.scrollTo({ top: target, behavior: reduce ? "auto" : "smooth" });
+    window.scrollTo({ top: target, behavior: "smooth" });
   };
 
-  if (reduce) {
-    return (
-      <div className="space-y-0">
-        <div className="relative min-h-screen overflow-hidden">
-          <HeroBackdrop />
-          <StickyIntroCopy />
-        </div>
-        {items.map((item, index) => (
-          <div key={item.title} className="relative min-h-screen overflow-hidden">
-            <FullBleedImage src={item.image} />
-            <StickyIntroCopy />
-            <div className="absolute inset-0 z-10 flex items-end md:items-center">
-              <SlideCopy item={item} index={index} count={items.length} />
-            </div>
-          </div>
-        ))}
-      </div>
-    );
+  if (useLight) {
+    return <LightValuesGallery items={items} animate={!reduce} />;
   }
 
   return (
@@ -364,7 +403,6 @@ export default function ValuesScrollGallery({ items }: { items: ValueGalleryItem
             active={activeFrame === valueIndex + 1}
             progress={scrollYProgress}
             valueCount={items.length}
-            reduce={false}
           />
         ))}
 

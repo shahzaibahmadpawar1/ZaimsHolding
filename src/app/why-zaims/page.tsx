@@ -16,17 +16,17 @@ export const metadata: Metadata = {
 
 const notUs = [
   {
-    icon: "/assets/icons/icon-timer.png",
+    icon: "/assets/icons/icon-timer.webp",
     title: "Not a short-hold PE vehicle",
     body: "No structural need to flip companies on a fund clock. Permanent ownership orientation.",
   },
   {
-    icon: "/assets/icons/icon-marketplace.png",
+    icon: "/assets/icons/icon-marketplace.webp",
     title: "Not a contractor marketplace",
     body: "We don't auction work across strangers. We own operators and take responsibility for the group story.",
   },
   {
-    icon: "/assets/icons/icon-check.png",
+    icon: "/assets/icons/icon-check.webp",
     title: "Not credential theater",
     body: "Aramco, SCA, and ISO claims stay attached to the company that earned them — starting with NexGen's Aramco vendor #10119021.",
   },
@@ -37,7 +37,7 @@ export default function WhyZaimsPage() {
     <>
       <PageHero
         eyebrow="Why Zaims"
-        title="Three companies. One holding. A long horizon."
+        title="Four companies. One holding. A long horizon."
         description="Zaims is a thesis about how industrial capability should be owned in Saudi Arabia — complementary operators under permanent capital, not a pile of unrelated assets."
         actions={[
           { label: "Our companies", href: "/companies" },
@@ -47,41 +47,43 @@ export default function WhyZaimsPage() {
 
       <section id="thesis" className="bg-surface py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6 grid gap-12 lg:grid-cols-2">
-          <FadeIn>
+          <div>
             <SectionHeading
               eyebrow="The problem"
               title="Fragmented ownership creates fragmented outcomes."
             />
-            <p className="mt-5 text-base leading-relaxed text-mono-70">
-              When steel, precision fabrication, and building systems sit under unrelated owners, every
-              interface becomes a negotiation. Specs drift. Schedules slip. Accountability dissolves at
-              the seams. Investors and principals inherit coordination risk they never priced.
-            </p>
-          </FadeIn>
-          <FadeIn delay={0.08}>
+            <FadeIn>
+              <p className="mt-5 text-base leading-relaxed text-mono-70">
+                When steel, precision fabrication, and building systems sit under unrelated owners, every
+                interface becomes a negotiation. Specs drift. Schedules slip. Accountability dissolves at
+                the seams. Investors and principals inherit coordination risk they never priced.
+              </p>
+            </FadeIn>
+          </div>
+          <div>
             <SectionHeading
               eyebrow="The structure"
               title="Integrated from ownership — not from a temporary JV."
             />
-            <p className="mt-5 text-base leading-relaxed text-mono-70">
-              Zaims holds companies that already belong in the same industrial conversation. They keep
-              local brands and operators. The holding aligns incentives, capital posture, and the option
-              to deliver as a coherent chain when the work demands it.
-            </p>
-          </FadeIn>
+            <FadeIn delay={0.08}>
+              <p className="mt-5 text-base leading-relaxed text-mono-70">
+                Zaims holds companies that already belong in the same industrial conversation. They keep
+                local brands and operators. The holding aligns incentives, capital posture, and the option
+                to deliver as a coherent chain when the work demands it.
+              </p>
+            </FadeIn>
+          </div>
         </div>
       </section>
 
       <section id="portfolio" className="bg-paper border-y border-mono-20 py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <FadeIn>
-            <SectionHeading
-              eyebrow="The portfolio"
-              title="Designed to work as a chain."
-              description="THEY WORK TOGETHER. BY DESIGN."
-            />
-          </FadeIn>
-          <Stagger className="mt-12 grid gap-5 md:grid-cols-3">
+          <SectionHeading
+            eyebrow="The portfolio"
+            title="Designed to work as a chain."
+            description="THEY WORK TOGETHER. BY DESIGN."
+          />
+          <Stagger className="mt-12 grid gap-5 sm:grid-cols-2">
             {companies.map((c, i) => (
               <StaggerItem key={c.slug}>
                 <CompanyCard company={c} index={i} />
@@ -93,9 +95,7 @@ export default function WhyZaimsPage() {
 
       <section id="model" className="bg-surface py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <FadeIn>
-            <SectionHeading eyebrow="What we are not" title="Clear about the model." />
-          </FadeIn>
+          <SectionHeading eyebrow="What we are not" title="Clear about the model." />
           <Stagger className="mt-12 grid gap-6 md:grid-cols-3">
             {notUs.map((item) => (
               <StaggerItem key={item.title}>

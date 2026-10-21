@@ -111,12 +111,10 @@ export default function ComparisonPage() {
 
       <section id="fit" className="bg-paper border-t border-mono-20 py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <FadeIn>
-            <SectionHeading
-              eyebrow="When Zaims fits"
-              title="Best suited for partners who care about industrial coherence."
-            />
-          </FadeIn>
+          <SectionHeading
+            eyebrow="When Zaims fits"
+            title="Best suited for partners who care about industrial coherence."
+          />
           <Stagger className="mt-10 grid gap-6 md:grid-cols-3">
             {[
               {

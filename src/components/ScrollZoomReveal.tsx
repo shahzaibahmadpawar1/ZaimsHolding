@@ -13,9 +13,10 @@ import {
 const LEFT_LOGO = "/assets/logos/zaimsLogo.jpg";
 
 const RIGHT_LOGOS = [
-  { src: "/assets/logos/logo.png", alt: "NexGen Build" },
-  { src: "/assets/logos/edge-steel.png", alt: "Edge Steel" },
   { src: "/assets/logos/dammam-laser.png", alt: "Dammam Laser" },
+  { src: "/assets/logos/edge-steel.png", alt: "Edge Steel" },
+  { src: "/assets/logos/logo.png", alt: "NexGen Build" },
+  { src: "/assets/logos/pro-pipe.png", alt: "ProPipe" },
 ] as const;
 
 type ScrollZoomRevealProps = {

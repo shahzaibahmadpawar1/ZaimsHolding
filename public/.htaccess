@@ -1,16 +1,24 @@
-# Serve Next.js static export 404 (LiteSpeed / Apache / cPanel)
-ErrorDocument 404 /404.html
+# Apache: serve Next static export from this folder (copied into `out/` on build)
+DirectoryIndex index.html
 
+# Pretty URLs / SPA-style fallback for missing trailing files
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # Prefer extensionless URLs → matching .html files
-  RewriteCond %{REQUEST_FILENAME} !-d
+  # Legacy redirects (were next.config redirects; unsupported with static export)
+  RewriteRule ^platforms/?$ /companies/ [R=301,L]
+  RewriteRule ^services/?$ /sectors/ [R=301,L]
+  RewriteRule ^resources/?$ /news/ [R=301,L]
+  RewriteRule ^stakeholders/?$ /investors/ [R=301,L]
+
+  # If request is a real file or directory, serve it
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Map /about → /about/index.html when trailingSlash export is used
   RewriteCond %{REQUEST_FILENAME}.html -f
   RewriteRule ^(.+)$ $1.html [L]
-
-  # Fallback to Next export 404 for unknown paths
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^ /404.html [L]
 </IfModule>
+
+ErrorDocument 404 /404.html

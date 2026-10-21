@@ -11,22 +11,22 @@ import { companies, sectors } from "@/lib/content";
 
 const proofs = [
   {
-    icon: "/assets/icons/icon-shield.png",
+    icon: "/assets/icons/icon-shield.webp",
     title: "Aramco-grade standards",
     desc: "NexGen Build holds Saudi Aramco vendor approval #10119021 — attributed where it belongs.",
   },
   {
-    icon: "/assets/icons/icon-trophy.png",
+    icon: "/assets/icons/icon-trophy.webp",
     title: "SCA-certified fabrication",
     desc: "Edge Steel and Dammam Laser operate as SCA-certified contractors for Kingdom projects.",
   },
   {
-    icon: "/assets/icons/icon-group.png",
-    title: "Three companies, one group",
-    desc: "Construction, steel, and precision fab under permanent holding ownership — not a one-off JV.",
+    icon: "/assets/icons/icon-group.webp",
+    title: "Four companies, one group",
+    desc: "Construction, steel, precision fab, and on-site pipeline services under permanent holding ownership — not a one-off JV.",
   },
   {
-    icon: "/assets/icons/icon-footprint.png",
+    icon: "/assets/icons/icon-footprint.webp",
     title: "Kingdom footprint",
     desc: "Operations across Riyadh and the Eastern Province — Dammam, Jubail, and beyond.",
   },
@@ -35,23 +35,23 @@ const proofs = [
 const faqItems = [
   {
     q: "What does Zaims Holding own?",
-    a: "Three operating companies: NexGen Build (construction & building systems), Dammam Laser CNC (precision laser and CNC fabrication), and Edge Steel KSA (structural and architectural steel). Each runs day-to-day independently; the holding aligns capital, quality, and cross-company delivery.",
-    image: "/assets/images/values-complementary.jpg",
+    a: "Four operating companies: NexGen Build (construction & building systems), Dammam Laser CNC (precision laser and CNC fabrication), Edge Steel KSA (structural and architectural steel), and ProPipe (on-site industrial and pipeline services). Each runs day-to-day independently; the holding aligns capital, quality, and cross-company delivery.",
+    image: "/assets/images/values-complementary.webp",
   },
   {
     q: "Is Zaims a contractor or an investor?",
     a: "Both, in the industrial sense. We are operators who own complementary businesses for the long term — not a fund with a forced exit clock, and not a brokerage that auctions projects. Partners engage the group; work is delivered by the operating companies.",
-    image: "/assets/images/values-operator-mindset.jpg",
+    image: "/assets/images/values-operator-mindset.webp",
   },
   {
     q: "How do the companies work together?",
-    a: "They are designed as a chain: Edge for structural and architectural steel, Dammam Laser for precision components and panels, NexGen for construction and MEP systems. Shared ownership means coordination happens inside the group instead of across competing subcontractors.",
-    image: "/assets/images/values-standards.jpg",
+    a: "They are designed as a chain: Edge for structural and architectural steel, Dammam Laser for precision components and panels, NexGen for construction and MEP systems, and ProPipe for on-site leak sealing, bolting, and pipeline services. Shared ownership means coordination happens inside the group instead of across competing subcontractors.",
+    image: "/assets/images/values-standards.webp",
   },
   {
     q: "Who should get in touch?",
     a: "Investors and capital partners, strategic operators exploring collaboration, and media or institutional stakeholders. Project delivery conversations are routed to the relevant operating company — start at Contact and we'll connect you.",
-    image: "/assets/images/values-long-horizon.jpg",
+    image: "/assets/images/values-long-horizon.webp",
   },
 ];
 
@@ -65,14 +65,12 @@ export default function HomePage() {
       {/* Companies */}
       <section id="companies" className="bg-paper py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
-          <FadeIn>
-            <SectionHeading
-              eyebrow="Our Companies"
-              title="Operating companies we hold."
-              description="A focused industrial portfolio — not a sprawling conglomerate. Each company is built to stand alone and stronger together."
-            />
-          </FadeIn>
-          <Stagger className="mt-12 grid gap-5 md:grid-cols-3" delay={0.1}>
+          <SectionHeading
+            eyebrow="Our Companies"
+            title="Operating companies we hold."
+            description="A focused industrial portfolio — not a sprawling conglomerate. Each company is built to stand alone and stronger together."
+          />
+          <Stagger className="mt-12 grid gap-5 sm:grid-cols-2" delay={0.1}>
             {companies.map((c, i) => (
               <StaggerItem key={c.slug}>
                 <CompanyCard company={c} index={i} />
@@ -93,13 +91,11 @@ export default function HomePage() {
       {/* Sectors */}
       <section id="sectors" className="bg-surface py-20 md:py-28 border-y border-mono-20">
         <div className="mx-auto max-w-6xl px-6">
-          <FadeIn>
-            <SectionHeading
-              eyebrow="Sectors"
-              title="Where the group operates."
-              description="Four industrial lenses. One holding. Capabilities live inside the operating companies — the group sets direction and accountability."
-            />
-          </FadeIn>
+          <SectionHeading
+            eyebrow="Sectors"
+            title="Where the group operates."
+            description="Five industrial lenses. One holding. Capabilities live inside the operating companies — the group sets direction and accountability."
+          />
           <div className="mt-14 grid gap-10 md:grid-cols-2">
             {sectors.map((s, i) => (
               <Reveal key={s.title} delay={i * 0.08} direction={i % 2 === 0 ? "right" : "left"}>
@@ -138,19 +134,21 @@ export default function HomePage() {
       <section className="bg-paper py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-            <Reveal direction="right">
+            <div>
               <SectionHeading
                 eyebrow="Why this structure"
                 title="Integration is a holding strategy — not a slide in a pitch deck."
                 description="Fragmented ownership creates fragmented outcomes. Zaims exists so complementary industrial capabilities share capital, standards, and a long horizon."
               />
-              <Link
-                href="/why-zaims"
-                className="mt-8 inline-flex text-sm font-semibold text-brand-primary transition-colors hover:text-brand-yellow cursor-pointer"
-              >
-                Read the thesis →
-              </Link>
-            </Reveal>
+              <FadeIn className="mt-8">
+                <Link
+                  href="/why-zaims"
+                  className="inline-flex text-sm font-semibold text-brand-primary transition-colors hover:text-brand-yellow cursor-pointer"
+                >
+                  Read the thesis →
+                </Link>
+              </FadeIn>
+            </div>
             <Reveal direction="left" delay={0.1}>
               <div className="rounded-2xl border border-mono-20 bg-surface p-8 shadow-soft md:p-10">
                 <ul className="space-y-6">
@@ -175,13 +173,11 @@ export default function HomePage() {
       {/* Proof */}
       <section className="bg-surface py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
-          <FadeIn>
-            <SectionHeading
-              eyebrow="Track record"
-              title="Proof, attributed honestly."
-              description="We don't invent group-wide badges. Credentials belong to the operating companies that earned them."
-            />
-          </FadeIn>
+          <SectionHeading
+            eyebrow="Track record"
+            title="Proof, attributed honestly."
+            description="We don't invent group-wide badges. Credentials belong to the operating companies that earned them."
+          />
           <Stagger className="mt-12 grid gap-6 sm:grid-cols-2" delay={0.05}>
             {proofs.map((p) => (
               <StaggerItem key={p.title}>
@@ -216,13 +212,11 @@ export default function HomePage() {
       {/* FAQ */}
       <section className="bg-paper py-20 md:py-28">
         <div className="mx-auto max-w-4xl px-6">
-          <FadeIn>
-            <SectionHeading
-              eyebrow="Common questions"
-              title="What partners ask first."
-              align="center"
-            />
-          </FadeIn>
+          <SectionHeading
+            eyebrow="Common questions"
+            title="What partners ask first."
+            align="center"
+          />
           <FadeIn delay={0.08} className="mt-12">
             <FaqAccordion items={faqItems} />
           </FadeIn>

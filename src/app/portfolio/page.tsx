@@ -7,7 +7,7 @@ import { FadeIn, Stagger, StaggerItem } from "@/components/Motion";
 export const metadata: Metadata = {
   title: "Track Record",
   description:
-    "Selected work across Zaims Holding operating companies — attributed to NexGen Build, Dammam Laser CNC, and Edge Steel KSA.",
+    "Selected work across Zaims Holding operating companies — attributed to NexGen Build, Dammam Laser CNC, Edge Steel KSA, and ProPipe.",
 };
 
 const projects = [
@@ -42,6 +42,14 @@ const projects = [
     summary:
       "Dammam Laser CNC publishes fiber laser metal cutting, CO₂ laser cutting & engraving, advanced CNC routing, architectural metal works, and custom industrial parts from Al-Khodariya Industrial Area, Dammam — serving construction, oil & gas, automotive, aerospace, and interior design industries as an SCA-certified contractor.",
     source: "https://dammamlaser.com/",
+  },
+  {
+    name: "On-site leak sealing, bolting & pipeline services (Jubail)",
+    type: "Pipeline & on-site industrial",
+    companies: "ProPipe",
+    summary:
+      "ProPipe (Pro Pipe International Contracting Co., est. 2003) publishes online leak sealing, critical bolting, portable on-site machining, pipeline fabrication, welding, heat exchanger service, and related industrial maintenance from Jubail — supporting oil & gas and plant operations across KSA and the GCC without costly downtime.",
+    source: "https://propipeksa.com/",
   },
 ];
 

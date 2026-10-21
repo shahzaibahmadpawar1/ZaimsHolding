@@ -36,6 +36,13 @@ export const pageSections: Record<string, PageSection[]> = {
     { id: "services", label: "Services" },
     { id: "industries", label: "Industries" },
   ],
+  "/companies/pro-pipe": [
+    { id: "overview", label: "Overview" },
+    { id: "details", label: "Details" },
+    { id: "mission", label: "Mission" },
+    { id: "services", label: "Services" },
+    { id: "industries", label: "Industries" },
+  ],
   "/companies/edge-steel": [
     { id: "overview", label: "Overview" },
     { id: "details", label: "Details" },

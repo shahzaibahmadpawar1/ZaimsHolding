@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ChevronDown, Menu, X } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { navItems, type NavItem } from "@/lib/content";
 
 function linkIsActive(pathname: string, href: string) {
@@ -65,6 +65,7 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const menuId = useId();
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -86,6 +87,7 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
   const dropdownBorder = isLightBackground ? "rgba(26,69,112,0.1)" : "rgba(247,241,232,0.14)";
   const dropdownText = isLightBackground ? "#1A4570" : "#F7F1E8";
   const dropdownMuted = isLightBackground ? "#5a6d82" : "rgba(247,241,232,0.65)";
+  const navBackdrop = reduce ? "blur(8px) saturate(120%)" : "blur(12px) saturate(140%)";
 
   const clearCloseTimer = () => {
     if (closeTimer.current) {
@@ -121,7 +123,7 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
             : theme === "light"
               ? "rgba(247,241,232,0.78)"
               : "rgba(247,241,232,0.12)",
-          backdropFilter: "blur(24px) saturate(160%)",
+          backdropFilter: navBackdrop,
           boxShadow: scrolled ? "var(--shadow-nav)" : "none",
           border: scrolled
             ? "1px solid rgba(26,69,112,0.1)"
@@ -276,7 +278,11 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
       </motion.nav>
 
       {/* Mobile + tablet — keep pill fully inside the viewport */}
-      <div className="fixed top-3 left-1/2 z-50 box-border flex w-[calc(100%-1.5rem)] max-w-[calc(100vw-1.5rem)] -translate-x-1/2 items-center justify-between gap-2 overflow-hidden rounded-full border border-mono-20/80 bg-surface/90 px-3 py-2.5 shadow-soft backdrop-blur-xl sm:top-4 sm:w-[calc(100%-2rem)] sm:max-w-[calc(100vw-2rem)] sm:px-4 sm:py-3 lg:hidden">
+      <div
+        className={`fixed top-3 left-1/2 z-50 box-border flex w-[calc(100%-1.5rem)] max-w-[calc(100vw-1.5rem)] -translate-x-1/2 items-center justify-between gap-2 overflow-hidden rounded-full border border-mono-20/80 bg-surface/90 px-3 py-2.5 shadow-soft sm:top-4 sm:w-[calc(100%-2rem)] sm:max-w-[calc(100vw-2rem)] sm:px-4 sm:py-3 lg:hidden ${
+          reduce ? "backdrop-blur-sm" : "backdrop-blur-md"
+        }`}
+      >
         <Link
           href="/"
           className="flex min-w-0 flex-1 items-center overflow-hidden"

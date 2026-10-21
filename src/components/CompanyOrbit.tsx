@@ -12,27 +12,31 @@ const ease = [0.22, 1, 0.36, 1] as const;
  */
 export default function CompanyOrbit({ className = "" }: { className?: string }) {
   const reduce = useReducedMotion();
+  const simplify = Boolean(reduce);
   const positions = [
     { top: "8%", left: "58%", delay: 0.35 },
     { top: "42%", left: "78%", delay: 0.5 },
     { top: "72%", left: "48%", delay: 0.65 },
+    { top: "42%", left: "12%", delay: 0.8 },
   ];
 
   return (
     <div className={`relative mx-auto h-[380px] w-full max-w-md lg:h-[440px] lg:max-w-none ${className}`}>
       <motion.div
         className="absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-surface/15"
-        animate={reduce ? undefined : { rotate: 360 }}
+        animate={simplify ? undefined : { rotate: 360 }}
         transition={{ duration: 70, repeat: Infinity, ease: "linear" }}
       />
       <motion.div
         className="absolute left-1/2 top-1/2 h-[42%] w-[42%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-brand-yellow/30"
-        animate={reduce ? undefined : { rotate: -360 }}
+        animate={simplify ? undefined : { rotate: -360 }}
         transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
       />
 
       <motion.div
-        className="absolute left-1/2 top-1/2 z-10 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-surface/20 bg-surface/10 p-3 shadow-[0_0_40px_rgba(201,162,39,0.2)] backdrop-blur-md md:h-28 md:w-28 md:p-3.5"
+        className={`absolute left-1/2 top-1/2 z-10 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-surface/20 bg-surface/10 p-3 shadow-[0_0_40px_rgba(201,162,39,0.2)] md:h-28 md:w-28 md:p-3.5 ${
+          simplify ? "" : "backdrop-blur-md"
+        }`}
         initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.2, ease }}
@@ -57,12 +61,14 @@ export default function CompanyOrbit({ className = "" }: { className?: string })
           transition={{ duration: 0.7, delay: positions[i].delay, ease }}
         >
           <motion.div
-            animate={reduce ? undefined : { y: [0, i % 2 === 0 ? -12 : 10, 0] }}
+            animate={simplify ? undefined : { y: [0, i % 2 === 0 ? -12 : 10, 0] }}
             transition={{ duration: 5.5 + i, repeat: Infinity, ease: "easeInOut" }}
           >
             <Link
               href={`/companies/${c.slug}`}
-              className="group flex min-w-[10rem] -translate-x-1/2 flex-col rounded-2xl border border-surface/20 bg-surface/10 px-4 py-3 shadow-[0_12px_40px_rgba(0,0,0,0.35)] backdrop-blur-md transition-colors hover:border-brand-cyan/60 hover:bg-surface/15 cursor-pointer"
+              className={`group flex min-w-[10rem] -translate-x-1/2 flex-col rounded-2xl border border-surface/20 px-4 py-3 shadow-[0_12px_40px_rgba(0,0,0,0.35)] transition-colors hover:border-brand-cyan/60 hover:bg-surface/20 cursor-pointer ${
+                simplify ? "bg-surface/15" : "bg-surface/10 backdrop-blur-md"
+              }`}
             >
               <span className="text-[10px] font-semibold uppercase tracking-wider text-brand-yellow">
                 {String(i + 1).padStart(2, "0")}
@@ -74,7 +80,7 @@ export default function CompanyOrbit({ className = "" }: { className?: string })
         </motion.div>
       ))}
 
-      {!reduce && (
+      {!simplify && (
         <motion.div
           className="pointer-events-none absolute inset-x-[10%] top-0 z-0 h-px bg-linear-to-r from-transparent via-brand-yellow/50 to-transparent"
           animate={{ top: ["10%", "88%", "10%"] }}

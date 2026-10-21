@@ -1,12 +1,14 @@
+import Image from "next/image";
 import { FadeIn, Stagger, StaggerItem } from "@/components/Motion";
 import type { ProjectItem } from "@/lib/companyPages";
 
 export default function ProjectsShowcase({
-  categories,
   projects,
+  featuredImage = "/assets/images/edge/project-featured.jpg",
 }: {
-  categories: string[];
   projects: ProjectItem[];
+  /** Image for the featured project media panel */
+  featuredImage?: string;
 }) {
   const featured = projects.find((p) => p.featured) ?? projects[0];
   const rest = projects.filter((p) => p !== featured);
@@ -29,26 +31,19 @@ export default function ProjectsShowcase({
           </p>
         </FadeIn>
 
-        <div className="mt-8 flex flex-wrap gap-2 border-y border-mono-20 py-3">
-          {categories.map((cat, i) => (
-            <span
-              key={cat}
-              className={`company-mono text-xs uppercase tracking-wider ${
-                i === 0
-                  ? "border-b-2 border-brand-orange pb-0.5 font-bold text-mono-90"
-                  : "text-mono-55"
-              }`}
-            >
-              {cat}
-            </span>
-          ))}
-        </div>
-
         {featured ? (
           <FadeIn className="mt-10 overflow-hidden rounded-2xl border border-mono-20 bg-surface">
             <div className="grid md:grid-cols-2">
-              <div className="relative min-h-56 bg-mono-100 md:min-h-72">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_40%,rgba(232,96,26,0.35),transparent_55%)]" />
+              <div className="relative min-h-56 md:min-h-72">
+                <Image
+                  src={featuredImage}
+                  alt={featured.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  unoptimized
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-mono-100/70 via-transparent to-mono-100/20" />
                 <span className="absolute left-4 top-4 rounded bg-brand-orange px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-surface">
                   Featured project
                 </span>

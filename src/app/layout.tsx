@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     template: "%s | Zaims Holding",
   },
   description:
-    "Zaims Holding owns and operates complementary construction and fabrication companies across Saudi Arabia — NexGen Build, Dammam Laser CNC, and Edge Steel KSA.",
+    "Zaims Holding owns and operates complementary construction and fabrication companies across Saudi Arabia — NexGen Build, Dammam Laser CNC, Edge Steel KSA, and ProPipe.",
   icons: {
     icon: [{ url: "/assets/logos/favicon.png", type: "image/png" }],
     apple: [{ url: "/assets/logos/favicon.png", type: "image/png" }],

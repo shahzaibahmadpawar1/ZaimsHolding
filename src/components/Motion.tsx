@@ -3,9 +3,11 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import type { ReactNode } from "react";
 import { useRef } from "react";
+import { useClientMotionReady, useInViewFailsafe } from "@/lib/useInViewFailsafe";
 
 const ease = [0.22, 1, 0.36, 1] as const;
-const viewport = { once: true, margin: "-10% 0px -12% 0px", amount: 0.2 as const };
+/** Loose enough that sticky-hero cold loads still count as in-view. */
+const viewport = { once: true, margin: "0px 0px -8% 0px", amount: 0.05 as const };
 
 export function FadeIn({
   children,
@@ -23,16 +25,20 @@ export function FadeIn({
   duration?: number;
 }) {
   const reduce = useReducedMotion();
+  const ready = useClientMotionReady();
+  const { shown, onViewportEnter } = useInViewFailsafe();
 
-  if (reduce) {
+  // SSR + first paint: always visible (never opacity 0 in HTML)
+  if (reduce || !ready) {
     return <div className={className}>{children}</div>;
   }
 
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y, x, filter: "blur(6px)" }}
-      whileInView={{ opacity: 1, y: 0, x: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 1, y, x }}
+      animate={shown ? { opacity: 1, y: 0, x: 0 } : { opacity: 1, y, x }}
+      onViewportEnter={onViewportEnter}
       viewport={viewport}
       transition={{ duration, delay, ease }}
     >
@@ -53,7 +59,8 @@ export function Reveal({
   direction?: "up" | "down" | "left" | "right" | "scale";
 }) {
   const reduce = useReducedMotion();
-  if (reduce) return <div className={className}>{children}</div>;
+  const ready = useClientMotionReady();
+  const { shown, onViewportEnter } = useInViewFailsafe();
 
   const offset =
     direction === "up"
@@ -68,11 +75,20 @@ export function Reveal({
 
   const scale = direction === "scale" ? 0.92 : 1;
 
+  if (reduce || !ready) {
+    return <div className={className}>{children}</div>;
+  }
+
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, ...offset, scale, filter: "blur(8px)" }}
-      whileInView={{ opacity: 1, y: 0, x: 0, scale: 1, filter: "blur(0px)" }}
+      initial={{ opacity: 1, ...offset, scale }}
+      animate={
+        shown
+          ? { opacity: 1, y: 0, x: 0, scale: 1 }
+          : { opacity: 1, ...offset, scale }
+      }
+      onViewportEnter={onViewportEnter}
       viewport={viewport}
       transition={{ duration: 0.75, delay, ease }}
     >
@@ -109,13 +125,19 @@ export function Stagger({
   stagger?: number;
 }) {
   const reduce = useReducedMotion();
-  if (reduce) return <div className={className}>{children}</div>;
+  const ready = useClientMotionReady();
+  const { shown, onViewportEnter } = useInViewFailsafe();
+
+  if (reduce || !ready) {
+    return <div className={className}>{children}</div>;
+  }
 
   return (
     <motion.div
       className={className}
       initial="hidden"
-      whileInView="show"
+      animate={shown ? "show" : "hidden"}
+      onViewportEnter={onViewportEnter}
       viewport={viewport}
       variants={{
         hidden: {},
@@ -138,11 +160,10 @@ export function StaggerItem({
     <motion.div
       className={className}
       variants={{
-        hidden: { opacity: 0, y: 28, filter: "blur(6px)" },
+        hidden: { opacity: 1, y: 28 },
         show: {
           opacity: 1,
           y: 0,
-          filter: "blur(0px)",
           transition: { duration: 0.6, ease },
         },
       }}
@@ -159,7 +180,7 @@ export function HeroMotion({ children, className = "" }: { children: ReactNode; 
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 28 }}
+      initial={{ opacity: 1, y: 28 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease }}
     >
@@ -183,9 +204,11 @@ export function TextReveal({
   inView?: boolean;
 }) {
   const reduce = useReducedMotion();
+  const ready = useClientMotionReady();
+  const { shown, onViewportEnter } = useInViewFailsafe();
   const words = text.split(" ");
 
-  if (reduce) {
+  if (reduce || !ready) {
     return <Tag className={className}>{text}</Tag>;
   }
 
@@ -198,11 +221,12 @@ export function TextReveal({
         >
           <motion.span
             className="inline-block"
-            initial={{ y: "110%", opacity: 0 }}
+            initial={{ y: "110%", opacity: 1 }}
             {...(inView
               ? {
-                  whileInView: { y: 0, opacity: 1 },
-                  viewport: { once: true, margin: "-40px" },
+                  animate: shown ? { y: 0, opacity: 1 } : { y: "110%", opacity: 1 },
+                  onViewportEnter,
+                  viewport: { once: true, margin: "0px 0px -8% 0px", amount: 0.05 },
                 }
               : {
                   animate: { y: 0, opacity: 1 },
@@ -273,14 +297,16 @@ export function HoverLift({
 /** Decorative line that draws in as it enters the viewport */
 export function DrawLine({ className = "", delay = 0 }: { className?: string; delay?: number }) {
   const reduce = useReducedMotion();
+  const { shown, onViewportEnter } = useInViewFailsafe();
   if (reduce) return <div className={`h-px bg-mono-20 ${className}`} />;
 
   return (
     <motion.div
       className={`h-px origin-left bg-brand-accent/40 ${className}`}
       initial={{ scaleX: 0 }}
-      whileInView={{ scaleX: 1 }}
-      viewport={{ once: true, margin: "-40px" }}
+      animate={{ scaleX: shown ? 1 : 0 }}
+      onViewportEnter={onViewportEnter}
+      viewport={{ once: true, margin: "0px 0px -8% 0px", amount: 0.05 }}
       transition={{ duration: 0.8, delay, ease }}
     />
   );

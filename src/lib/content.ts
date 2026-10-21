@@ -1,4 +1,4 @@
-export type CompanySlug = "nexgen-build" | "dammam-laser" | "edge-steel";
+export type CompanySlug = "nexgen-build" | "dammam-laser" | "edge-steel" | "pro-pipe";
 
 /** Visual identity pulled from each operating company's public site. */
 export type CompanyBrand = {
@@ -53,7 +53,7 @@ export type LeadershipPerson = {
 /**
  * Leadership profiles for the group and operating companies.
  * NexGen names are as published on nxgens.com/about.
- * Dammam Laser CNC does not list named executives on its public About page.
+ * Dammam Laser CNC and ProPipe do not list named executives on their public About pages.
  */
 export const leadership: LeadershipPerson[] = [
   {
@@ -90,54 +90,6 @@ export const leadership: LeadershipPerson[] = [
 ];
 
 export const companies: Company[] = [
-  {
-    slug: "nexgen-build",
-    name: "NexGen Build",
-    shortName: "NexGen",
-    tagline: "Complete construction & fabrication for Saudi Arabia",
-    role: "Construction & MEP systems",
-    location: "Dammam & Jubail, Eastern Province",
-    address: "Dammam, Saudi Arabia (Jubail facilities)",
-    description:
-      "End-to-end construction, industrial fabrication, and maintenance from foundation to finish. Six integrated divisions under one roof — general construction, electrical, HVAC, sanitary & plumbing, waterproofing & coatings, and fire protection — with Saudi Aramco vendor approval and Vision 2030–aligned delivery.",
-    capabilities: [
-      "General construction & civil works",
-      "Electrical systems",
-      "HVAC systems",
-      "Sanitary & plumbing",
-      "Waterproofing & coatings",
-      "Fire protection systems",
-      "Fiber laser & CNC fabrication (Dammam & Jubail workshops)",
-      "AWS-certified welding (TIG, MIG, SMAW)",
-    ],
-    credentials: [
-      "Saudi Aramco Approved Vendor #10119021",
-      "Saudi Energy Registered Supplier (SAP Ariba)",
-      "ISO 9001:2015 Certified",
-      "AWS Certified Welding Processes",
-    ],
-    highlights: [
-      "Six specialized service divisions, one contractor",
-      "Workshop facilities in Dammam and Jubail",
-      "<8% weld rejection rate (as published by NexGen)",
-      "CNC precision within ±0.05mm tolerances (workshop capability)",
-    ],
-    email: "contact@Nxgens.com",
-    phone: "+966-555-123-456",
-    website: "https://nxgens.com/",
-    accent: "bg-surface",
-    brand: {
-      logo: "/assets/logos/logo.png",
-      logoWidth: 220,
-      logoHeight: 78,
-      primary: "#0f2744",
-      accent: "#c9a227",
-      surface: "#f7f1e8",
-      heroFrom: "#0a1a2e",
-      heroTo: "#0f2744",
-      themeClass: "theme-nexgen",
-    },
-  },
   {
     slug: "dammam-laser",
     name: "Dammam Laser CNC",
@@ -213,6 +165,8 @@ export const companies: Company[] = [
       "SAPCQ",
       "Tarshid Energy",
     ],
+    email: "info@edgesteelksa.com",
+    phone: "+966 57 610 6246",
     website: "https://edgesteelksa.com/en",
     accent: "bg-surface",
     brand: {
@@ -227,6 +181,110 @@ export const companies: Company[] = [
       themeClass: "theme-edge",
     },
   },
+  {
+    slug: "nexgen-build",
+    name: "NexGen Build",
+    shortName: "NexGen",
+    tagline: "Complete construction & fabrication for Saudi Arabia",
+    role: "Construction & MEP systems",
+    location: "Dammam & Jubail, Eastern Province",
+    address: "Dammam, Saudi Arabia (Jubail facilities)",
+    description:
+      "End-to-end construction, industrial fabrication, and maintenance from foundation to finish. Six integrated divisions under one roof — general construction, electrical, HVAC, sanitary & plumbing, waterproofing & coatings, and fire protection — with Saudi Aramco vendor approval and Vision 2030–aligned delivery.",
+    capabilities: [
+      "General construction & civil works",
+      "Electrical systems",
+      "HVAC systems",
+      "Sanitary & plumbing",
+      "Waterproofing & coatings",
+      "Fire protection systems",
+      "Fiber laser & CNC fabrication (Dammam & Jubail workshops)",
+      "AWS-certified welding (TIG, MIG, SMAW)",
+    ],
+    credentials: [
+      "Saudi Aramco Approved Vendor #10119021",
+      "Saudi Energy Registered Supplier (SAP Ariba)",
+      "ISO 9001:2015 Certified",
+      "AWS Certified Welding Processes",
+    ],
+    highlights: [
+      "Six specialized service divisions, one contractor",
+      "Workshop facilities in Dammam and Jubail",
+      "<8% weld rejection rate (as published by NexGen)",
+      "CNC precision within ±0.05mm tolerances (workshop capability)",
+    ],
+    email: "contact@Nxgens.com",
+    phone: "+966 53 416 9741",
+    website: "https://nxgens.com/",
+    accent: "bg-surface",
+    brand: {
+      logo: "/assets/logos/logo.png",
+      logoWidth: 220,
+      logoHeight: 78,
+      primary: "#0f2744",
+      accent: "#c9a227",
+      surface: "#f7f1e8",
+      heroFrom: "#0a1a2e",
+      heroTo: "#0f2744",
+      themeClass: "theme-nexgen",
+    },
+  },
+  {
+    slug: "pro-pipe",
+    name: "ProPipe",
+    shortName: "ProPipe",
+    tagline: "Online leak sealing, bolting & on-site machining",
+    role: "On-site industrial & pipeline services",
+    location: "Jubail, KSA",
+    address: "Jubail, Saudi Arabia",
+    founded: "2003",
+    description:
+      "Established in 2003 as Pro Pipe International Contracting Co., ProPipe delivers on-site engineering for oil & gas and industrial plants across Saudi Arabia and the GCC — online leak sealing, critical bolting, portable machining, pipeline fabrication, welding, heat exchanger service, and related industrial maintenance that keeps operations running without costly downtime.",
+    capabilities: [
+      "Online leak sealing & critical bolting",
+      "Hydraulic torque wrenches, bolt tensioners & flange spreaders",
+      "On-site machining (OD-mounted pipe cutting & beveling)",
+      "Pipeline fabrication & mechanical general contracting",
+      "Metal fabrication & engineering",
+      "Welding (FCAW, SMAW, and related processes)",
+      "Heat exchanger maintenance & repair",
+      "CNC & manual machining",
+      "Erection & installation (including PEB)",
+      "Water & sewage plant maintenance",
+      "CNC laser cutting",
+      "Car parking shade fabrication & installation",
+    ],
+    credentials: [],
+    highlights: [
+      "Founded 2003 — 20+ years of industrial expertise (as published)",
+      "24/7 on-site response across KSA & GCC",
+      "Portable precision machining for live plant environments",
+      "Leak sealing & critical bolting for oil, gas, power & petrochemical",
+    ],
+    clients: [
+      "Saudi Aramco",
+      "NEOM",
+      "S-Chem",
+      "Sadara",
+      "SAMREF",
+      "SATORP",
+    ],
+    email: "sales@propipeksa.com",
+    phone: "+966534169741",
+    website: "https://propipeksa.com/",
+    accent: "bg-surface",
+    brand: {
+      logo: "/assets/logos/pro-pipe.png",
+      logoWidth: 160,
+      logoHeight: 47,
+      primary: "#296EB5",
+      accent: "#296EB5",
+      surface: "#f0f5fa",
+      heroFrom: "#0a1a2e",
+      heroTo: "#1a3a5c",
+      themeClass: "theme-propipe",
+    },
+  },
 ];
 
 export function getCompany(slug: string): Company | undefined {
@@ -239,28 +297,35 @@ export const sectors = [
     description:
       "Turnkey structural and civil delivery through NexGen Build — from foundations to handover on industrial and commercial sites.",
     company: "NexGen Build",
-    icon: "/assets/icons/icon-construction.png",
+    icon: "/assets/icons/icon-construction.webp",
   },
   {
     title: "Steel Fabrication",
     description:
       "Heavy structural members, architectural panels, and weld assemblies through Edge Steel KSA — built for demanding Saudi projects.",
     company: "Edge Steel KSA",
-    icon: "/assets/icons/icon-steel.png",
+    icon: "/assets/icons/icon-steel.webp",
   },
   {
     title: "Precision Manufacturing",
     description:
       "Laser and CNC fabrication through Dammam Laser CNC — tight-tolerance components and decorative metalwork.",
     company: "Dammam Laser CNC",
-    icon: "/assets/icons/icon-precision.png",
+    icon: "/assets/icons/icon-precision.webp",
   },
   {
     title: "Industrial Systems",
     description:
       "Electrical, HVAC, plumbing, waterproofing, and fire protection — integrated under NexGen so systems and structure stay coordinated.",
     company: "NexGen Build",
-    icon: "/assets/icons/icon-systems.png",
+    icon: "/assets/icons/icon-systems.webp",
+  },
+  {
+    title: "Pipeline & On-Site Services",
+    description:
+      "Online leak sealing, critical bolting, portable machining, and pipeline services through ProPipe — keeping industrial plants running without costly downtime.",
+    company: "ProPipe",
+    icon: "/assets/icons/icon-systems.webp",
   },
 ];
 
@@ -287,11 +352,6 @@ export const navItems: NavItem[] = [
     href: "/companies",
     children: [
       {
-        label: "NexGen Build",
-        href: "/companies/nexgen-build",
-        description: "Construction & MEP systems",
-      },
-      {
         label: "Dammam Laser CNC",
         href: "/companies/dammam-laser",
         description: "Precision laser & CNC fabrication",
@@ -300,6 +360,16 @@ export const navItems: NavItem[] = [
         label: "Edge Steel KSA",
         href: "/companies/edge-steel",
         description: "Structural & architectural steel",
+      },
+      {
+        label: "NexGen Build",
+        href: "/companies/nexgen-build",
+        description: "Construction & MEP systems",
+      },
+      {
+        label: "ProPipe",
+        href: "/companies/pro-pipe",
+        description: "On-site industrial & pipeline services",
       },
     ],
   },
@@ -341,21 +411,33 @@ export const navItems: NavItem[] = [
 /** @deprecated Use navItems — kept for any residual imports */
 export const navLinks = navItems.map(({ label, href }) => ({ label, href }));
 
+/** Public path for the downloadable holding company profile PDF. */
+export const COMPANY_PROFILE_PDF = "/Zaims-Holding-Company-Profile.pdf";
+
+export type FooterLink = {
+  label: string;
+  href: string;
+  /** When true, render as a file download instead of an in-app route. */
+  download?: boolean;
+};
+
 export const footerLinks = {
   company: [
     { label: "About", href: "/about" },
     { label: "Why Zaims", href: "/why-zaims" },
     { label: "Comparison", href: "/comparison" },
-  ],
-  portfolio: [
-    { label: "Our Companies", href: "/companies" },
     { label: "Track Record", href: "/portfolio" },
-    { label: "Sectors", href: "/sectors" },
-  ],
+  ] satisfies FooterLink[],
+  portfolio: [
+    { label: "Dammam Laser", href: "/companies/dammam-laser" },
+    { label: "Edge Steel", href: "/companies/edge-steel" },
+    { label: "NexGen", href: "/companies/nexgen-build" },
+    { label: "ProPipe", href: "/companies/pro-pipe" },
+  ] satisfies FooterLink[],
   /** Renamed from "stakeholders" — /stakeholders redirects to /investors; avoid duplicate naming. */
   connect: [
-    { label: "Investors", href: "/investors" },
+    { label: "Investor", href: "/investors" },
     { label: "News", href: "/news" },
     { label: "Contact", href: "/contact" },
-  ],
+  ] satisfies FooterLink[],
 };

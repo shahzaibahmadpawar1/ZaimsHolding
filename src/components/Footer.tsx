@@ -2,18 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { companies, footerLinks } from "@/lib/content";
+import { FileDown } from "lucide-react";
+import { footerLinks, COMPANY_PROFILE_PDF } from "@/lib/content";
 import { FadeIn, Stagger, StaggerItem } from "@/components/Motion";
 
 const headingClass =
   "text-sm font-bold uppercase tracking-wider text-brand-cyan";
 
+const linkClass =
+  "cursor-pointer text-sm text-mono-70 transition-colors hover:text-brand-yellow";
+
 export default function Footer() {
   const year = new Date().getFullYear();
-  const portfolioLinks = [
-    ...footerLinks.portfolio,
-    ...companies.map((c) => ({ href: `/companies/${c.slug}`, label: c.shortName })),
-  ];
 
   return (
     <footer className="border-t border-mono-20 bg-surface">
@@ -35,10 +35,18 @@ export default function Footer() {
                 An industrial holding company that owns and operates complementary construction and
                 fabrication businesses across Saudi Arabia.
               </p>
+              <a
+                href={COMPANY_PROFILE_PDF}
+                download
+                className="mt-4 inline-flex cursor-pointer items-center gap-2 rounded-full bg-brand-yellow px-4 py-2.5 text-sm font-semibold text-brand-primary shadow-sm transition-opacity hover:opacity-90"
+              >
+                <FileDown className="h-4 w-4" aria-hidden />
+                Download company profile
+              </a>
             </div>
 
             <Stagger
-              className="md:col-span-8 grid grid-cols-2 gap-x-8 gap-y-5 sm:flex sm:flex-nowrap sm:justify-end sm:gap-10"
+              className="md:col-span-8 grid grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-3 sm:justify-end sm:gap-10"
               delay={0.08}
             >
               <StaggerItem className="sm:shrink-0">
@@ -46,10 +54,7 @@ export default function Footer() {
                 <ul className="mt-2 space-y-1">
                   {footerLinks.company.map((l) => (
                     <li key={l.href}>
-                      <Link
-                        href={l.href}
-                        className="text-sm text-mono-70 transition-colors hover:text-brand-yellow cursor-pointer"
-                      >
+                      <Link href={l.href} className={linkClass}>
                         {l.label}
                       </Link>
                     </li>
@@ -57,14 +62,11 @@ export default function Footer() {
                 </ul>
               </StaggerItem>
               <StaggerItem className="sm:shrink-0">
-                <p className={`${headingClass} text-center`}>Portfolio</p>
-                <ul className="mt-2 grid grid-cols-2 gap-x-5 gap-y-1">
-                  {portfolioLinks.map((l) => (
+                <p className={headingClass}>Portfolio</p>
+                <ul className="mt-2 space-y-1">
+                  {footerLinks.portfolio.map((l) => (
                     <li key={l.href}>
-                      <Link
-                        href={l.href}
-                        className="text-sm text-mono-70 transition-colors hover:text-brand-yellow cursor-pointer"
-                      >
+                      <Link href={l.href} className={linkClass}>
                         {l.label}
                       </Link>
                     </li>
@@ -76,10 +78,7 @@ export default function Footer() {
                 <ul className="mt-2 space-y-1">
                   {footerLinks.connect.map((l) => (
                     <li key={l.href}>
-                      <Link
-                        href={l.href}
-                        className="cursor-pointer text-sm text-mono-70 transition-colors hover:text-brand-yellow"
-                      >
+                      <Link href={l.href} className={linkClass}>
                         {l.label}
                       </Link>
                     </li>

@@ -4,7 +4,7 @@ import PageHero from "@/components/PageHero";
 import SectionHeading from "@/components/SectionHeading";
 import ClosingCTA from "@/components/ClosingCTA";
 import ValuesScrollGallery from "@/components/ValuesScrollGallery";
-import { FadeIn, Reveal, Stagger, StaggerItem } from "@/components/Motion";
+import { Reveal, Stagger, StaggerItem } from "@/components/Motion";
 import { companies, leadership } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -17,22 +17,22 @@ const values = [
   {
     title: "Operator mindset",
     desc: "We are not distant capital. We understand fabrication floors, site logistics, and what permanent ownership demands.",
-    image: "/assets/images/values-operator-mindset.jpg",
+    image: "/assets/images/values-operator-mindset.webp",
   },
   {
     title: "Complementary by design",
     desc: "Companies are chosen because they fit an industrial chain — steel, precision fab, construction systems — not because a thesis needed a logo.",
-    image: "/assets/images/values-complementary.jpg",
+    image: "/assets/images/values-complementary.webp",
   },
   {
     title: "Standards that travel",
     desc: "Quality discipline matters more than slogans. Credentials stay with the company that earned them; the group insists they are real.",
-    image: "/assets/images/values-standards.jpg",
+    image: "/assets/images/values-standards.webp",
   },
   {
     title: "Long horizon",
     desc: "No forced flip clock. Holding structure exists so operators can plan beyond a fund vintage.",
-    image: "/assets/images/values-long-horizon.jpg",
+    image: "/assets/images/values-long-horizon.webp",
   },
 ];
 
@@ -47,9 +47,9 @@ export default function AboutPage() {
 
       <section id="story" className="bg-surface py-16 md:py-24">
         <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-12">
-          <Reveal direction="right" className="lg:col-span-4">
+          <div className="lg:col-span-4">
             <SectionHeading eyebrow="Our story" title="From fragmentation to a coherent group." />
-          </Reveal>
+          </div>
           <Reveal
             direction="left"
             delay={0.08}
@@ -64,9 +64,11 @@ export default function AboutPage() {
               Zaims was formed to hold businesses that belong together:{" "}
               <strong className="font-semibold text-brand-yellow">NexGen Build</strong> for construction and
               MEP, <strong className="font-semibold text-brand-yellow">Edge Steel KSA</strong> for structural
-              and architectural steel, and{" "}
+              and architectural steel,{" "}
               <strong className="font-semibold text-brand-yellow">Dammam Laser CNC</strong> for precision
-              fabrication. Each company keeps its operating identity. The holding keeps the long view.
+              fabrication, and{" "}
+              <strong className="font-semibold text-brand-yellow">ProPipe</strong> for on-site industrial and
+              pipeline services. Each company keeps its operating identity. The holding keeps the long view.
             </p>
             <p>
               We are operators and owners — not a pure financial sponsor, and not a general contractor
@@ -83,13 +85,11 @@ export default function AboutPage() {
 
       <section id="leadership" className="bg-surface py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <FadeIn>
-            <SectionHeading
-              eyebrow="Leadership"
-              title="People published by our operating companies."
-              description="Operating leadership includes Adil Tasawar (Founder & Managing Director, Edge Steel KSA) and NexGen Build leaders as published on nxgens.com. Dammam Laser CNC does not list named executives on its public site — contact that company directly for operating inquiries."
-            />
-          </FadeIn>
+          <SectionHeading
+            eyebrow="Leadership"
+            title="People published by our operating companies."
+            description="Operating leadership includes Adil Tasawar (Founder & Managing Director, Edge Steel KSA) and NexGen Build leaders as published on nxgens.com. Dammam Laser CNC and ProPipe do not list named executives on their public sites — contact those companies directly for operating inquiries."
+          />
           <Stagger className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {leadership.map((person) => (
               <StaggerItem key={person.name}>
@@ -140,6 +140,22 @@ export default function AboutPage() {
             >
               info@dammamlaser.com
             </a>
+            . For ProPipe:{" "}
+            <a
+              href="https://propipeksa.com/about/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-brand-primary underline underline-offset-4 hover:text-brand-yellow"
+            >
+              propipeksa.com/about
+            </a>
+            {" · "}
+            <a
+              href="mailto:sales@propipeksa.com"
+              className="font-medium text-brand-primary underline underline-offset-4 hover:text-brand-yellow"
+            >
+              sales@propipeksa.com
+            </a>
             .
           </p>
         </div>
@@ -147,13 +163,11 @@ export default function AboutPage() {
 
       <section id="footprint" className="border-t border-mono-20 bg-paper py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <FadeIn>
-            <SectionHeading
-              eyebrow="Footprint"
-              title="Where the group operates."
-              description="Operating companies span Riyadh and the Eastern Province — with facilities and project reach across Saudi Arabia."
-            />
-          </FadeIn>
+          <SectionHeading
+            eyebrow="Footprint"
+            title="Where the group operates."
+            description="Operating companies span Riyadh and the Eastern Province — with facilities and project reach across Saudi Arabia."
+          />
           <ul className="mt-10 space-y-4">
             {companies.map((c) => (
               <li

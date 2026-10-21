@@ -125,22 +125,24 @@ export default async function CompanyDetailPage({ params }: Props) {
               </ul>
             </FadeIn>
 
-            <FadeIn>
-              <h2 className="company-display text-2xl font-bold text-mono-90 mb-6">Credentials</h2>
-              <ul className="space-y-3">
-                {company.credentials.map((cred) => (
-                  <li
-                    key={cred}
-                    className="company-body border-l-2 border-brand-yellow pl-4 text-[15px] text-mono-70"
-                  >
-                    {cred}
-                  </li>
-                ))}
-              </ul>
-              <p className="company-body mt-4 text-sm text-mono-55">
-                Credentials are those of {company.name}, not automatically of the wider group.
-              </p>
-            </FadeIn>
+            {company.credentials.length > 0 ? (
+              <FadeIn>
+                <h2 className="company-display text-2xl font-bold text-mono-90 mb-6">Credentials</h2>
+                <ul className="space-y-3">
+                  {company.credentials.map((cred) => (
+                    <li
+                      key={cred}
+                      className="company-body border-l-2 border-brand-yellow pl-4 text-[15px] text-mono-70"
+                    >
+                      {cred}
+                    </li>
+                  ))}
+                </ul>
+                <p className="company-body mt-4 text-sm text-mono-55">
+                  Credentials are those of {company.name}, not automatically of the wider group.
+                </p>
+              </FadeIn>
+            ) : null}
 
             {company.highlights && company.highlights.length > 0 ? (
               <FadeIn>
@@ -200,10 +202,7 @@ export default async function CompanyDetailPage({ params }: Props) {
             partners={extras.data.partners}
             stats={extras.data.partnerStats}
           />
-          <ProjectsShowcase
-            categories={extras.data.projectCategories}
-            projects={extras.data.projects}
-          />
+          <ProjectsShowcase projects={extras.data.projects} />
           <CompanyTimeline
             items={extras.data.milestones}
             eyebrow="Timeline"
@@ -214,7 +213,28 @@ export default async function CompanyDetailPage({ params }: Props) {
 
       {extras.kind === "dammam" ? (
         <>
-          <MissionBlock mission={extras.data.mission} />
+          <MissionBlock
+            mission={extras.data.mission}
+            media={{
+              type: "image",
+              src: "/assets/images/photo-1504917595217-d4dc5ebe6122.avif",
+              alt: "Precision laser and CNC fabrication",
+            }}
+            badge={{ title: "SCA", subtitle: "Certified contractor" }}
+          />
+          <ServicesIndustries
+            services={extras.data.services}
+            industries={extras.data.industries}
+          />
+        </>
+      ) : null}
+
+      {extras.kind === "propipe" ? (
+        <>
+          <MissionBlock
+            mission={extras.data.mission}
+            media={{ type: "video", src: "/assets/images/abc-video.mp4" }}
+          />
           <ServicesIndustries
             services={extras.data.services}
             industries={extras.data.industries}
@@ -227,7 +247,7 @@ export default async function CompanyDetailPage({ params }: Props) {
           <FadeIn>
             <h2 className="mb-8 font-display text-2xl font-bold text-mono-90">Also in the group</h2>
           </FadeIn>
-          <Stagger className="grid gap-4 md:grid-cols-2">
+          <Stagger className="grid gap-4 md:grid-cols-3">
             {others.map((c) => (
               <StaggerItem key={c.slug}>
                 <Link

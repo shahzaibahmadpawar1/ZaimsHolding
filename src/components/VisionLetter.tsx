@@ -87,7 +87,7 @@ export default function VisionLetter() {
                   company that does none of it.
                 </p>
 
-                <p>Today, Zaims holds three complementary operating companies:</p>
+                <p>Today, Zaims holds four complementary operating companies:</p>
 
                 <ul className="space-y-2.5">
                   {companies.map((c) => (

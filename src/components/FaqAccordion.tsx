@@ -99,17 +99,9 @@ export default function FaqAccordion({ items }: { items: FaqItem[] }) {
                   {isActive ? (
                     <motion.div
                       key="body"
-                      initial={
-                        reduce
-                          ? false
-                          : { height: 0, opacity: 0, filter: "blur(4px)" }
-                      }
-                      animate={{ height: "auto", opacity: 1, filter: "blur(0px)" }}
-                      exit={
-                        reduce
-                          ? undefined
-                          : { height: 0, opacity: 0, filter: "blur(4px)" }
-                      }
+                      initial={reduce ? false : { height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={reduce ? undefined : { height: 0, opacity: 0 }}
                       transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                       className="overflow-hidden"
                     >

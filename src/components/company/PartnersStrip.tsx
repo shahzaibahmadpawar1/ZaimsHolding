@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { FadeIn, Stagger, StaggerItem } from "@/components/Motion";
 import type { PartnerStat } from "@/lib/companyPages";
 
@@ -7,7 +8,7 @@ export default function PartnersStrip({
   stats,
 }: {
   intro: string;
-  partners: string[];
+  partners: { name: string; logo: string }[];
   stats: PartnerStat[];
 }) {
   return (
@@ -35,14 +36,21 @@ export default function PartnersStrip({
         </FadeIn>
 
         <Stagger className="mt-10 grid grid-cols-2 border border-white/10 sm:grid-cols-4">
-          {partners.map((name) => (
-            <StaggerItem key={name}>
-              <div className="flex min-h-28 flex-col items-center justify-center border border-white/10 px-3 py-6 text-center">
-                <p className="company-display text-sm font-bold uppercase tracking-wide text-surface/90">
-                  {name}
-                </p>
-                <p className="company-mono mt-2 text-[10px] uppercase tracking-wider text-surface/45">
-                  Partner
+          {partners.map((partner) => (
+            <StaggerItem key={partner.name}>
+              <div className="group flex min-h-44 flex-col items-center justify-center gap-3 border border-white/10 bg-surface px-4 py-6 text-center">
+                <div className="relative flex h-32 w-full items-center justify-center">
+                  <Image
+                    src={partner.logo}
+                    alt={partner.name}
+                    width={320}
+                    height={128}
+                    className="h-28 w-auto max-w-[90%] object-contain grayscale transition duration-300 group-hover:grayscale-0"
+                    unoptimized
+                  />
+                </div>
+                <p className="company-mono text-[10px] uppercase tracking-wider text-mono-55">
+                  {partner.name}
                 </p>
               </div>
             </StaggerItem>

@@ -1,33 +1,37 @@
-  "use client";
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionValue,
   useReducedMotion,
-  useScroll,
   useSpring,
   useTransform,
   type MotionValue,
 } from "motion/react";
+import {
+  useScrubFailureFallback,
+  useSectionScrollProgress,
+} from "@/lib/useSectionScrollProgress";
 
 /**
  * Scroll hero inspired by Framer MokuHero:
  * https://www.framer.com/marketplace/components/mokuhero/
  *
- * Start: 1.png is full-bleed. On scroll it insets into a rounded card while
- * 2–5.jpg settle into a tight asymmetric grid around it.
+ * Start: 1.webp is full-bleed. On scroll it insets into a rounded card while
+ * 2–5.webp settle into a tight asymmetric grid around it.
  */
 
-const CENTER = "/assets/images/1.png";
+const CENTER = "/assets/images/1.webp";
 const GAP = "0.5rem";
+const ease = [0.22, 1, 0.36, 1] as const;
 
 /** Settled satellites — % of viewport; paired with responsive center inset */
 const SATELLITES = [
   {
-    src: "/assets/images/2.jpg",
+    src: "/assets/images/2.webp",
     alt: "Precision welding on site",
     className:
       "left-[max(0.5rem,calc(50%-var(--hero-center-half)-var(--hero-gap)-var(--hero-side-w)))] top-[calc(50%-40%)] h-[39%] w-[var(--hero-side-w)]",
@@ -35,7 +39,7 @@ const SATELLITES = [
     to: { x: 0, y: 0, rotate: -1 },
   },
   {
-    src: "/assets/images/3.jpg",
+    src: "/assets/images/3.webp",
     alt: "Heavy fabrication work",
     className:
       "right-[max(0.5rem,calc(50%-var(--hero-center-half)-var(--hero-gap)-var(--hero-side-w)))] top-[calc(50%-40%)] h-[39%] w-[var(--hero-side-w)]",
@@ -43,7 +47,7 @@ const SATELLITES = [
     to: { x: 0, y: 0, rotate: 1 },
   },
   {
-    src: "/assets/images/4.jpg",
+    src: "/assets/images/4.webp",
     alt: "Industrial plant structure",
     className:
       "left-[max(0.5rem,calc(50%-var(--hero-center-half)-var(--hero-gap)-var(--hero-side-w)))] bottom-[calc(50%-40%)] h-[39%] w-[var(--hero-side-w)]",
@@ -51,7 +55,7 @@ const SATELLITES = [
     to: { x: 0, y: 0, rotate: 0.75 },
   },
   {
-    src: "/assets/images/5.jpg",
+    src: "/assets/images/5.webp",
     alt: "Kingdom industrial operations",
     className:
       "right-[max(0.5rem,calc(50%-var(--hero-center-half)-var(--hero-gap)-var(--hero-side-w)))] bottom-[calc(50%-40%)] h-[39%] w-[var(--hero-side-w)]",
@@ -73,14 +77,12 @@ function useHeroLayout() {
     const update = () => {
       const w = window.innerWidth;
       if (w < 480) {
-        // Narrow phones — tighter center, visible side tiles
         setLayout({ showSides: true, insetX: 27, sideW: "23%", centerHalf: "23%" });
       } else if (w < 768) {
         setLayout({ showSides: true, insetX: 25, sideW: "22%", centerHalf: "25%" });
       } else if (w < 1024) {
         setLayout({ showSides: true, insetX: 24, sideW: "21%", centerHalf: "26%" });
       } else if (w < 1280) {
-        // 14" / small laptop
         setLayout({ showSides: true, insetX: 26, sideW: "22%", centerHalf: "24%" });
       } else if (w < 1536) {
         setLayout({ showSides: true, insetX: 24, sideW: "20%", centerHalf: "26%" });
@@ -173,7 +175,48 @@ function Satellite({
       className={`absolute z-[1] overflow-hidden shadow-[0_16px_40px_rgba(11,18,32,0.16)] ${className}`}
       style={{ x, y, rotate, opacity, scale, borderRadius: radius }}
     >
-      <Image src={src} alt={alt} fill className="object-cover" sizes="22vw" />
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        className="object-cover"
+        sizes="22vw"
+        priority
+        loading="eager"
+      />
+    </motion.div>
+  );
+}
+
+function SettledSatellite({
+  src,
+  alt,
+  className,
+  delay,
+  animateIn,
+}: {
+  src: string;
+  alt: string;
+  className: string;
+  delay: number;
+  animateIn: boolean;
+}) {
+  return (
+    <motion.div
+      className={`absolute z-[1] overflow-hidden rounded-[1.5rem] shadow-[0_16px_40px_rgba(11,18,32,0.16)] ${className}`}
+      initial={animateIn ? { opacity: 0, y: 16, scale: 0.94 } : false}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.55, delay, ease }}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        className="object-cover"
+        sizes="24vw"
+        priority
+        loading="eager"
+      />
     </motion.div>
   );
 }
@@ -181,6 +224,8 @@ function Satellite({
 export default function HomeHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
+  const [forceSettled, setForceSettled] = useState(false);
+  const simplify = Boolean(reduce || forceSettled);
   const { showSides, insetX, sideW, centerHalf } = useHeroLayout();
   const insetXTarget = useMotionValue(insetX);
 
@@ -188,9 +233,11 @@ export default function HomeHero() {
     insetXTarget.set(insetX);
   }, [insetX, insetXTarget]);
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"],
+  const scrollYProgress = useSectionScrollProgress(sectionRef, !simplify);
+
+  const onScrubFail = useCallback(() => setForceSettled(true), []);
+  useScrubFailureFallback(sectionRef, scrollYProgress, onScrubFail, {
+    enabled: !simplify,
   });
 
   const insetXMotion = useTransform([scrollYProgress, insetXTarget], ([p, settled]) => {
@@ -227,17 +274,17 @@ export default function HomeHero() {
     <section
       id="hero"
       ref={sectionRef}
-      className="relative h-[220vh] bg-paper md:h-[240vh]"
+      className={simplify ? "relative h-svh bg-paper" : "relative h-[220vh] bg-paper md:h-[240vh]"}
       aria-label="Zaims Holding hero"
     >
-      <div className="sticky top-0 h-svh overflow-hidden">
+      <div className={simplify ? "relative h-svh overflow-hidden" : "sticky top-0 h-svh overflow-hidden"}>
         <motion.div
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,var(--surface)_0%,var(--paper)_70%)]"
-          style={reduce ? { opacity: 1 } : { opacity: paperOpacity }}
+          style={simplify ? { opacity: 1 } : { opacity: paperOpacity }}
         />
         <motion.div
           className="pointer-events-none absolute inset-0 bg-noise"
-          style={reduce ? { opacity: 0.4 } : { opacity: noiseOpacity }}
+          style={simplify ? { opacity: 0.4 } : { opacity: noiseOpacity }}
         />
 
         <div
@@ -251,14 +298,16 @@ export default function HomeHero() {
           }
         >
           {showSides &&
-            SATELLITES.map((s) =>
-              reduce ? (
-                <div
+            SATELLITES.map((s, i) =>
+              simplify ? (
+                <SettledSatellite
                   key={s.src}
-                  className={`absolute z-[1] overflow-hidden rounded-[1.5rem] shadow-[0_16px_40px_rgba(11,18,32,0.16)] ${s.className}`}
-                >
-                  <Image src={s.src} alt={s.alt} fill className="object-cover" sizes="24vw" />
-                </div>
+                  src={s.src}
+                  alt={s.alt}
+                  className={s.className}
+                  delay={0.08 + i * 0.07}
+                  animateIn={forceSettled && !reduce}
+                />
               ) : (
                 <Satellite
                   key={s.src}
@@ -275,7 +324,7 @@ export default function HomeHero() {
           <motion.div
             className="absolute z-10 overflow-hidden will-change-[inset,border-radius]"
             style={
-              reduce
+              simplify
                 ? {
                     top: "10%",
                     bottom: "10%",
@@ -294,10 +343,6 @@ export default function HomeHero() {
                   }
             }
           >
-            {/*
-              Mobile only: crop toward the right so the baked-in headline stays in frame.
-              md+ (tablet / laptop / desktop): balanced center crop.
-            */}
             <Image
               src={CENTER}
               alt="We build more than structures. We build trust."
@@ -309,13 +354,13 @@ export default function HomeHero() {
 
             <motion.div
               className="absolute inset-0 bg-linear-to-t from-brand-primary/45 via-transparent to-transparent"
-              style={reduce ? { opacity: 0.4 } : { opacity: overlayOpacity }}
+              style={simplify ? { opacity: 0.4 } : { opacity: overlayOpacity }}
             />
 
             <motion.div
               className="absolute inset-x-0 bottom-0 z-10 flex flex-wrap items-center justify-center gap-2.5 px-4 pb-[max(1.25rem,4.5vh)] sm:gap-3 sm:px-6 sm:pb-[max(2rem,6vh)]"
               style={
-                reduce
+                simplify
                   ? undefined
                   : { y: copyY, opacity: copyOpacity, pointerEvents: copyPointer }
               }

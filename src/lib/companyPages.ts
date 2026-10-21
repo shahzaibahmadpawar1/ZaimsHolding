@@ -52,7 +52,7 @@ export type NexgenPageContent = {
 
 export type EdgePageContent = {
   partnersIntro: string;
-  partners: string[];
+  partners: { name: string; logo: string }[];
   partnerStats: PartnerStat[];
   projectCategories: string[];
   projects: ProjectItem[];
@@ -65,43 +65,49 @@ export type DammamPageContent = {
   industries: NamedItem[];
 };
 
+export type PropipePageContent = {
+  mission: MissionContent;
+  services: NamedItem[];
+  industries: NamedItem[];
+};
+
 export const nexgenPage: NexgenPageContent = {
   whyChoose: [
     {
       title: "Integrated Expertise",
       body: "One contractor handles six specialized services. You coordinate with us — we coordinate the details internally. This eliminates delays, ensures design compatibility, and simplifies project management.",
-      icon: "/assets/icons/icon-trophy.png",
+      icon: "/assets/icons/icon-trophy.webp",
     },
     {
       title: "Saudi Aramco Approved",
       body: "Approval as Saudi Aramco vendor #10119021 means we meet the Kingdom's most demanding standards. We're trusted with critical infrastructure.",
-      icon: "/assets/icons/icon-shield.png",
+      icon: "/assets/icons/icon-shield.webp",
     },
     {
       title: "Certified Professional Teams",
       body: "Technical staff hold AWS welding certifications, electrical engineering qualifications, and industry-specific training. Experience meets credentials on every project.",
-      icon: "/assets/icons/icon-check.png",
+      icon: "/assets/icons/icon-check.webp",
     },
     {
       title: "Safety-First Approach",
       body: "We implement strict safety protocols on every job site. Safety compliance isn't negotiable — it's embedded in our operations.",
-      icon: "/assets/icons/icon-shield.png",
+      icon: "/assets/icons/icon-shield.webp",
     },
     {
       title: "Transparent Communication",
       body: "We provide regular project updates, manage expectations clearly, and respond to client questions promptly. You always know project status.",
-      icon: "/assets/icons/icon-group.png",
+      icon: "/assets/icons/icon-group.webp",
     },
     {
       title: "Preventive Maintenance",
       body: "Beyond installation, we offer maintenance contracts that prevent costly emergency repairs and extend system lifespan.",
-      icon: "/assets/icons/icon-timer.png",
+      icon: "/assets/icons/icon-timer.webp",
     },
   ],
   serviceDivisions: [
     {
       title: "General Construction",
-      icon: "/assets/icons/icon-construction.png",
+      icon: "/assets/icons/icon-construction.webp",
       whatWeDo:
         "Our construction team executes complete structural projects from concept through handover. We manage site preparation, excavation, reinforced concrete foundations, structural steel framing, masonry work, and comprehensive civil site development.",
       keyServices: [
@@ -117,7 +123,7 @@ export const nexgenPage: NexgenPageContent = {
     },
     {
       title: "Electrical Systems",
-      icon: "/assets/icons/icon-systems.png",
+      icon: "/assets/icons/icon-systems.webp",
       whatWeDo:
         "Power distribution engineering, panel installations, and backup power networks designed and installed for industrial and commercial facilities.",
       keyServices: [
@@ -132,7 +138,7 @@ export const nexgenPage: NexgenPageContent = {
     },
     {
       title: "HVAC Systems",
-      icon: "/assets/icons/icon-systems.png",
+      icon: "/assets/icons/icon-systems.webp",
       whatWeDo:
         "Commercial HVAC duct design, central cooling systems, and VRF technology for reliable climate control across industrial and commercial buildings.",
       keyServices: [
@@ -147,7 +153,7 @@ export const nexgenPage: NexgenPageContent = {
     },
     {
       title: "Sanitary & Plumbing",
-      icon: "/assets/icons/icon-systems.png",
+      icon: "/assets/icons/icon-systems.webp",
       whatWeDo:
         "Complete plumbing and sanitary systems for industrial and commercial projects, including water-saving designs aligned with responsible building practice.",
       keyServices: [
@@ -162,7 +168,7 @@ export const nexgenPage: NexgenPageContent = {
     },
     {
       title: "Waterproofing & Coatings",
-      icon: "/assets/icons/icon-shield.png",
+      icon: "/assets/icons/icon-shield.webp",
       whatWeDo:
         "Roof membranes, foundation sealing, and protective coatings that extend structural life in demanding Saudi climates.",
       keyServices: [
@@ -177,7 +183,7 @@ export const nexgenPage: NexgenPageContent = {
     },
     {
       title: "Fire Protection Systems",
-      icon: "/assets/icons/icon-systems.png",
+      icon: "/assets/icons/icon-systems.webp",
       whatWeDo:
         "Fire protection systems integrated with building design so code compliance and life safety are engineered into the project — not added as an afterthought.",
       keyServices: [
@@ -217,14 +223,14 @@ export const edgePage: EdgePageContent = {
   partnersIntro:
     "Delivering precision steel work for government, defence, energy, and infrastructure clients across the Kingdom of Saudi Arabia.",
   partners: [
-    "Ministry of Interior",
-    "Saudi National Guard",
-    "Siemens KSA",
-    "Alfanar Projects",
-    "Riyadh Metro",
-    "Jadah Development",
-    "SAPCQ",
-    "Tarshid Energy",
+    { name: "Ministry of Interior", logo: "/assets/logos/partners/ministry-of-interior.png" },
+    { name: "Saudi National Guard", logo: "/assets/logos/partners/national-guard.png" },
+    { name: "Siemens KSA", logo: "/assets/logos/partners/siemens.png" },
+    { name: "Alfanar Projects", logo: "/assets/logos/partners/alfanar.png" },
+    { name: "Riyadh Metro", logo: "/assets/logos/partners/riyadh-metro.png" },
+    { name: "Jadah Development", logo: "/assets/logos/partners/jadah.png" },
+    { name: "SAPCQ", logo: "/assets/logos/partners/sapcq.png" },
+    { name: "Tarshid Energy", logo: "/assets/logos/partners/tarshid.png" },
   ],
   partnerStats: [
     { value: "SCA", label: "Certified Contractor" },
@@ -348,6 +354,72 @@ export const dammamPage: DammamPageContent = {
   ],
 };
 
+export const propipePage: PropipePageContent = {
+  mission: {
+    eyebrow: "Mission",
+    title: "Our Mission",
+    paragraphs: [
+      "To provide quality fabrication, installation, and erection of structural steel and process equipment at competitive prices. ProPipe commits to excellence and value in structural solutions and machine-shop activities — delivering exceptional quality, predictable outcomes, and mutually beneficial relationships.",
+      "Established in 2003, Pro Pipe International Contracting Co. has grown into a trusted provider of fabrication, engineering, civil, and industrial services in the Kingdom of Saudi Arabia. Managed by professionals with over 20 years of structural steel industry experience, the company supports oil & gas and industrial operations with on-site leak sealing, bolting, and portable machining that keep plants running without costly downtime.",
+    ],
+  },
+  services: [
+    {
+      title: "Metal Fabrication & Engineering",
+      description: "Metal structures created through cutting, bending, and assembling processes.",
+    },
+    {
+      title: "Pipeline Services",
+      description:
+        "Industrial piping, pipeline fabrication, and mechanical general contracting from design to completion.",
+    },
+    {
+      title: "Comprehensive Welding Services",
+      description: "Premium welding using advanced processes including FCAW, SMAW, and more.",
+    },
+    {
+      title: "Heat Exchanger Service",
+      description:
+        "Maintenance, performance testing, and repair for industrial heat exchangers.",
+    },
+    {
+      title: "CNC & Manual Machining",
+      description:
+        "Tight-tolerance components from a fully equipped machine shop with specialized capabilities.",
+    },
+    {
+      title: "Maintenance & Online Leak Repair",
+      description:
+        "Specialized online leak services for boilers, heaters, and power plants — plus hydraulic bolting and flange tools.",
+    },
+    {
+      title: "Erection & Installation",
+      description:
+        "Erection and installation for pre-fabricated buildings and equipment, including PEB erection and structure dismantling.",
+    },
+    {
+      title: "Water & Sewage Plants",
+      description:
+        "Maintenance and installation for water and sewage treatment facilities and water networks.",
+    },
+    {
+      title: "CNC Laser Cutting",
+      description: "High-precision CNC laser cutting and processing across multiple materials.",
+    },
+    {
+      title: "Car Parking Shades",
+      description:
+        "Fabrication and installation of car parking shades for stability and long-term performance.",
+    },
+  ],
+  industries: [
+    { title: "Oil & Gas" },
+    { title: "Power & Petrochemical" },
+    { title: "Heavy Engineering" },
+    { title: "Water & Sewage Infrastructure" },
+  ],
+};
+
 export function getCompanyPageExtras(slug: CompanySlug) {
   switch (slug) {
     case "nexgen-build":
@@ -356,5 +428,7 @@ export function getCompanyPageExtras(slug: CompanySlug) {
       return { kind: "edge" as const, data: edgePage };
     case "dammam-laser":
       return { kind: "dammam" as const, data: dammamPage };
+    case "pro-pipe":
+      return { kind: "propipe" as const, data: propipePage };
   }
 }

@@ -1,18 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Node.js hosting (cPanel) — do not use `output: "export"`
+  // Static HTML export → `out/` after `npm run build`
+  output: "export",
+  // Folder-style URLs (`/about/index.html`) work better on Apache/cPanel static hosts
+  trailingSlash: true,
   images: {
-    // Avoid native `sharp` issues on many shared hosts
+    // Required for static export (no image optimization server)
     unoptimized: true,
-  },
-  async redirects() {
-    return [
-      { source: "/platforms", destination: "/companies", permanent: true },
-      { source: "/services", destination: "/sectors", permanent: true },
-      { source: "/resources", destination: "/news", permanent: true },
-      { source: "/stakeholders", destination: "/investors", permanent: true },
-    ];
   },
 };
 

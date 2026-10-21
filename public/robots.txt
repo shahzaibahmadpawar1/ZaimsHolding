@@ -1,0 +1,5 @@
+# https://zaimsholding.com/robots.txt
+User-agent: *
+Allow: /
+
+Sitemap: https://zaimsholding.com/sitemap.xml

@@ -9,7 +9,7 @@ import { companies } from "@/lib/content";
 export const metadata: Metadata = {
   title: "Our Companies",
   description:
-    "Zaims Holding's operating companies: NexGen Build, Dammam Laser CNC, and Edge Steel KSA.",
+    "Zaims Holding's operating companies: NexGen Build, Dammam Laser CNC, Edge Steel KSA, and ProPipe.",
 };
 
 export default function CompaniesPage() {
@@ -27,7 +27,7 @@ export default function CompaniesPage() {
 
       <section id="portfolio" className="bg-surface py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <Stagger className="grid gap-5 md:grid-cols-3">
+          <Stagger className="grid gap-5 sm:grid-cols-2">
             {companies.map((c, i) => (
               <StaggerItem key={c.slug}>
                 <CompanyCard company={c} index={i} />

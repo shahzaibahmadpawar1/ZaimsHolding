@@ -59,6 +59,22 @@ const news = [
     href: "/companies/dammam-laser",
   },
   {
+    date: "Operating update",
+    category: "ProPipe",
+    title: "On-site leak sealing & bolting from Jubail",
+    excerpt:
+      "ProPipe publishes online leak sealing, critical bolting, portable machining, and pipeline services from Jubail — founded in 2003 as Pro Pipe International Contracting Co. to support oil & gas and industrial plants across KSA and the GCC.",
+    href: "/companies/pro-pipe",
+  },
+  {
+    date: "2003",
+    category: "ProPipe",
+    title: "ProPipe founded in Jubail",
+    excerpt:
+      "ProPipe publicly dates its founding to 2003, delivering fabrication, engineering, and on-site industrial services for structural steel and process equipment across Saudi Arabia.",
+    href: "/companies/pro-pipe",
+  },
+  {
     date: "2020",
     category: "Edge Steel KSA",
     title: "Edge Steel KSA founded in Riyadh",
@@ -74,7 +90,7 @@ export default function NewsPage() {
       <PageHero
         eyebrow="News"
         title="Updates from the group."
-        description="Milestones and operating notes grounded in what NexGen Build, Dammam Laser CNC, and Edge Steel KSA publish on their own sites. Media inquiries: Contact with inquiry type Media."
+        description="Milestones and operating notes grounded in what NexGen Build, Dammam Laser CNC, Edge Steel KSA, and ProPipe publish on their own sites. Media inquiries: Contact with inquiry type Media."
       />
 
       <section id="updates" className="bg-surface py-16 md:py-24">

@@ -35,6 +35,10 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# Contact form SMTP secrets (copy from contact-config.example.php)
+public/api/contact-config.php
+out/api/contact-config.php
+
 # vercel
 .vercel
 

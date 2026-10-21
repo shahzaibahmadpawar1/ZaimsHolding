@@ -1,0 +1,18 @@
+# Block direct access to secrets and library sources; contact.php remains executable.
+<Files "contact-config.php">
+  Require all denied
+</Files>
+
+# Apache 2.2 fallback
+<IfModule !mod_authz_core.c>
+  <Files "contact-config.php">
+    Order allow,deny
+    Deny from all
+  </Files>
+</IfModule>
+
+# Deny browsing / downloading PHPMailer sources
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^phpmailer/ - [F,L]
+</IfModule>

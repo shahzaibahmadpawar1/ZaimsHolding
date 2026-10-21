@@ -4,7 +4,7 @@ import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import SectionHeading from "@/components/SectionHeading";
 import ClosingCTA from "@/components/ClosingCTA";
-import { FadeIn, Stagger, StaggerItem } from "@/components/Motion";
+import { Stagger, StaggerItem } from "@/components/Motion";
 import { companies } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -28,21 +28,19 @@ export default function InvestorsPage() {
 
       <section id="glance" className="bg-surface py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <FadeIn>
-            <SectionHeading
-              eyebrow="At a glance"
-              title="What capital partners should know."
-            />
-          </FadeIn>
+          <SectionHeading
+            eyebrow="At a glance"
+            title="What capital partners should know."
+          />
           <Stagger className="mt-12 grid gap-6 md:grid-cols-3">
             {[
               {
-                title: "Three operating companies",
+                title: "Four operating companies",
                 body: companies.map((c) => c.name).join(", ") + ".",
               },
               {
                 title: "Sector focus",
-                body: "Construction & MEP, structural steel, precision laser/CNC fabrication — Kingdom of Saudi Arabia.",
+                body: "Construction & MEP, structural steel, precision laser/CNC fabrication, and on-site pipeline services — Kingdom of Saudi Arabia.",
               },
               {
                 title: "Ownership stance",
@@ -62,27 +60,25 @@ export default function InvestorsPage() {
 
       <section id="resources" className="bg-paper border-y border-mono-20 py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <FadeIn>
-            <SectionHeading eyebrow="Resources" title="Investor pathways." />
-          </FadeIn>
+          <SectionHeading eyebrow="Resources" title="Investor pathways." />
           <Stagger className="mt-12 grid gap-5 md:grid-cols-3">
             {[
               {
-                icon: "/assets/icons/icon-marketplace.png",
+                icon: "/assets/icons/icon-marketplace.webp",
                 title: "Investment inquiries",
                 body: "Share context via Contact (inquiry type: Investment). Formal materials shared under NDA as appropriate.",
                 href: "/contact",
                 cta: "Contact IR path",
               },
               {
-                icon: "/assets/icons/icon-shield.png",
+                icon: "/assets/icons/icon-shield.webp",
                 title: "Sustainability & ESG",
                 body: "Operating companies carry site-level safety and quality systems (including ISO 9001 at NexGen). Group ESG reporting is in development.",
                 href: "/about",
                 cta: "About the group",
               },
               {
-                icon: "/assets/icons/icon-group.png",
+                icon: "/assets/icons/icon-group.webp",
                 title: "Media",
                 body: "For press, use Contact with inquiry type Media. Seeded updates live on the News page.",
                 href: "/news",
