@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { FileDown } from "lucide-react";
 import {
   motion,
   useMotionValue,
@@ -15,6 +16,7 @@ import {
   useScrubFailureFallback,
   useSectionScrollProgress,
 } from "@/lib/useSectionScrollProgress";
+import { COMPANY_PROFILE_PDF } from "@/lib/content";
 
 /**
  * Scroll hero inspired by Framer MokuHero:
@@ -102,10 +104,12 @@ function MagneticCTA({
   href,
   children,
   variant = "primary",
+  download = false,
 }: {
   href: string;
   children: React.ReactNode;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "accent";
+  download?: boolean;
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
   const reduce = useReducedMotion();
@@ -131,19 +135,36 @@ function MagneticCTA({
   const base =
     variant === "primary"
       ? "rounded-full bg-surface px-5 py-3 text-sm font-semibold text-brand-primary shadow-lg shadow-black/25 sm:px-6 sm:py-3.5"
-      : "rounded-full border border-surface/35 bg-surface/10 px-5 py-3 text-sm font-semibold text-surface backdrop-blur-sm sm:px-6 sm:py-3.5";
+      : variant === "accent"
+        ? "rounded-full bg-brand-yellow px-5 py-3 text-sm font-semibold text-brand-primary shadow-lg shadow-black/25 sm:px-6 sm:py-3.5"
+        : "rounded-full border border-surface/35 bg-surface/10 px-5 py-3 text-sm font-semibold text-surface backdrop-blur-sm sm:px-6 sm:py-3.5";
+
+  const className = `${base} inline-flex cursor-pointer items-center gap-2 transition-colors hover:opacity-95`;
 
   return (
     <motion.div style={{ x: springX, y: springY }}>
-      <Link
-        ref={ref}
-        href={href}
-        onMouseMove={onMove}
-        onMouseLeave={onLeave}
-        className={`${base} inline-flex cursor-pointer transition-colors hover:opacity-95`}
-      >
-        {children}
-      </Link>
+      {download ? (
+        <a
+          ref={ref}
+          href={href}
+          download
+          onMouseMove={onMove}
+          onMouseLeave={onLeave}
+          className={className}
+        >
+          {children}
+        </a>
+      ) : (
+        <Link
+          ref={ref}
+          href={href}
+          onMouseMove={onMove}
+          onMouseLeave={onLeave}
+          className={className}
+        >
+          {children}
+        </Link>
+      )}
     </motion.div>
   );
 }
@@ -367,6 +388,10 @@ export default function HomeHero() {
             >
               <h1 className="sr-only">Zaims Holding — We build more than structures. We build trust.</h1>
               <MagneticCTA href="/companies">Explore our companies</MagneticCTA>
+              <MagneticCTA href={COMPANY_PROFILE_PDF} download variant="accent">
+                <FileDown className="h-4 w-4" aria-hidden />
+                Company profile
+              </MagneticCTA>
               <MagneticCTA href="/contact" variant="secondary">
                 Get in touch
               </MagneticCTA>

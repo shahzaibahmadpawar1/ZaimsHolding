@@ -23,7 +23,7 @@ const proofs = [
   {
     icon: "/assets/icons/icon-group.webp",
     title: "Four companies, one group",
-    desc: "Construction, steel, precision fab, and on-site pipeline services under permanent holding ownership — not a one-off JV.",
+    desc: "Construction, steel, precision fab, and on-site pipeline services under permanent holding ownership.",
   },
   {
     icon: "/assets/icons/icon-footprint.webp",

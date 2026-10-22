@@ -5,9 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, FileDown, Menu, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { navItems, type NavItem } from "@/lib/content";
+import { COMPANY_PROFILE_PDF, navItems, type NavItem } from "@/lib/content";
 
 function linkIsActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
@@ -269,12 +269,22 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
           })}
         </div>
 
-        <Link
-          href="/contact"
-          className="flex flex-shrink-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-brand-primary px-4 py-2.5 text-sm font-semibold text-surface transition-opacity hover:opacity-90 xl:px-5"
-        >
-          Get in touch
-        </Link>
+        <div className="flex flex-shrink-0 items-center gap-2">
+          <a
+            href={COMPANY_PROFILE_PDF}
+            download
+            className="inline-flex cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-yellow px-3.5 py-2.5 text-sm font-semibold text-brand-primary transition-opacity hover:opacity-90 xl:gap-2 xl:px-4"
+          >
+            <FileDown className="h-4 w-4" aria-hidden />
+            Company profile
+          </a>
+          <Link
+            href="/contact"
+            className="flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-brand-primary px-4 py-2.5 text-sm font-semibold text-surface transition-opacity hover:opacity-90 xl:px-5"
+          >
+            Get in touch
+          </Link>
+        </div>
       </motion.nav>
 
       {/* Mobile + tablet — keep pill fully inside the viewport */}
@@ -290,6 +300,16 @@ export default function Header({ theme = "light" }: { theme?: "dark" | "light" }
         >
           <BrandLogo className="h-6! w-auto max-w-full object-contain object-left sm:h-7!" />
         </Link>
+        <a
+          href={COMPANY_PROFILE_PDF}
+          download
+          className="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full bg-brand-yellow px-2.5 py-2 text-xs font-semibold text-brand-primary transition-opacity hover:opacity-90 sm:gap-2 sm:px-3 sm:text-sm"
+          aria-label="Download company profile"
+        >
+          <FileDown className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden />
+          <span className="sm:hidden">Profile</span>
+          <span className="hidden sm:inline">Company profile</span>
+        </a>
         <Dialog.Root open={open} onOpenChange={setOpen}>
           <Dialog.Trigger asChild>
             <button
